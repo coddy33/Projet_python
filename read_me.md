@@ -1,10 +1,12 @@
 # README
 
+Créer un compte github https://github.com/
+
 **PENSER A PULL AVANT DE TRAVAILLER**
 
 ## installer github
 
-	`sudo apt-get install github`
+	`sudo apt-get install git`
 
 ---
 
