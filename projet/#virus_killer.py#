@@ -1,0 +1,44 @@
+# Projet de programmation Python - Virus killer
+# JUNG Frédéric
+# DOURTHE Cyril
+# THOUVENIN Arthur
+
+#-*- coding: utf-8 -*-
+
+def grid(L):
+
+
+######## MENU ########
+
+import sys
+
+def menu(lol):
+    print "====================================== Virus Killer ======================================="
+    print "\n"
+    print "taper 1 pour commencer"
+    print "taper 0 pour quitter"
+    print "\n"
+    print "==========================================================================================="
+ 
+def commandes(nb): 
+    while nb != 0:
+        menu(0)
+        nb=raw_input() 
+        if nb == "1":
+           
+        elif nb == "0":
+            print "Bye"
+            sys.exit()
+        else:
+            print "ERREUR : mauvaise valeur"
+    
+
+######## MAIN ########
+
+
+
+print "start ------>", 1 #faire la boucle avec la sortie
+print "stop  ------>", 0
+
+rep=input()
+commandes(rep)
