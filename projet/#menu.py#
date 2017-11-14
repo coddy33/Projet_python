@@ -12,8 +12,6 @@ def grid(L):
 
 import sys
 
-
-
 def menu(lol):
     print "====================================== Virus Killer ======================================="
     print "\n"
