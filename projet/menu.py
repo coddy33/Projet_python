@@ -19,11 +19,12 @@ def create_grid(G):
 def player(G):
     x=0
     y=0
-    for j in range(len(G)):
+    for j in range(len(G)): #chercher la position du joueur
         for i in G[j]: #mettre aussi dans une boucle for pour le G[j]
-            if i == 50:
-                print G[j].index(50) #print les coordonées en y
-                print j #print coordonées en x
+            if i == 0:
+                y = G[j].index(0) # coordonées en y
+                x = j #coordonées en x
+                G[x][y]=" "
     movement = raw_input("où voulez-vous aller ?")
     if movement == "s":#backward
         x = x+1
@@ -73,12 +74,12 @@ def commandes(nb):
 
 grid=[]
 
-x=2
-y=4
+x=8
+y=8
 
 create_grid(grid)
 
-grid[x][y]=50
+grid[x][y]=0
 
 
 
