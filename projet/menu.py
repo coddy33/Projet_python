@@ -23,7 +23,7 @@ def player(G):
         for i in G[j]: #mettre aussi dans une boucle for pour le G[j]
             if i == 50:
                 print G[j].index(50) #print les coordonées en y
-                
+                print j #print coordonées en x
     movement = raw_input("où voulez-vous aller ?")
     if movement == "s":#backward
         x = x+1
