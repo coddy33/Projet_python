@@ -16,9 +16,21 @@ create_grid(grid)
 
 grid[x][y]=0
 
-for i in range(10):
-    print grid[i]
+#TEST GRID
+#for i in range(10):
+    #print grid[i]
 
-
+print "\n\n\n"
+print "------------ VIRUS KILLER ---------------"
+print "-----------------------------------------"
+y=0
+while y<9:
+    x=0
+    for h in range(9):
+        print "|",grid[x][y], 
+        x=x+1
+    print "|",grid[x][y],"|"
+    print"-----------------------------------------"
+    y=y+1
 
 
