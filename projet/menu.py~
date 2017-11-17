@@ -6,36 +6,26 @@
 
 import os
 
-#Create Grid
-
-def create_grid(G):
+def create_grid(grid):
     for i in range(10):
         list=[1,2,3,4,5,6,7,8,9,10]
-        G.append(list)
+        grid.append(list)
 
-#Movment Player
-
-def player(x,y,G):
-    for i in G:
-        if i == 0:
-            print x
-            print y            
+def player(x,y):
     movement = raw_input("où voulez-vous aller ?")
-    if movement == "s":#backward
+    if movement == "z":
         x = x+1
-    if movement == "z":#foreward
+    if movement == "s":
         x = x-1
-    if movement == "d":#righ
+    if movement == "d":
         y = y+1
-    if movement == "q":#left
+    if movement == "q":
         y = y-1
-    G[x][y]=0
-    
-    
-    
-    
-    
-    t
+    return x, y
+    #foreward
+    #backward
+    #left
+    #right
     
 
 ######## MENU ########
@@ -60,7 +50,7 @@ def commandes(nb):
             for i in range(10):
                 print grid[i]
         if nb == "2":
-            player(x,y,grid)
+            player(x,y)
             for i in range(10):
                 print grid[i]
         elif nb == "0":
@@ -75,7 +65,7 @@ def commandes(nb):
 
 grid=[]
 
-x=5 
+x=5
 y=4
 
 create_grid(grid)
