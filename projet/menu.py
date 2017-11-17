@@ -7,11 +7,30 @@ import sys
 import os
 
 #Create Grid
-
+"""
 def create_grid(G):
     for i in range(10):
         list=[1,2,3,4,5,6,7,8,9,10]
         G.append(list)
+"""
+def create_grid(grid):
+    for i in range(10):
+        list=[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+        grid.append(list)
+
+def print_grid(grid):
+    print "\n\n\n"
+    print "------------ VIRUS KILLER ---------------"
+    print "-----------------------------------------"
+    y=0
+    while y<9:
+        x=0
+        for h in range(9):
+            print "|",grid[x][y], 
+            x=x+1
+        print "|",grid[x][y],"|"
+        print"-----------------------------------------"
+        y=y+1
 
 #Movment Player
 
@@ -26,14 +45,18 @@ def player(G):
                 x = j #coordonées en x
                 G[x][y]=" "
     movement = raw_input("où voulez-vous aller ?")
-    if movement == "s":#backward
-        x = x+1
-    if movement == "z":#foreward
-        x = x-1
-    if movement == "d":#righ
-        y = y+1
+    if movement == "d":#right
+        right=input("de combien de cases voulez-vous vous déplacer ?")
+        x = x+right
     if movement == "q":#left
-        y = y-1
+        left=input("de combien de cases voulez-vous vous déplacer ?")
+        x = x-left
+    if movement == "s":#backward
+        backward=input("de combien de cases voulez-vous vous déplacer ?")
+        y = y+backward
+    if movement == "z":#foreward
+        foreward=input("de combien de cases voulez-vous vous déplacer ?")
+        y = y-foreward
     G[x][y]=0
     
 
@@ -57,11 +80,11 @@ def commandes(nb):
         if nb == "1":
             os.system("clear")
             for i in range(10):
-                print grid[i]
+                print_grid(grid)
         elif nb == "2":
             player(grid)
             for i in range(10):
-                print grid[i]
+                print_grid(grid)
         elif nb == "0":
             print "Bye"
             sys.exit()
