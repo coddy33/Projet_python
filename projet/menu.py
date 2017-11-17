@@ -3,7 +3,7 @@
 # JUNG Frédéric
 # DOURTHE Cyril
 # THOUVENIN Arthur
-
+import sys
 import os
 
 #Create Grid
@@ -15,11 +15,15 @@ def create_grid(G):
 
 #Movment Player
 
-def player(x,y,G):
-    for i in G:
-        if i == 0:
-            print x
-            print y            
+
+def player(G):
+    x=0
+    y=0
+    for j in range(len(G)):
+        for i in G[j]: #mettre aussi dans une boucle for pour le G[j]
+            if i == 50:
+                print G[j].index(50) #print les coordonées en y
+                
     movement = raw_input("où voulez-vous aller ?")
     if movement == "s":#backward
         x = x+1
@@ -31,16 +35,10 @@ def player(x,y,G):
         y = y-1
     G[x][y]=0
     
-    
-    
-    
-    
-    t
-    
 
 ######## MENU ########
 
-import sys
+
 
 def menu(lol):
     print "====================================== Virus Killer ======================================="
@@ -59,8 +57,8 @@ def commandes(nb):
             os.system("clear")
             for i in range(10):
                 print grid[i]
-        if nb == "2":
-            player(x,y,grid)
+        elif nb == "2":
+            player(grid)
             for i in range(10):
                 print grid[i]
         elif nb == "0":
@@ -75,14 +73,12 @@ def commandes(nb):
 
 grid=[]
 
-x=5 
+x=2
 y=4
 
 create_grid(grid)
 
-grid[x][y]=0
-
-
+grid[x][y]=50
 
 
 

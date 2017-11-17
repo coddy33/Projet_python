@@ -1,3 +1,7 @@
+
+import random #appeller la fonction
+
+
 def create_grid(grid):
     for i in range(10):
         list=[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
@@ -31,3 +35,8 @@ while y<9:
     print "|",grid[x][y],"|"
     print"-----------------------------------------"
     y=y+1
+
+
+rand = random.randint(1,10)
+
+print rand
