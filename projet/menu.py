@@ -33,7 +33,7 @@ def print_grid(grid):
         y=y+1
 
 #Movment Player
-
+#Régler le probleme out of range quand sort de la grille
 
 def player(G):
     x=0
@@ -47,17 +47,29 @@ def player(G):
     movement = raw_input("où voulez-vous aller ?")
     if movement == "d":#right
         right=input("de combien de cases voulez-vous vous déplacer ?")
-        x = x+right
+        if x+right >=10 :
+            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        else:
+            x = x+right
     if movement == "q":#left
         left=input("de combien de cases voulez-vous vous déplacer ?")
-        x = x-left
+        if x-left <= 0 :
+            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        else:    
+            x = x-left
     if movement == "s":#backward
         backward=input("de combien de cases voulez-vous vous déplacer ?")
-        y = y+backward
+        if y+backward <= 0 :
+            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        else:    
+            y = y+backward
     if movement == "z":#foreward
-        foreward=input("de combien de cases voulez-vous vous déplacer ?")
-        y = y-foreward
-    G[x][y]=0
+        if y-foreward <= 0 :
+            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        else:    
+            y = y-foreward
+        
+    G[x][y]=0 # 0=le symbole qui matérialise le personnage dans la grille
     
 
 ######## MENU ########
@@ -79,12 +91,10 @@ def commandes(nb):
         nb=raw_input() 
         if nb == "1":
             os.system("clear")
-            for i in range(10):
-                print_grid(grid)
+            print_grid(grid)
         elif nb == "2":
             player(grid)
-            for i in range(10):
-                print_grid(grid)
+            print_grid(grid)
         elif nb == "0":
             print "Bye"
             sys.exit()
