@@ -27,6 +27,8 @@ def print_grid(grid):
         print"-----------------------------------------"
         y=y+1
 
+
+"""
 #Localisation du joueur
 #vraiment nécessaire ? car initialisation coordonnées connus 
 def location(G,P):
@@ -39,6 +41,7 @@ def location(G,P):
                 x = j #coordonées en x
                 P.append(x)
                 P.append(y)
+"""
                 
 #Movment Player
 #Régler le probleme out of range quand sort de la grille -> Ok
@@ -48,7 +51,7 @@ def move(G,P):
     movement = raw_input("où voulez-vous aller ?")
     x=P[0]
     y=P[1]
-    G[x][y]=" " #remplacer son ancienne position par une case vide
+    G[x][y]=" " #remplacer l'ancienne position par une case vide
     if movement == "d":#right
         right=input("de combien de cases voulez-vous vous déplacer ?")
         if x+right >=10 :
@@ -83,13 +86,28 @@ def drugs_inventory(I):#médicament=bombe
     for w in I :
         print w[1], "   ", w[0], "---------->" ,"[" ,w[2], "]"
     print "\n"
-    tmp=input("Quelle médicament voulez vous utiliser ?")
-    I[tmp][1]=(I[tmp][1])-1
-    #rajouter un return des dégats
-    if I[tmp][1] == 0:
-        del I[tmp] #supprime un élément de l'inventaire
-       
-######## MENU ########
+    rep=raw_input("Voulez-vous utiliser un médicament ?")
+    if rep == "yes":
+        print "\n"
+        tmp=input("Quelle médicament voulez vous utiliser ?")
+        I[tmp][1]=(I[tmp][1])-1
+        #rajouter un return des dégats
+        if I[tmp][1] == 0:
+            del I[tmp] #supprime un élément de l'inventaire
+    else :
+        print "Retour au menu..."
+
+def power_less(I):
+    tmp=0
+    for i in I: # A chaque fois que le personnage appelle cette fonction on perd un de portée sur toutes les bombes
+        i[2]=i[2]-1
+        print i[2]
+    for i in I: # A chaque fois que la portée passe à 0 le médicament=bombe est supprimé
+        tmp=0
+        if i[2] == 0:
+            del I[tmp]
+        else:
+            tmp=tmp+1
 
 def menu(lol):
     print "====================================== Virus Killer ======================================="
@@ -109,7 +127,8 @@ def commandes(nb):
             os.system("clear")
             print_grid(grid)
         elif nb == "2": #player movement
-            location(grid,position)
+            #location(grid,position)
+            power_less(inventory)
             move(grid,position)
             print_grid(grid)
         elif nb == "3":
@@ -128,7 +147,7 @@ def commandes(nb):
 Items={"Bombe_nucleaire":8,"Grande_bombe":6,"Moyenne_bombe":4,"Petite_bombe":2}
 
 inventory=[]
-Bombe_nucleaire=["A",1,Items["Bombe_nucleaire"]]
+Bombe_nucleaire=["A",1,8]
 Grande_bombe =["B",1,Items["Grande_bombe"]]
 Moyenne_bombe=["C",1,Items["Moyenne_bombe"]]
 Petite_bombe=["D",1,Items["Petite_bombe"]]
@@ -143,11 +162,15 @@ grid=[]
 
 position=[]
 
+position.append(0)
+position.append(0)
+
+
 create_grid(grid)
 
 #Initialisation  
 #le joueur est matérialisé par un 0 sur la grille
-grid[4][4]=0 #position initiale définie x=0 ;y=0 
+grid[position[0]][position[1]]=0 #position initiale définie x=0 ;y=0 
 
 print "start ------>", 1 #faire la boucle avec la sortie
 print "stop  ------>", 0
