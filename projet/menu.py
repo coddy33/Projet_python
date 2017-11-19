@@ -1,8 +1,10 @@
+#!/usr/bin/env python
 #-*- coding: utf-8 -*-
 # Projet de programmation Python - Virus killer
 # JUNG Frédéric
 # DOURTHE Cyril
 # THOUVENIN Arthur
+
 import sys
 import os
 
@@ -46,7 +48,8 @@ def location(G,P):
 #Movment Player
 #Régler le probleme out of range quand sort de la grille -> Ok
 #code dupliqué pour la gestion d'erreur out of range
-            
+#bug déplacement, a chaque fois que le joueur se déplace, perte durabilité des bombes même si il a fait un déplacement dans un mur
+
 def move(G,P):
     movement = raw_input("où voulez-vous aller ?")
     x=P[0]
@@ -55,27 +58,33 @@ def move(G,P):
     if movement == "d":#right
         right=input("de combien de cases voulez-vous vous déplacer ?")
         if x+right >=10 :
+            os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
         else:
             x = x+right
-    if movement == "q":#left
+    elif movement == "q":#left
         left=input("de combien de cases voulez-vous vous déplacer ?")
         if x-left <= 0 :
+            os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
         else:    
             x = x-left
-    if movement == "s":#backward
+    elif movement == "s":#backward
         backward=input("de combien de cases voulez-vous vous déplacer ?")
         if y+backward <= 0 :
+            os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
         else:    
             y = y+backward
-    if movement == "z":#foreward
+    elif movement == "z":#foreward
         foreward=input("de combien de cases voulez-vous vous déplacer ?")
         if y-foreward <= 0 :
-            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-        else:    
+            os.system("clear")
+            print "Erreur : Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        else:
             y = y-foreward
+    else:
+        print "MAUVAIS DEPLACEMENT - UTILISEZ LES COMMANDES DE DEPLACEMENT Z Q S D"
     G[x][y]=0 # 0=le symbole qui matérialise le personnage dans la grille
     P[0]=x
     P[1]=y
@@ -101,7 +110,6 @@ def power_less(I):
     tmp=0
     for i in I: # A chaque fois que le personnage appelle cette fonction on perd un de portée sur toutes les bombes
         i[2]=i[2]-1
-        print i[2]
     for i in I: # A chaque fois que la portée passe à 0 le médicament=bombe est supprimé
         tmp=0
         if i[2] == 0:
@@ -112,26 +120,25 @@ def power_less(I):
 def menu(lol):
     print "====================================== Virus Killer ======================================="
     print "\n"
-    print "taper [1] pour commencer"
-    print "taper [2] pour vous déplacer"
-    print "taper [3] pour déposer un médicament"
+    print "taper [1] pour vous déplacer"
+    print "taper [2] pour déposer un médicament"
     print "taper [0] pour quitter"
     print "\n"
     print "==========================================================================================="
  
 def commandes(nb): 
     while nb != 0:
+        os.system("clear")
+        print_grid(grid)
         menu(0)
         nb=raw_input() 
-        if nb == "1":
-            os.system("clear")
-            print_grid(grid)
-        elif nb == "2": #player movement
+        if nb == "1": #player movement
             #location(grid,position)
             power_less(inventory)
             move(grid,position)
-            print_grid(grid)
-        elif nb == "3":
+            #os.system("clear")
+            #print_grid(grid)
+        elif nb == "2":
             os.system("clear")
             print_grid(grid)
             drugs_inventory(inventory)
@@ -140,7 +147,22 @@ def commandes(nb):
             sys.exit()
         else:
             print "ERREUR : mauvaise valeur"
-    
+            
+def win():
+    print " __    __  _____   _   _        _          __  _   __   _  "
+    print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
+    print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
+    print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
+    print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
+    print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
+
+def lose():
+    print "    __    __  _____   _   _        _       _____   _____   _____  "
+    print "    \ \  / / /  _  \ | | | |      | |     /  _  \ /  ___/ | ____| "
+    print "     \ \/ /  | | | | | | | |      | |     | | | | | |___  | |__   "
+    print "      \  /   | | | | | | | |      | |     | | | | \___  \ |  __|  "
+    print "      / /    | |_| | | |_| |      | |___  | |_| |  ___| | | |___  "
+    print "     /_/     \_____/ \_____/      |_____| \_____/ /_____/ |_____| "
 
 ######## MAIN ########
 
@@ -170,11 +192,25 @@ create_grid(grid)
 
 #Initialisation  
 #le joueur est matérialisé par un 0 sur la grille
-grid[position[0]][position[1]]=0 #position initiale définie x=0 ;y=0 
+grid[position[0]][position[1]]=0 #position initiale définie x=0 ;y=0
 
-print "start ------>", 1 #faire la boucle avec la sortie
-print "stop  ------>", 0
+os.system("clear")
 
+print "_     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____   "
+print "| |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \  "
+print "| |  / /  | | | |_| |  | | | | | |___       | |/ /   | | | |     | |     | |__   | |_| |  "
+print "| | / /   | | |  _  /  | | | | \___  \      | |\ \   | | | |     | |     |  __|  |  _  /  "
+print "| |/ /    | | | | \ \  | |_| |  ___| |      | | \ \  | | | |___  | |___  | |___  | | \ \  "
+print "|___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ "
+
+print "\n"
+print "\n"
+
+print "[1] START"
+print "[2] EXIT"
 rep=input()
 commandes(rep)
 
+#print l'inventaire dans le menu ?
+#régler les os. clear
+#faire la fonction pour perdre la partie
