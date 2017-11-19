@@ -54,15 +54,25 @@ def location(G,P):
 
 def move(G,P):
     movement = raw_input("où voulez-vous aller ?")
+    tmp=[]
     x=P[0]
     y=P[1]
     G[x][y]=" " #remplacer l'ancienne position par une case vide
     if movement == "d":#right
         right=input("de combien de cases voulez-vous vous déplacer ?")
+        for i in G[x]:
+            if i == "W":
+                nb=G[x].index(i)
+                tmp.append(nb)
+        print x+right
+        for i in tmp:
+            if i >= x+right:
+                print "Erreur"
+                break
         if x+right >=10 :
             os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-        if G[x+right][y] == "W":
+        elif G[x+right][y] == "W": #pour ne pas s'arrêter sur un mur -> simplifier au dessus
             print "Vous ne pouvez pas traverser une membrane"
         else:
             x = x+right
@@ -125,7 +135,10 @@ def power_less(I):
             
 #def use_energy():
     
-
+def help(G):
+    print G[0]
+    y = G[0].index("W")
+    print y
             
 def energy(grid):
     for i in range(8):
@@ -196,6 +209,8 @@ def commandes(nb):
     easy(grid)
     spawn_virus(grid)
     energy(grid)
+    help(grid)
+    print grid[0][3]
     while nb != 0:
         print inventory
         print len(inventory)
