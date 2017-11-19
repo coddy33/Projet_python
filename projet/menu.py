@@ -7,6 +7,8 @@
 
 import sys
 import os
+import random
+from energy import* 
 
 #Create Grid
 
@@ -60,6 +62,8 @@ def move(G,P):
         if x+right >=10 :
             os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        if G[x+right][y] == "W":
+            print "Vous ne pouvez pas traverser une membrane"
         else:
             x = x+right
     elif movement == "q":#left
@@ -67,6 +71,8 @@ def move(G,P):
         if x-left <= 0 :
             os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+        if G[x-right][y] == "W":
+            print "Vous ne pouvez pas traverser une membrane"
         else:    
             x = x-left
     elif movement == "s":#backward
@@ -84,6 +90,7 @@ def move(G,P):
         else:
             y = y-foreward
     else:
+        os.system("clear")
         print "MAUVAIS DEPLACEMENT - UTILISEZ LES COMMANDES DE DEPLACEMENT Z Q S D"
     G[x][y]=0 # 0=le symbole qui matérialise le personnage dans la grille
     P[0]=x
@@ -111,24 +118,87 @@ def power_less(I):
     for i in I: # A chaque fois que le personnage appelle cette fonction on perd un de portée sur toutes les bombes
         i[2]=i[2]-1
     for i in I: # A chaque fois que la portée passe à 0 le médicament=bombe est supprimé
-        tmp=0
         if i[2] == 0:
             del I[tmp]
         else:
             tmp=tmp+1
+            
+#def use_energy():
+    
+
+            
+def energy(grid):
+    for i in range(8):
+        r=0    
+        x=random.randint(0,9)
+        listtmp=grid[x]
+        while r==0:
+            y=random.randint(0,9)
+            if listtmp[y]!="W" and listtmp[y] !=0 and listtmp[y]!="A":
+                grid[x][y]="A"
+                break
+            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A":
+                continue
+
+def spawn_virus(grid):
+    for i in range(4):
+        r=0
+        x=random.randint(0,9)
+        listtmp=grid[x]
+        while r==0:
+            y=random.randint(0,9)
+            if listtmp[y]!="W" and listtmp[y]!=0 and listtmp[y]!="A" and listtmp[y]!="V":
+                grid[x][y]="V"
+                break
+            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A" or listtmp[y]!="V":
+                continue            
+"""
+def easy(grid):
+    listx=[2,7,4,0,4,1,6,3,8,2]
+    listy=[0,1,2,3,4,5,6,7,8,9]
+    for i in range(10):
+        grid[listx[i]][listy[i]]="W"
+"""        
+
+
+#END OF GAME
+#Essayer de mettre les deux dans une fonction
+
+def win(): #pas encore utilisé
+    print " __    __  _____   _   _        _          __  _   __   _  "
+    print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
+    print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
+    print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
+    print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
+    print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
+
+def lose(I):
+    if len(I) == 0:
+        print "    __    __  _____   _   _        _       _____   _____   _____  "
+        print "    \ \  / / /  _  \ | | | |      | |     /  _  \ /  ___/ | ____| "
+        print "     \ \/ /  | | | | | | | |      | |     | | | | | |___  | |__   "
+        print "      \  /   | | | | | | | |      | |     | | | | \___  \ |  __|  "
+        print "      / /    | |_| | | |_| |      | |___  | |_| |  ___| | | |___  "
+        print "     /_/     \_____/ \_____/      |_____| \_____/ /_____/ |_____| "
+    
 
 def menu(lol):
     print "====================================== Virus Killer ======================================="
     print "\n"
-    print "taper [1] pour vous déplacer"
-    print "taper [2] pour déposer un médicament"
-    print "taper [0] pour quitter"
+    print "[1] pour vous déplacer"
+    print "[2] pour déposer un médicament"
+    print "[0] pour quitter"
     print "\n"
     print "==========================================================================================="
  
-def commandes(nb): 
+def commandes(nb):
+    os.system("clear")
+    easy(grid)
+    spawn_virus(grid)
+    energy(grid)
     while nb != 0:
-        os.system("clear")
+        print inventory
+        print len(inventory)
         print_grid(grid)
         menu(0)
         nb=raw_input() 
@@ -136,8 +206,7 @@ def commandes(nb):
             #location(grid,position)
             power_less(inventory)
             move(grid,position)
-            #os.system("clear")
-            #print_grid(grid)
+            lose(inventory)
         elif nb == "2":
             os.system("clear")
             print_grid(grid)
@@ -148,27 +217,13 @@ def commandes(nb):
         else:
             print "ERREUR : mauvaise valeur"
             
-def win():
-    print " __    __  _____   _   _        _          __  _   __   _  "
-    print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
-    print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
-    print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
-    print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
-    print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
-
-def lose():
-    print "    __    __  _____   _   _        _       _____   _____   _____  "
-    print "    \ \  / / /  _  \ | | | |      | |     /  _  \ /  ___/ | ____| "
-    print "     \ \/ /  | | | | | | | |      | |     | | | | | |___  | |__   "
-    print "      \  /   | | | | | | | |      | |     | | | | \___  \ |  __|  "
-    print "      / /    | |_| | | |_| |      | |___  | |_| |  ___| | | |___  "
-    print "     /_/     \_____/ \_____/      |_____| \_____/ /_____/ |_____| "
 
 ######## MAIN ########
 
 Items={"Bombe_nucleaire":8,"Grande_bombe":6,"Moyenne_bombe":4,"Petite_bombe":2}
 
-inventory=[]
+inventory=[["A",1,3],["A",1,2],["A",1,1]]
+
 Bombe_nucleaire=["A",1,8]
 Grande_bombe =["B",1,Items["Grande_bombe"]]
 Moyenne_bombe=["C",1,Items["Moyenne_bombe"]]
@@ -196,7 +251,7 @@ grid[position[0]][position[1]]=0 #position initiale définie x=0 ;y=0
 
 os.system("clear")
 
-print "_     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____   "
+print " _     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____   "
 print "| |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \  "
 print "| |  / /  | | | |_| |  | | | | | |___       | |/ /   | | | |     | |     | |__   | |_| |  "
 print "| | / /   | | |  _  /  | | | | \___  \      | |\ \   | | | |     | |     |  __|  |  _  /  "
