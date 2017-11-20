@@ -62,8 +62,6 @@ def move(G,P):
     tmp2=[]
     for i in range(len(G)):
         tmp2.append(G[i][y])
-    print tmp, " =====tmp"
-    print tmp2, "=====tmp2"
     print G[0][2]
     G[x][y]=" " #remplacer l'ancienne position par une case vide
     if movement == "s":#backward
@@ -71,26 +69,58 @@ def move(G,P):
         h=h+backward
         for i in tmp:
             #print tmp[i].index(W)
-            if i == "W": 
-                print "STOP"
-                y=y-1
-                break #si le joueur rencontre un wall il n'avance plus
-            elif x+backward >=10 :
+            if G[x][y+1]== "W":
+                break
+            elif h >=10 :
                 os.system("clear")
                 print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
             elif y == h:
                 break
             else:
                 y=y+1
-                #print "la position", G[x][h]
-                print y, "=========== TEST"
         if G[x][y] == "V":
-                y=y-1 
+            y=y-1
+    if movement == "z":
+        foreward=input("de combien de cases voulez-vous vous déplacer ?")
+        h=y-foreward ###
+        for i in tmp:
+            if G[x][y-1] == "W":
+                break
+            elif h < 0 :
+                os.system("clear")
+                print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+            elif y == h:
+                break
+            else:
+                y=y-1
+        if G[x][y] == "V":
+            x=x+1
     if movement == "d":
         right=input("de combien de cases voulez-vous vous déplacer ?")
         h=h+right
         for i in tmp2:
-            if i == "W": 
+            if G[x-1][y] == "W": ####
+                break
+            elif i == "W": 
+                print "STOP"
+                x=x-1
+                break #si le joueur rencontre un wall il n'avance plus
+            elif x+right >=10 :
+                os.system("clear")
+                print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+            elif x == h:
+                break
+            else:
+                x=x+1
+            if G[x][y] == "V":
+                x=x-1
+    if movement == "g":
+        right=input("de combien de cases voulez-vous vous déplacer ?")
+        h=h+right
+        for i in tmp2:
+            if G[x-1][y] == "W": ####
+                break
+            elif i == "W": 
                 print "STOP"
                 x=x-1
                 break #si le joueur rencontre un wall il n'avance plus
