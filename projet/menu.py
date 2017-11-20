@@ -54,21 +54,56 @@ def location(G,P):
 
 def move(G,P):
     movement = raw_input("où voulez-vous aller ?")
-    tmp=[]
     x=P[0]
     y=P[1]
+    print "y=", y ### TEST
+    h=y
+    tmp=G[x]
+    tmp2=[]
+    for i in range(len(G)):
+        tmp2.append(G[i][y])
+    print tmp, " =====tmp"
+    print tmp2, "=====tmp2"
+    print G[0][2]
     G[x][y]=" " #remplacer l'ancienne position par une case vide
-    if movement == "d":#right
-        right=input("de combien de cases voulez-vous vous déplacer ?")
-        for i in G[x]:
-            if i == "W":
-                nb=G[x].index(i)
-                tmp.append(nb)
-        print x+right
+    if movement == "s":#backward
+        backward=input("de combien de cases voulez-vous vous déplacer ?")
+        h=h+backward
         for i in tmp:
-            if i >= x+right:
-                print "Erreur"
+            #print tmp[i].index(W)
+            if i == "W": 
+                print "STOP"
+                y=y-1
+                break #si le joueur rencontre un wall il n'avance plus
+            elif x+backward >=10 :
+                os.system("clear")
+                print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+            elif y == h:
                 break
+            else:
+                y=y+1
+                #print "la position", G[x][h]
+                print y, "=========== TEST"
+        if G[x][y] == "V":
+                y=y-1 
+    if movement == "d":
+        right=input("de combien de cases voulez-vous vous déplacer ?")
+        h=h+right
+        for i in tmp2:
+            if i == "W": 
+                print "STOP"
+                x=x-1
+                break #si le joueur rencontre un wall il n'avance plus
+            elif x+right >=10 :
+                os.system("clear")
+                print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
+            elif x == h:
+                break
+            else:
+                x=x+1
+            if G[x][y] == "V":
+                x=x-1
+        """    
         if x+right >=10 :
             os.system("clear")
             print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
@@ -98,7 +133,7 @@ def move(G,P):
             os.system("clear")
             print "Erreur : Vous ne pouvez-pas sortir de l'espace cellulaire!"
         else:
-            y = y-foreward
+            y = y-foreward"""
     else:
         os.system("clear")
         print "MAUVAIS DEPLACEMENT - UTILISEZ LES COMMANDES DE DEPLACEMENT Z Q S D"
@@ -210,10 +245,10 @@ def commandes(nb):
     spawn_virus(grid)
     energy(grid)
     help(grid)
-    print grid[0][3]
+    grid[0][2]="V" ##### TEST
     while nb != 0:
-        print inventory
-        print len(inventory)
+        print inventory ### TEST
+        print len(inventory) ### TEST
         print_grid(grid)
         menu(0)
         nb=raw_input() 
