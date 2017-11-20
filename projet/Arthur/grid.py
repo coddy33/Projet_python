@@ -1,17 +1,18 @@
 #-*- coding: utf-8 -*-
 
+import random
+
 def create_grid(grid):
     for i in range(10):
         list=[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
         grid.append(list)
-
 
 def print_grid(grid):
     print "\n\n\n"
     print "------------ VIRUS KILLER ---------------"
     print "-----------------------------------------"
     y=0
-    while y<9:
+    while y<=9:
         x=0
         for h in range(9):
             print "|",grid[x][y], 
@@ -19,7 +20,6 @@ def print_grid(grid):
         print "|",grid[x][y],"|"
         print"-----------------------------------------"
         y=y+1
-    
 
 def easy(grid):
     listx=[2,7,4,0,4,1,6,3,8,2]
@@ -39,6 +39,54 @@ def hardcore(grid):
     for i in range(len(listx)):
         grid[listx[i]][listy[i]]="W"
 
+def energy(grid):
+    for i in range(8):
+        r=0    
+        x=random.randint(0,9)
+        listtmp=grid[x]
+        while r==0:
+            y=random.randint(0,9)
+            if listtmp[y]!="W" and listtmp[y] !=0 and listtmp[y]!="A" and listtmp[y]!="V":
+                grid[x][y]="A"
+                break
+            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A" or listtmp[y]=="V":
+                continue
+
+def spawn_virus(grid):
+    for i in range(4):
+        r=0
+        x=random.randint(0,9)
+        listtmp=grid[x]
+        while r==0:
+            y=random.randint(0,9)
+            if listtmp[y]!="W" and listtmp[y]!=0 and listtmp[y]!="A" and listtmp[y]!="V":
+                grid[x][y]="V"
+                break
+            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A" or listtmp[y]!="V":
+                continue
+
+def repop_energy():
+    totA=0
+    for i in range(10):
+        for h in range(10):
+            if grid[i][h]=="A":
+                totA=totA+1
+    if totA<8:
+        pop(nb=8-totA,mol="A")
+
+def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=mol
+    for i in range(nb):
+        r=0    
+        x=random.randint(0,9)
+        listtmp=grid[x]
+        while r==0:
+            y=random.randint(0,9)
+            if listtmp[y]!="W" and listtmp[y] !=0 and listtmp[y]!="A" and listtmp[y]!="V":
+                grid[x][y]=mol
+                break
+            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A" or listtmp[y]=="V":
+                continue
+
 #MAIN
 
 grid=[]
@@ -50,10 +98,10 @@ create_grid(grid)
 
 grid[x][y]=0
 
-#TEST GRID
-#for i in range(10):
-    #print grid[i]
 hardcore(grid)
+pop(nb=8,mol="A")#pop ATP
+pop(nb=4,mol="V")#pop Virus
+repop_energy()
 print_grid(grid)
 
 
