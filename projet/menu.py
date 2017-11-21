@@ -64,6 +64,7 @@ def move(G,P):
     for i in range(len(G)):
         tmp2.append(G[i][y])
     G[x][y]=" " #remplacer l'ancienne position par une case vide
+    """
     if movement == "s":#backward
         tmp_y=y+nbr_case
         for i in range(nbr_case):
@@ -90,30 +91,23 @@ def move(G,P):
                 y=y-1
         if G[x][y] == "\x1b[31;1mV\x1b[37;1m":
             x=x+1
-    elif movement == "d":#right
-        for i in range(nbr_case):
-            if tmp_x+nbr_case >= 10 and tmp_x-nbr_case > 0: 
-                break
-            elif  G[x+1][y] == "\x1b[30;1mW\x1b[37;1m": #position d'un mur
-                break
-            else:
-                x=x+1
-        if G[x][y] == "\x1b[31;1mV\x1b[37;1m": #position d'un virus
-            x=x-1
+"""
+    if movement == "d":#right
+        step=1
     elif movement == "q": #left
-        for i in range(nbr_case):
-            if G[x-1][y] == "\x1b[30;1mW\x1b[37;1m": 
-                break
-            elif tmp_x-nbr_case < 0:
-                os.system("clear")
-                print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-            else:
-                x=x-1
-        if G[x][y] == "\x1b[31;1mV\x1b[37;1m":
-            x=x+1
+        step=-1
     else:
         os.system("clear")
         print "MAUVAIS DEPLACEMENT - UTILISEZ LES COMMANDES DE DEPLACEMENT Z Q S D"
+    for i in range(nbr_case):
+        if tmp_x+nbr_case >= 10 and tmp_x-nbr_case > 0: 
+            break
+        elif  G[x+(step)][y] == "\x1b[30;1mW\x1b[37;1m": #position d'un mur
+            break
+        else:
+            x=x+(step)
+        if G[x][y] == "\x1b[31;1mV\x1b[37;1m": #position d'un virus
+            x=x+(step)
     G[x][y]= "\x1b[33;1m0\x1b[37;1m" # 0=le symbole qui matérialise le personnage dans la grille
     P[0]=x
     P[1]=y
