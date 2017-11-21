@@ -8,7 +8,7 @@
 import sys
 import os
 import random
-from energy import* 
+
 
 #Create Grid
 
@@ -18,17 +18,17 @@ def create_grid(grid):
         grid.append(list)
 
 def print_grid(grid):
-    print "\n\n\n"
-    print "------------ VIRUS KILLER ---------------"
-    print "-----------------------------------------"
+    print "\n"
+    print "----------- ","\x1b[33;1mVIRUS KILLER","\x1b[37;0m --------------"
+    print "\x1b[30;1m-----------------------------------------\x1b[37;1m"
     y=0
     while y<=9:
         x=0
         for h in range(9):
-            print "|",grid[x][y], 
+            print "\x1b[30;1m|\x1b[37;1m",grid[x][y], 
             x=x+1
-        print "|",grid[x][y],"|"
-        print"-----------------------------------------"
+        print "\x1b[30;1m|\x1b[37;1m",grid[x][y],"\x1b[30;1m|\x1b[37;1m"
+        print"\x1b[30;1m-----------------------------------------\x1b[37;1m"
         y=y+1
 
 
@@ -54,120 +54,67 @@ def location(G,P):
 
 def move(G,P):
     movement = raw_input("où voulez-vous aller ?")
+    nbr_case=input("de combien de cases voulez-vous vous déplacer ?")
     x=P[0]
     y=P[1]
-    print "y=", y ### TEST
-    h=y
+    tmp_x=x
+    tmp_y=y
     tmp=G[x]
     tmp2=[]
     for i in range(len(G)):
         tmp2.append(G[i][y])
-    print G[0][2]
     G[x][y]=" " #remplacer l'ancienne position par une case vide
     if movement == "s":#backward
-        backward=input("de combien de cases voulez-vous vous déplacer ?")
-        h=h+backward
-        for i in tmp:
-            #print tmp[i].index(W)
-            if G[x][y+1]== "W":
+        tmp_y=y+nbr_case
+        for i in range(nbr_case):
+            if G[x][y+1]== "\x1b[30;1mW\x1b[37;1m": #wall
                 break
-            elif h >=10 :
+            elif tmp_y >=9 :
                 os.system("clear")
                 print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-            elif y == h:
-                break
             else:
                 y=y+1
-        if G[x][y] == "V":
+        if G[x][y] == "\x1b[31;1mV\x1b[37;1m": #virus
             y=y-1
-    if movement == "z":
-        foreward=input("de combien de cases voulez-vous vous déplacer ?")
-        h=y-foreward ###
-        for i in tmp:
-            if G[x][y-1] == "W":
+    elif movement == "z":
+        tmp_y=y-nbr_case
+        for i in range(nbr_case):
+            if G[x][y-1] == "\x1b[30;1mW\x1b[37;1m":
                 break
-            elif h < 0 :
+            elif tmp_y < 0 :
                 os.system("clear")
                 print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-            elif y == h:
+            elif y == tmp_y :
                 break
             else:
                 y=y-1
-        if G[x][y] == "V":
+        if G[x][y] == "\x1b[31;1mV\x1b[37;1m":
             x=x+1
-    if movement == "d":
-        right=input("de combien de cases voulez-vous vous déplacer ?")
-        h=h+right
-        for i in tmp2:
-            if G[x-1][y] == "W": ####
+    elif movement == "d":#right
+        for i in range(nbr_case):
+            if tmp_x+nbr_case >= 10 and tmp_x-nbr_case > 0: 
                 break
-            elif i == "W": 
-                print "STOP"
-                x=x-1
-                break #si le joueur rencontre un wall il n'avance plus
-            elif x+right >=10 :
-                os.system("clear")
-                print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-            elif x == h:
+            elif  G[x+1][y] == "\x1b[30;1mW\x1b[37;1m": #position d'un mur
                 break
             else:
                 x=x+1
-            if G[x][y] == "V":
-                x=x-1
-    if movement == "g":
-        right=input("de combien de cases voulez-vous vous déplacer ?")
-        h=h+right
-        for i in tmp2:
-            if G[x-1][y] == "W": ####
+        if G[x][y] == "\x1b[31;1mV\x1b[37;1m": #position d'un virus
+            x=x-1
+    elif movement == "q": #left
+        for i in range(nbr_case):
+            if G[x-1][y] == "\x1b[30;1mW\x1b[37;1m": 
                 break
-            elif i == "W": 
-                print "STOP"
-                x=x-1
-                break #si le joueur rencontre un wall il n'avance plus
-            elif x+right >=10 :
+            elif tmp_x-nbr_case < 0:
                 os.system("clear")
                 print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-            elif x == h:
-                break
             else:
-                x=x+1
-            if G[x][y] == "V":
                 x=x-1
-        """    
-        if x+right >=10 :
-            os.system("clear")
-            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-        elif G[x+right][y] == "W": #pour ne pas s'arrêter sur un mur -> simplifier au dessus
-            print "Vous ne pouvez pas traverser une membrane"
-        else:
-            x = x+right
-    elif movement == "q":#left
-        left=input("de combien de cases voulez-vous vous déplacer ?")
-        if x-left <= 0 :
-            os.system("clear")
-            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-        if G[x-right][y] == "W":
-            print "Vous ne pouvez pas traverser une membrane"
-        else:    
-            x = x-left
-    elif movement == "s":#backward
-        backward=input("de combien de cases voulez-vous vous déplacer ?")
-        if y+backward <= 0 :
-            os.system("clear")
-            print "Vous ne pouvez-pas sortir de l'espace cellulaire!"
-        else:    
-            y = y+backward
-    elif movement == "z":#foreward
-        foreward=input("de combien de cases voulez-vous vous déplacer ?")
-        if y-foreward <= 0 :
-            os.system("clear")
-            print "Erreur : Vous ne pouvez-pas sortir de l'espace cellulaire!"
-        else:
-            y = y-foreward"""
+        if G[x][y] == "\x1b[31;1mV\x1b[37;1m":
+            x=x+1
     else:
         os.system("clear")
         print "MAUVAIS DEPLACEMENT - UTILISEZ LES COMMANDES DE DEPLACEMENT Z Q S D"
-    G[x][y]=0 # 0=le symbole qui matérialise le personnage dans la grille
+    G[x][y]= "\x1b[33;1m0\x1b[37;1m" # 0=le symbole qui matérialise le personnage dans la grille
     P[0]=x
     P[1]=y
 
@@ -199,44 +146,25 @@ def power_less(I):
             tmp=tmp+1
             
 #def use_energy():
-    
-def help(G):
-    print G[0]
-    y = G[0].index("W")
-    print y
-            
-def energy(grid):
-    for i in range(8):
+
+def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=mol
+    for i in range(nb):
         r=0    
         x=random.randint(0,9)
         listtmp=grid[x]
         while r==0:
             y=random.randint(0,9)
-            if listtmp[y]!="W" and listtmp[y] !=0 and listtmp[y]!="A":
-                grid[x][y]="A"
+            if listtmp[y]!="\x1b[30;1mW\x1b[37;1m" and listtmp[y] !=0 and listtmp[y]!="\x1b[32;1mA\x1b[37;1m" and listtmp[y]!="\x1b[31;1mV\x1b[37;1m":
+                grid[x][y]=mol
                 break
-            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A":
+            if listtmp[y]=="\x1b[30;1mW\x1b[37;1m" or listtmp[y]==0 or listtmp[y]=="\x1b[32;1mA\x1b[37;1m" or listtmp[y]=="\x1b[31;1mV\x1b[37;1m":
                 continue
 
-def spawn_virus(grid):
-    for i in range(4):
-        r=0
-        x=random.randint(0,9)
-        listtmp=grid[x]
-        while r==0:
-            y=random.randint(0,9)
-            if listtmp[y]!="W" and listtmp[y]!=0 and listtmp[y]!="A" and listtmp[y]!="V":
-                grid[x][y]="V"
-                break
-            if listtmp[y]=="W" or listtmp[y]==0 or listtmp[y]=="A" or listtmp[y]!="V":
-                continue            
-"""
 def easy(grid):
     listx=[2,7,4,0,4,1,6,3,8,2]
     listy=[0,1,2,3,4,5,6,7,8,9]
-    for i in range(10):
-        grid[listx[i]][listy[i]]="W"
-"""        
+    for i in range(len(listx)):
+        grid[listx[i]][listy[i]]="\x1b[30;1mW\x1b[37;1m"  
 
 
 #END OF GAME
@@ -272,10 +200,8 @@ def menu(lol):
 def commandes(nb):
     os.system("clear")
     easy(grid)
-    spawn_virus(grid)
-    energy(grid)
-    help(grid)
-    grid[0][2]="V" ##### TEST
+    pop(nb=8,mol="\x1b[32;1mA\x1b[37;1m")
+    pop(nb=4,mol="\x1b[31;1mV\x1b[37;1m")#pop Virus
     while nb != 0:
         print inventory ### TEST
         print len(inventory) ### TEST
@@ -302,8 +228,7 @@ def commandes(nb):
 
 Items={"Bombe_nucleaire":8,"Grande_bombe":6,"Moyenne_bombe":4,"Petite_bombe":2}
 
-inventory=[["A",1,3],["A",1,2],["A",1,1]]
-dinventory[]
+inventory=[["\x1b[32;1mA\x1b[37;1m",1,3],["\x1b[32;1mA\x1b[37;1m",1,2],["\x1b[32;1mA\x1b[37;1m",1,1]]
 
 Bombe_nucleaire=["A",1,8]
 Grande_bombe =["B",1,Items["Grande_bombe"]]
@@ -315,11 +240,6 @@ inventory.append(Bombe_nucleaire)
 inventory.append(Grande_bombe)
 inventory.append(Moyenne_bombe)
 inventory.append(Petite_bombe)
-
-dinventory.append(Bombe_nucleaire)
-dinventory.append(Grande_bombe)
-dinventory.append(Moyenne_bombe)
-dinventory.append(Petite_bombe)
 
 grid=[]
 
