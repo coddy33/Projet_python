@@ -48,17 +48,12 @@ def location(G,P):
 """
                 
 #Movment Player
-#Régler le probleme out of range quand sort de la grille -> Ok
-#code dupliqué pour la gestion d'erreur out of range
-#bug déplacement, a chaque fois que le joueur se déplace, perte durabilité des bombes même si il a fait un déplacement dans un mur
 
 def move(G,P):
     movement = raw_input("où voulez-vous aller ?")
     nbr_case=input("de combien de cases voulez-vous vous déplacer ?") # erreur possible si input string
     x=P[0]
     y=P[1]
-    tmp_x=x #ancienne position en x
-    tmp_y=y #ancienne position en y
     G[x][y]=" " #remplacer l'ancienne position par une case vide    
     if movement == "s":#backward
         step=1
@@ -75,7 +70,7 @@ def move(G,P):
         for i in range(nbr_case):
             if G[x][y+(step)] == wall: #wall
                 break
-            elif tmp_y+nbr_case >=10 and tmp_y-nbr_case > 0 :
+            elif y > len(G) :
                 break
             else:
                 y=y+(step)
@@ -83,7 +78,7 @@ def move(G,P):
             y=y-(step)
     if movement == "d" or movement == "q" :
         for i in range(nbr_case):
-            if tmp_x+nbr_case >= 10 and tmp_x-nbr_case > 0: 
+            if x > len(G)+1 :
                 break
             elif  G[x+(step)][y] == wall: #position d'un mur
                 break
