@@ -92,34 +92,36 @@ def move(G,P):
     P[0]=x
     P[1]=y
 
-def drugs_inventory(I):#médicament=bombe
-
-    print "\n"
-    print "Medicament       Portée"
-    for w in I :
-        print w[0], "---------->" ,"[" ,w[1], "]"
-    print "\n"
-    tmp=raw_input("Quel médicament voulez vous utiliser ?")
-    if tmp == "A":
+def drugs_inventory():#médicament=bombe
+    i=0
+    print "\nInventory\n"
+    print "        Médicament       --> Portée"
+    while i<4:
+        print  "[",i+1,"]"," ",inventory[i][0]," --> ",inventory[i][1]
+        i=i+1
+    print "[ 0 ]   Retour au menu"
+    tmp=raw_input("Quel est votre choix ?")
+    if tmp == "0":
+        exit
+    if tmp == "1":
        pop = random.randint(0,3)
        inventory[0] = dinventory[pop]
-    elif tmp == "B":
+    if tmp == "2":
        pop = random.randint(0,3)
        inventory[1] = dinventory[pop]
-    elif tmp == "C":
+    if tmp == "3":
        pop = random.randint(0,3)
        inventory[2] = dinventory[pop]
-    elif tmp == "D":
+    if tmp == "4":
        pop = random.randint(0,3) 
        inventory[3] = dinventory[pop]
-            
-            
 
 def power_less(I):
-    for i in I: # A chaque fois que le personnage appelle cette fonction on perd un de portée sur toutes les bombes
-        i[1]=i[1]-1
-            
-            
+    i=0
+    while i<4: # A chaque fois que le personnage appelle cette fonction on perd un de portée sur toutes les bombes
+        inventory[i][1]=(inventory[i][1])-1
+        i=i+1
+  
 def energy(grid):
     for i in range(8):
         r=0    
@@ -151,8 +153,6 @@ def easy(grid):
     listy=[0,1,2,3,4,5,6,7,8,9]
     for i in range(10):
         grid[listx[i]][listy[i]]="W"
-
-
 
 #END OF GAME
 #Essayer de mettre les deux dans une fonction
@@ -199,13 +199,13 @@ def commandes(nb):
         nb=raw_input() 
         if nb == "1": #player movement
             #location(grid,position)
-            #power_less(inventory)
+            power_less(inventory)
             move(grid,position)
             lose(inventory)
         elif nb == "2":
             os.system("clear")
             print_grid(grid)
-            drugs_inventory(inventory)
+            drugs_inventory()
         elif nb == "0":
             print "Bye"
             sys.exit()
@@ -214,26 +214,12 @@ def commandes(nb):
             
 
 ######## MAIN ########
-
-inventory=[]
-dinventory=[]
-      
-Bombe_nucleaire=["A",8]
-Grande_bombe =["B",6]
-Moyenne_bombe=["C",4]
-Petite_bombe=["D",2]    
-
-#initialisation 4 bombes
-inventory.append(Bombe_nucleaire)
-inventory.append(Grande_bombe)
-inventory.append(Moyenne_bombe)
-inventory.append(Petite_bombe)
-
-dinventory.append(Bombe_nucleaire)
-dinventory.append(Grande_bombe)
-dinventory.append(Moyenne_bombe)
-dinventory.append(Petite_bombe)
 grid=[]
+
+dinventory=[["Bombe nucléaire",8],["Grande bombe",6],["Moyenne bombe",4],["Petite bombe",2]] 
+inventory=[["Bombe nucléaire",8],["Grande bombe",6],["Moyenne bombe",4],["Petite bombe",2]] 
+
+
 
 position=[]
 

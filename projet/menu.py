@@ -303,6 +303,7 @@ def commandes(nb):
 Items={"Bombe_nucleaire":8,"Grande_bombe":6,"Moyenne_bombe":4,"Petite_bombe":2}
 
 inventory=[["A",1,3],["A",1,2],["A",1,1]]
+dinventory[]
 
 Bombe_nucleaire=["A",1,8]
 Grande_bombe =["B",1,Items["Grande_bombe"]]
@@ -314,6 +315,11 @@ inventory.append(Bombe_nucleaire)
 inventory.append(Grande_bombe)
 inventory.append(Moyenne_bombe)
 inventory.append(Petite_bombe)
+
+dinventory.append(Bombe_nucleaire)
+dinventory.append(Grande_bombe)
+dinventory.append(Moyenne_bombe)
+dinventory.append(Petite_bombe)
 
 grid=[]
 
