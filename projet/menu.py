@@ -55,39 +55,47 @@ def move(G,P):
     x=P[0]
     y=P[1]
     G[x][y]=" " #remplacer l'ancienne position par une case vide    
-    if movement == "s":#backward
+    if movement == "s" or movement == "d":#backward
         step=1
-    elif movement == "z":#foreward
+    elif movement == "z" or movement == "q":#foreward
         step=-1
-    elif movement == "d":#right
-        step=1
-    elif movement == "q": #left
-        step=-1
-    else:
-        os.system("clear")
-        print "MAUVAIS DEPLACEMENT - UTILISEZ LES COMMANDES DE DEPLACEMENT Z Q S D"
     if movement == "s" or  movement =="z":
         for i in range(nbr_case):
-            if G[x][y+(step)] == wall: #wall
+            if y > len(G):
                 break
-            elif y > len(G) :
+            elif G[x][y] == wall: #wall
+                y=y-(step)
                 break
             else:
                 y=y+(step)
-        if G[x][y] == virus: #virus
+                if y > len(G)-1:
+                    y=y-(step)
+                if y < 0:
+                    y=0 #### pas beau à changer
+        if G[x][y] == wall or G[x][y] == virus: #virus
             y=y-(step)
-    if movement == "d" or movement == "q" :
+            if G[x][y] == virus : #position d'un mur
+                y=y-(step)
+    elif movement == "d" or movement == "q" :
         for i in range(nbr_case):
-            if x > len(G)+1 :
+            if x > len(G):
                 break
-            elif  G[x+(step)][y] == wall: #position d'un mur
+            elif G[x][y] == wall : #position d'un mur
+                x=x-(step)
                 break
             else:
                 x=x+(step)
-        if G[x][y] == virus: #position d'un virus
+                if x > len(G)-1:
+                    x=x-(step)
+                if x < 0:
+                    x=0
+        if G[x][y] == wall or G[x][y] == virus:
             x=x-(step)
-    os.system("clear")
-    G[x][y]= perso # 0=le symbole qui matérialise le personnage dans la grille
+            if G[x][y] == virus : #position d'un mur
+                x=x-(step)
+    os.system("clear") # 0=le symbole qui matérialise le personnage dans la grille
+    print "======= x", x
+    G[x][y]= perso
     P[0]=x
     P[1]=y
 
@@ -176,6 +184,7 @@ def commandes(nb):
     pop(nb=8,mol=ATP)
     pop(nb=4,mol=virus)#pop Virus
     while nb != 0:
+        #grid[5][4]=="\x1b[31;1mV\x1b[37;1m"  ####### TEST
         print_grid(grid)
         menu(0)
         nb=raw_input() 
@@ -192,6 +201,7 @@ def commandes(nb):
             print "Bye"
             sys.exit()
         else:
+            os.systeme("clear")
             print "ERREUR : mauvaise valeur"
             
 
