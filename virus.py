@@ -99,14 +99,16 @@ def move(G,P):
     P[1]=y
 
 
-    
-def drugs_inventory(I):#médicament=bombe
-    i=0
+def print_inventory(I):
+        i=0
     print "\nInventory\n"
     print "        Médicament       --> Portée"
     while i<4:
         print  "[",i+1,"]"," ",inventory[i][0]," --> ",inventory[i][1]
         i=i+1
+
+def drugs_inventory(I):#médicament=bombe
+
     print "[ 0 ]   Retour au menu"
     tmp=raw_input("Quel est votre choix ?")
     if tmp == "0":
@@ -124,11 +126,35 @@ def drugs_inventory(I):#médicament=bombe
        pop = random.randint(0,3) 
        inventory[3] = dinventory[pop]
 
+def explode(G,P,a):
+    x=position[1]
+    y=position[2]
+    
+    size1=inventory[a][1]//2
+    size2=inventory[a][1]-size1
+    S=[size1,size2]
+    rand1=random.randint(0,1)
+    rand2=inventory[a][1]-S[rand1]
+    i=S[rand1]
+    j=0
+    while i<S[rand1]:
+        
+        G[x][y]
+        i=i+1
+        
+    while j<rand2:
+
+        G[x][y]
+        i=i+1
+    
+    
 
 def power_less(I):
     i = 0
     while i < 4:
         inventory[i][1]=inventory[i][1]-1
+        if inventory[i][1]<0:
+            inventory[i][1]=0
         i = i + 1
 
 def power_up(I):
