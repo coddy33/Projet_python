@@ -98,9 +98,8 @@ def move(G,P):
     P[0]=x
     P[1]=y
 
-
-def print_inventory(I):
-        i=0
+def print_inventory():
+    i=0
     print "\nInventory\n"
     print "        Médicament       --> Portée"
     while i<4:
@@ -108,46 +107,56 @@ def print_inventory(I):
         i=i+1
 
 def drugs_inventory(I):#médicament=bombe
-
     print "[ 0 ]   Retour au menu"
     tmp=raw_input("Quel est votre choix ?")
     if tmp == "0":
         exit
     if tmp == "1":
+       explode(grid,0)
        pop = random.randint(0,3)
        inventory[0] = dinventory[pop]
     if tmp == "2":
+       explode(grid,1)
        pop = random.randint(0,3)
        inventory[1] = dinventory[pop]
     if tmp == "3":
+       explode(grid,2)
        pop = random.randint(0,3)
        inventory[2] = dinventory[pop]
     if tmp == "4":
+       explode(grid,3)
        pop = random.randint(0,3) 
        inventory[3] = dinventory[pop]
 
-def explode(G,P,a):
-    x=position[1]
-    y=position[2]
-    
+def explode(G,a):
+    x=position[0]
+    y=position[1]+1
     size1=inventory[a][1]//2
     size2=inventory[a][1]-size1
     S=[size1,size2]
     rand1=random.randint(0,1)
     rand2=inventory[a][1]-S[rand1]
-    i=S[rand1]
+    i=0
     j=0
     while i<S[rand1]:
-        
-        G[x][y]
+        if y>9:
+            break
+        if G[x][y]=="\x1b[31;1mV\x1b[37;1m":
+            G[x][y]=' '
+        G[x][y]='B' #test peter les mur et size
+        y=y+1
         i=i+1
-        
-    while j<rand2:
 
-        G[x][y]
-        i=i+1
-    
-    
+    y=position[1]-1
+    while j<rand2:
+        if y<0:
+            break
+        if G[x][y]=="\x1b[31;1mV\x1b[37;1m":
+            G[x][y]=' '
+        G[x][y]='H' #test peter les murs et size
+        y=y-1
+
+        j=j+1
 
 def power_less(I):
     i = 0
@@ -166,7 +175,6 @@ def power_up(I):
             inventory[tmp][1]=8
         i = i + 1
     
-
 def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=mol
     for i in range(nb):
         r=0    
@@ -186,27 +194,37 @@ def easy(grid):
     for i in range(len(listx)):
         grid[listx[i]][listy[i]]=wall  
 
-
 #END OF GAME
 #Essayer de mettre les deux dans une fonction
 
-def win(): #pas encore utilisé
-    print " __    __  _____   _   _        _          __  _   __   _  "
-    print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
-    print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
-    print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
-    print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
-    print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
+def win(G): #pas encore utilisé
+    x,y,nbvir=0,0,0
+    i,j=0,0
+    for i in G[x]:
+        for j in G[x][y]:
+            print j,'hello',x,y
+            if j=="\x1b[31;1mV\x1b[37;1m":
+                nbvir=nbvir+1
+    if nbvir==0:
+        print " __    __  _____   _   _        _          __  _   __   _  "
+        print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
+        print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
+        print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
+        print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
+        print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
 
-def lose(I):
-    if len(I) == 0:
+def lose(I): #termine
+    x=0
+    for i in I:
+        if i[1]==0:
+            x=x+1
+    if x==4:
         print "    __    __  _____   _   _        _       _____   _____   _____  "
         print "    \ \  / / /  _  \ | | | |      | |     /  _  \ /  ___/ | ____| "
         print "     \ \/ /  | | | | | | | |      | |     | | | | | |___  | |__   "
         print "      \  /   | | | | | | | |      | |     | | | | \___  \ |  __|  "
         print "      / /    | |_| | | |_| |      | |___  | |_| |  ___| | | |___  "
         print "     /_/     \_____/ \_____/      |_____| \_____/ /_____/ |_____| "
-    
 
 def menu(lol):
     print "====================================== Virus Killer ======================================="
@@ -221,7 +239,7 @@ def commandes(nb):
     os.system("clear")
     easy(grid)
     pop(nb=8,mol=ATP)
-    pop(nb=4,mol=virus)#pop Virus
+    pop(nb=1,mol=virus)#pop Virus
     while nb != 0:
         #grid[5][4]=="\x1b[31;1mV\x1b[37;1m"  ####### TEST
         print_grid(grid)
@@ -232,15 +250,18 @@ def commandes(nb):
             power_less(inventory)
             move(grid,position)
             lose(inventory)
+            
         elif nb == "2":
             os.system("clear")
             print_grid(grid)
+            print_inventory()
             drugs_inventory(inventory)
+            win(grid)
         elif nb == "0":
             print "Bye"
             sys.exit()
         else:
-            os.systeme("clear")
+            os.system("clear")
             print "ERREUR : mauvaise valeur"
             
 
@@ -274,7 +295,7 @@ print "\x1b[32;1m| |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |   
 print "\x1b[32;1m| |  / /  | | | |_| |  | | | | | |___       | |/ /   | | | |     | |     | |__   | |_| |  "
 print "\x1b[32;1m| | / /   | | |  _  /  | | | | \___  \      | |\ \   | | | |     | |     |  __|  |  _  /  "
 print "\x1b[32;1m| |/ /    | | | | \ \  | |_| |  ___| |      | | \ \  | | | |___  | |___  | |___  | | \ \  "
-print "\x1b[32;1m|___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ "
+print "\x1b[32;1m|___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ \x1b[37;1m"
 
 print "\n"
 print "\n"
