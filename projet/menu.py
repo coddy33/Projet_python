@@ -63,7 +63,7 @@ def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=
         
 #Movment Player
 
-def move(G,P):
+def move(G,P,I):
     movement = raw_input("où voulez-vous aller ?")
     nbr_case=input("de combien de cases voulez-vous vous déplacer ?") # erreur possible si input string
     x=P[0]
@@ -78,6 +78,7 @@ def move(G,P):
             if y > len(G):
                 break
             if G[x][y] == ATP: #ramassage des ATP
+                power_up(I)
                 pop(nb=1,mol=ATP)
                 G[x][y] = " "
                 if y < len(G)-1:
@@ -96,12 +97,14 @@ def move(G,P):
             if G[x][y] == virus : 
                 y=y-(step)
         if G[x][y] == ATP:
+            power_up(I)
             pop(nb=1,mol=ATP)
     elif movement == "d" or movement == "q" :
         for i in range(nbr_case):
             if x > len(G):
                 break
             if G[x][y] == ATP:
+                power_up(I)
                 pop(nb=1,mol=ATP)
                 G[x][y] = " "
                 if x < len(G)-1:
@@ -120,38 +123,55 @@ def move(G,P):
             if G[x][y] == virus :
                 x=x-(step)
         if G[x][y] == ATP:
+            power_up(I)
             pop(nb=1,mol=ATP)
     os.system("clear") # 0=le symbole qui matérialise le personnage dans la grille
     G[x][y]= perso
     P[0]=x
     P[1]=y
+    print I
 
 def drugs_inventory(I):#médicament=bombe
-    print "\n"
-    print "Medicament       Portée"
-    for w in I :
-        print w[1], "   ", w[0], "---------->" ,"[" ,w[2], "]"
-    print "\n"
-    rep=raw_input("Voulez-vous utiliser un médicament ?")
-    if rep == "yes":
-        print "\n"
-        tmp=input("Quelle médicament voulez vous utiliser ?")
-        I[tmp][1]=(I[tmp][1])-1
-        #rajouter un return des dégats
-        if I[tmp][1] == 0:
-            del I[tmp] #supprime un élément de l'inventaire
-    else :
-        print "Retour au menu..."
+    i=0
+    print "\nInventory\n"
+    print "        Médicament       --> Portée"
+    while i<4:
+        print  "[",i+1,"]"," ",inventory[i][0]," --> ",inventory[i][1]
+        i=i+1
+    print "[ 0 ]   Retour au menu"
+    tmp=raw_input("Quel est votre choix ?")
+    if tmp == "0":
+        exit
+    if tmp == "1":
+       pop = random.randint(0,3)
+       inventory[0] = dinventory[pop]
+    if tmp == "2":
+       pop = random.randint(0,3)
+       inventory[1] = dinventory[pop]
+    if tmp == "3":
+       pop = random.randint(0,3)
+       inventory[2] = dinventory[pop]
+    if tmp == "4":
+       pop = random.randint(0,3) 
+       inventory[3] = dinventory[pop]
+
 
 def power_less(I):
-    tmp=0
-    for i in I: # A chaque fois que le personnage appelle cette fonction on perd un de portée sur toutes les bombes
-        i[2]=i[2]-1
-    for i in I: # A chaque fois que la portée passe à 0 le médicament=bombe est supprimé
-        if i[2] == 0:
-            del I[tmp]
-        else:
-            tmp=tmp+1
+    i = 0
+    while i < 4:
+        inventory[i][1]=inventory[i][1]-1
+        if inventory[i][1] < 0 :
+            inventory[i][1] = 0 
+        i = i + 1
+
+def power_up(I):
+    i = 0
+    while i<2:
+        tmp=random.randint(0,3)
+        inventory[tmp][1]=inventory[tmp][1]+1
+        if inventory[tmp][1]>8:
+            inventory[tmp][1]=8
+        i = i + 1
             
 #def use_energy():
 
@@ -196,16 +216,14 @@ def commandes(nb):
     os.system("clear")
     easy(grid)
     pop(nb=8,mol=ATP)
-    pop(nb=4,mol=virus)#pop Virus
+    pop(nb=4,mol=virus)
     while nb != 0:
-        #grid[5][4]=="\x1b[31;1mV\x1b[37;1m"  ####### TEST
         print_grid(grid)
         menu(0)
         nb=raw_input() 
-        if nb == "1": #player movement
-            #location(grid,position)
+        if nb == "1":
             power_less(inventory)
-            move(grid,position)
+            move(grid,position,inventory)
             lose(inventory)
         elif nb == "2":
             os.system("clear")
@@ -215,26 +233,14 @@ def commandes(nb):
             print "Bye"
             sys.exit()
         else:
-            os.systeme("clear")
+            os.system("clear")
             print "ERREUR : mauvaise valeur"
             
 
 ######## MAIN ########
 
-Items={"Bombe_nucleaire":8,"Grande_bombe":6,"Moyenne_bombe":4,"Petite_bombe":2}
-
-inventory=[["ATP",1,3],["ATP",1,2],["ATP",1,1]]
-
-Bombe_nucleaire=["A",1,8]
-Grande_bombe =["B",1,Items["Grande_bombe"]]
-Moyenne_bombe=["C",1,Items["Moyenne_bombe"]]
-Petite_bombe=["D",1,Items["Petite_bombe"]]
-
-#initialisation 4 bombes
-inventory.append(Bombe_nucleaire)
-inventory.append(Grande_bombe)
-inventory.append(Moyenne_bombe)
-inventory.append(Petite_bombe)
+dinventory=[["Bombe nucléaire",8],["Grande bombe",6],["Moyenne bombe",4],["Petite bombe",2]] 
+inventory=[["Bombe nucléaire",8],["Grande bombe",6],["Moyenne bombe",4],["Petite bombe",2]] 
 
 grid=[]
 

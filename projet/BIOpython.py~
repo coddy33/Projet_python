@@ -125,21 +125,18 @@ flagi=isCodonStop(seq1,30) # False
 #Exercice 2.2.8: Écrire une fonction isGene(seq) qui retourne true si la séquence contient un codon start et un codon stop.
 
 def isGene(seq):
+    x=0
+    y=0
     for i in range(len(seq)):
-        x=0
-        y=0
-        if isCodonStop(seq,i*3) == True:
+        if isCodonStart(seq,i*3)== True :
             x=1
-        if isCodonStart(seq,i*3) == True:
+        if isCodonStop(seq,i*3)== True:
             y=1
-    if x==y:
+    if x == y:
         return True
-    else:
-        print "non"
-
         
 seq='CTGATGTTCCATTACCAGTACAACAAACTATGATTCCATTACCAGTACA'
-seq1="XXXXXXXXXX"
+seq1="ATGXXTAAXXXX"
 flag = isGene(seq) # True
 flagi = isGene(seq1)
 print flag

@@ -142,7 +142,13 @@ flagi = isGene(seq1)
 print flag
 print flagi
 
-"""Note: Attention! ici, dans la boucle, on avance de 3 en 3 (mots NON chevauchants) car les codons start et stop doivent être localisés sur un même cadre de lecture c’est à dire distant d’un multiple de 3 comme dans l’exemple ci-dessous."""
+
 
 #Exercice 2.2.9: Écrire une fonction isGene3(seq) qui retourne true si la séquence contient un codon start et un codon stop pour les 3 cadres de lecture.
 
+
+
+
+seq='TGATGTTCCATTACCAGTACAACAAACTATGATTCCATTACCAGTACA'
+flag = isGene3(seq) # True
+print flag
