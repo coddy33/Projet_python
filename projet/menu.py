@@ -46,7 +46,21 @@ def location(G,P):
                 P.append(x)
                 P.append(y)
 """
-                
+
+
+def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=mol
+    for i in range(nb):
+        r=0    
+        x=random.randint(0,9)
+        listtmp=grid[x]
+        while r==0:
+            y=random.randint(0,9)
+            if listtmp[y]!=wall and listtmp[y] !=0 and listtmp[y]!=ATP and listtmp[y]!=virus:
+                grid[x][y]=mol
+                break
+            if listtmp[y]==wall or listtmp[y]==0 or listtmp[y]==ATP or listtmp[y]==virus:
+                continue
+        
 #Movment Player
 
 def move(G,P):
@@ -54,15 +68,20 @@ def move(G,P):
     nbr_case=input("de combien de cases voulez-vous vous déplacer ?") # erreur possible si input string
     x=P[0]
     y=P[1]
-    G[x][y]=" " #remplacer l'ancienne position par une case vide    
+    G[x][y]=" " #remplacer l'ancienne position par une case vide
     if movement == "s" or movement == "d":#backward
         step=1
-    elif movement == "z" or movement == "q":#foreward
+    elif movement == "z" or movement == "q":
         step=-1
     if movement == "s" or  movement =="z":
         for i in range(nbr_case):
             if y > len(G):
                 break
+            if G[x][y] == ATP: #ramassage des ATP
+                pop(nb=1,mol=ATP)
+                G[x][y] = " "
+                if y < len(G)-1:
+                    y=y+(step)  
             elif G[x][y] == wall: #wall
                 y=y-(step)
                 break
@@ -72,29 +91,37 @@ def move(G,P):
                     y=y-(step)
                 if y < 0:
                     y=0 #### pas beau à changer
-        if G[x][y] == wall or G[x][y] == virus: #virus
+        if G[x][y] == wall or G[x][y] == virus: 
             y=y-(step)
-            if G[x][y] == virus : #position d'un mur
+            if G[x][y] == virus : 
                 y=y-(step)
+        if G[x][y] == ATP:
+            pop(nb=1,mol=ATP)
     elif movement == "d" or movement == "q" :
         for i in range(nbr_case):
             if x > len(G):
                 break
-            elif G[x][y] == wall : #position d'un mur
+            if G[x][y] == ATP:
+                pop(nb=1,mol=ATP)
+                G[x][y] = " "
+                if x < len(G)-1:
+                    x=x+(step)
+            elif G[x][y] == wall :
                 x=x-(step)
                 break
             else:
-                x=x+(step)
+                x=x+(step)                    
                 if x > len(G)-1:
                     x=x-(step)
                 if x < 0:
                     x=0
         if G[x][y] == wall or G[x][y] == virus:
             x=x-(step)
-            if G[x][y] == virus : #position d'un mur
+            if G[x][y] == virus :
                 x=x-(step)
+        if G[x][y] == ATP:
+            pop(nb=1,mol=ATP)
     os.system("clear") # 0=le symbole qui matérialise le personnage dans la grille
-    print "======= x", x
     G[x][y]= perso
     P[0]=x
     P[1]=y
@@ -127,19 +154,6 @@ def power_less(I):
             tmp=tmp+1
             
 #def use_energy():
-
-def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=mol
-    for i in range(nb):
-        r=0    
-        x=random.randint(0,9)
-        listtmp=grid[x]
-        while r==0:
-            y=random.randint(0,9)
-            if listtmp[y]!=wall and listtmp[y] !=0 and listtmp[y]!=ATP and listtmp[y]!=virus:
-                grid[x][y]=mol
-                break
-            if listtmp[y]==wall or listtmp[y]==0 or listtmp[y]==ATP or listtmp[y]==virus:
-                continue
 
 def easy(grid):
     listx=[2,7,4,0,4,1,6,3,8,2]
