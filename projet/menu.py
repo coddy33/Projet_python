@@ -61,6 +61,7 @@ def pop(nb,mol): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=
             if listtmp[y]==wall or listtmp[y]==0 or listtmp[y]==ATP or listtmp[y]==virus:
                 continue
         
+        
 #Movment Player
 
 def move(G,P,I):
@@ -69,68 +70,43 @@ def move(G,P,I):
     x=P[0]
     y=P[1]
     G[x][y]=" " #remplacer l'ancienne position par une case vide
-    if movement == "s" or movement == "d":#backward
-        step=1
-    elif movement == "z" or movement == "q":
-        step=-1
-    if movement == "s" or  movement =="z":
-        for i in range(nbr_case):
-            if y > len(G):
-                break
-            if G[x][y] == ATP: #ramassage des ATP
-                power_up(I)
-                pop(nb=1,mol=ATP)
-                G[x][y] = " "
-                if y < len(G)-1:
-                    y=y+(step)  
-            elif G[x][y] == wall: #wall
-                y=y-(step)
-                break
-            else:
-                y=y+(step)
-                if y > len(G)-1:
-                    y=y-(step)
-                if y < 0:
-                    y=0 #### pas beau à changer
-        if G[x][y] == wall or G[x][y] == virus: 
-            y=y-(step)
-            if G[x][y] == virus : 
-                y=y-(step)
-        if G[x][y] == ATP:
-            power_up(I)
-            pop(nb=1,mol=ATP)
-    elif movement == "d" or movement == "q" :
-        for i in range(nbr_case):
-            if x > len(G):
-                break
-            if G[x][y] == ATP:
-                power_up(I)
-                pop(nb=1,mol=ATP)
-                G[x][y] = " "
-                if x < len(G)-1:
-                    x=x+(step)
-            elif G[x][y] == wall :
-                x=x-(step)
-                break
-            else:
-                x=x+(step)                    
-                if x > len(G)-1:
-                    x=x-(step)
-                if x < 0:
-                    x=0
-        if G[x][y] == wall or G[x][y] == virus:
-            x=x-(step)
-            if G[x][y] == virus :
-                x=x-(step)
-        if G[x][y] == ATP:
-            power_up(I)
-            pop(nb=1,mol=ATP)
+    x_step=0
+    y_step=0
+    if movement == "s":
+        y_step=1
+    elif movement == "z": 
+        y_step = -1
+    elif  movement == "q":
+        x_step = -1
+    elif  movement == "d":
+        x_step = 1        
+    for i in range(nbr_case):
+        y=y+(y_step)
+        x=x+(x_step)
+        if  test_grid(x,y,G) == False or G[x][y] == wall: # Pour ne pas sortir de la grille
+            x,y = reculer(x,y,x_step,y_step)
+            break
+        elif G[x][y] == ATP: #ramassage des ATP
+            power_up(I) 
+            pop(nb=1,mol=ATP) 
+            G[x][y] = " " 
+    while G[x][y] == virus : #la dernière position ne peux pas être un virus
+        x,y = reculer(x,y,x_step,y_step)
     os.system("clear") # 0=le symbole qui matérialise le personnage dans la grille
     G[x][y]= perso
     P[0]=x
     P[1]=y
-    print I
+    
+def reculer(x,y,x_step,y_step):
+    y=y-(y_step)
+    x=x-(x_step)
+    return x,y
 
+def test_grid(x,y,G):
+    if y > len(G)-1 or y < 0 or x > len(G)-1 or x < 0:
+        return False
+    return True
+    
 def drugs_inventory(I):#médicament=bombe
     i=0
     print "\nInventory\n"

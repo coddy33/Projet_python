@@ -71,52 +71,37 @@ def move(G,P,I):
     G[x][y]=" " #remplacer l'ancienne position par une case vide
     if movement == "s" or movement == "d":#backward
         step=1
+        y = dep(step,nbr_case,G,x,y)
     elif movement == "z" or movement == "q":
         step=-1
-    if movement == "s" or  movement =="z":
-        for i in range(nbr_case):
-                y=y+(step)
-                if y > len(G)-1 or y < 0 : # Pour ne pas sortir de la grille
-                    y=y-(step)
-                    break
-                elif G[x][y] == ATP: #ramassage des ATP
-                    power_up(I) 
-                    pop(nb=1,mol=ATP) 
-                    G[x][y] = " " 
-                elif G[x][y] == wall: # si le joueur rencontre un mur : STOP
-                    y=y-(step)
-                    while G[x][y] == virus : # il recule tant qu'il se trouve sur un virus
-                        y=y-(step)
-                    break
-        while G[x][y] == virus : #la dernière position ne peux pas être un virus
-            y=y-(step)
-    elif movement == "d" or movement == "q" :
-        for i in range(nbr_case):
-            if G[x][y] == ATP:
-                power_up(I)
-                pop(nb=1,mol=ATP)
-                G[x][y] = " "
-            elif G[x][y] == wall :
-                x=x-(step)
-                break
-            else:
-                x=x+(step)                    
-                if x > len(G)-1:
-                    x=x-(step)
-                if x < 0:
-                    x=0
-        if G[x][y] == wall or G[x][y] == virus:
-            x=x-(step)
-            while G[x][y] == virus :
-                x=x-(step)
-        if G[x][y] == ATP:
-            power_up(I)
-            pop(nb=1,mol=ATP)
-    #os.system("clear") # 0=le symbole qui matérialise le personnage dans la grille
+        x = dep(step,nbr_case,G,x,y)
+    os.system("clear") # 0=le symbole qui matérialise le personnage dans la grille
     G[x][y]= perso
     P[0]=x
     P[1]=y
     print I
+
+def dep(step,nbr_case,G,x,y,movement):
+    for i in range(nbr_case):
+        y=y+(step)
+        if y > len(G)-1 or y < 0 : # Pour ne pas sortir de la grille
+            y=y-(step)
+            break
+        elif G[x][y] == ATP: #ramassage des ATP
+            power_up(I) 
+            pop(nb=1,mol=ATP) 
+            G[x][y] = " " 
+        elif G[x][y] == wall: # si le joueur rencontre un mur : STOP
+            y=y-(step)
+            while G[x][y] == virus : # il recule tant qu'il se trouve sur un virus
+                y=y-(step)
+                break
+        while G[x][y] == virus : #la dernière position ne peux pas être un virus
+            y=y-(step)
+        if movement == "s" or movement == "d":
+            return y
+        elif movement == "z" or movement == "q":
+            return x
 
 def drugs_inventory(I):#médicament=bombe
     i=0
@@ -267,3 +252,4 @@ commandes(rep)
 #print l'inventaire dans le menu ?
 #régler les os. clear
 #faire la fonction pour perdre la partie
+
