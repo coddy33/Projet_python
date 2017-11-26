@@ -8,6 +8,7 @@
 import sys
 import os
 import random
+import time
 
 
 #Create Grid
@@ -47,7 +48,7 @@ def pop(nb,mol,loc): #on defini le nombre de pop=nb ; puis quelle molecule doit 
                     loc_virus.append(y)
                     loc.append(loc_virus)
                 break
-            if listtmp[y]==wall or listtmp[y]==0 or listtmp[y]==ATP or listtmp[y]==virus:
+            if listtmp[y]==wall or listtmp[y]== perso or listtmp[y]==ATP or listtmp[y]==virus:
                 continue
         
         
@@ -66,6 +67,7 @@ def move_player(G,P,I,P_V):
 
 def move_virus(G,P,I,P_V):
     for i in range(len(P_V)):
+        time.sleep(2.0)
         nbr_case=random.randint(1,9) #nb de cases entre 1 et 9
         listdirect=["z","q","s","d"]
         pos=random.randint(0,3)
