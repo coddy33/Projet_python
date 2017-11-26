@@ -112,7 +112,7 @@ def move(G,P,I,movement,nbr_case,x,y,P_V):
         elif G[x][y] == ATP: #ramassage des ATP
             if pos == 2 :
                 power_up(I) 
-                pop(1,ATP,loc) 
+                pop(1,ATP,loc,G) 
                 G[x][y] = " " 
     while G[x][y] == virus or G[x][y] == 0 or G[x][y] == ATP: #la dernière position ne peux pas être un virus
         x,y = reculer(x,y,x_step,y_step)
@@ -272,7 +272,7 @@ def commandes(nb,level):
             power_less(inventory)
             move_player(grid,location_player,inventory,location_virus)
             move_virus(grid,location_player,inventory,location_virus)
-            print inventory
+            #print inventory
             lose(inventory)
         elif nb == "2":
             os.system("clear")
@@ -285,19 +285,7 @@ def commandes(nb,level):
             os.system("clear")
             print "You make a mistake, retry please..."
 
-def choicevalidation():
-    os.system("clear")
-    print "Are you sure?"
-    print "[1] YES"
-    print "[0] NO"
-    choice=input()
-    if choice==0:
-        continue
-    if choice==1:
-        print "Goodbye warrior!"
-        break
-
-def start():
+def print_title():
     os.system("clear")
     print "\x1b[32;1m _     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____   "
     print "\x1b[32;1m| |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \  "
@@ -307,6 +295,9 @@ def start():
     print "\x1b[32;1m|___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ \x1b[37;1m"
     print "\n"
     print "\n"
+
+def start():
+    print_title()
     print "[1] START"
     print "[0] EXIT"
     r=0
@@ -317,7 +308,16 @@ def start():
             speech()
             lvl=input()
             if lvl==0:
-                choicevalidation()
+                os.system("clear")
+                print "Are you sure?"
+                print "[1] YES"
+                print "[0] NO"
+                choice=input()
+                if choice==0:
+                    continue
+                if choice==1:
+                    print "Goodbye warrior!"
+                    break
             if lvl==1:
                 commandes(rep,easy)
             if lvl==2:
@@ -325,15 +325,13 @@ def start():
             if lvl==3:
                 commandes(rep,hardcore)
             else:
-                error()
+                print "You make a mistake, retry please..."
+                continue
         if rep==0:
             exit
         else:
-            error()
-
-def error():
-    print "You make a mistake, retry please..."
-    continue
+            print "You make a mistake, retry please..."
+            continue
 
 ######## MAIN ########
 
@@ -350,7 +348,6 @@ wall="\x1b[30;1m"u"\u25a9\x1b[37;1m"
 perso="\x1b[33;1m"u"\u263b\x1b[37;1m" 
 virus="\x1b[31;1m"u"\u2620\x1b[37;1m"
 ATP="\x1b[32;1m"u"\u2622\x1b[37;1m"
-
 create_grid(grid)
 
 #Initialisation  
