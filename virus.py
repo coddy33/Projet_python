@@ -31,7 +31,6 @@ def print_grid(grid):
         print"\x1b[30;1m-----------------------------------------\x1b[37;1m"
         y=y+1
 
-
 """
 #Localisation du joueur
 #vraiment nécessaire ? car initialisation coordonnées connus 
@@ -143,7 +142,7 @@ def explode(G,a):
             break
         if G[x][y]=="\x1b[31;1mV\x1b[37;1m":
             G[x][y]=' '
-        G[x][y]='B' #test peter les mur et size
+        #G[x][y]='B' #test peter les mur et size
         y=y+1
         i=i+1
 
@@ -153,9 +152,8 @@ def explode(G,a):
             break
         if G[x][y]=="\x1b[31;1mV\x1b[37;1m":
             G[x][y]=' '
-        G[x][y]='H' #test peter les murs et size
+        #G[x][y]='H' #test peter les murs et size
         y=y-1
-
         j=j+1
 
 def power_less(I):
@@ -198,20 +196,12 @@ def easy(grid):
 #Essayer de mettre les deux dans une fonction
 
 def win(G): #pas encore utilisé
-    x,y,nbvir=0,0,0
-    i,j=0,0
-    for i in G[x]:
-        for j in G[x][y]:
-            print j,'hello',x,y
-            if j=="\x1b[31;1mV\x1b[37;1m":
-                nbvir=nbvir+1
-    if nbvir==0:
-        print " __    __  _____   _   _        _          __  _   __   _  "
-        print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
-        print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
-        print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
-        print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
-        print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
+    print " __    __  _____   _   _        _          __  _   __   _  "
+    print " \ \  / / /  _  \ | | | |      | |        / / | | |  \ | | "
+    print "  \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| | "
+    print "   \  /   | | | | | | | |      | | /  | / /   | | | |\   | "
+    print "   / /    | |_| | | |_| |      | |/   |/ /    | | | | \  | "
+    print "  /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_| "
 
 def lose(I): #termine
     x=0
