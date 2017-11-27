@@ -29,7 +29,6 @@ def print_grid(grid,I):
         y=y+1
     print_inventory(I)
 
-
 def speech():
     print "Welcome warrior,\n"
     print "You are in 2594, Humanity is in danger, recent advances in genetics, robotics, and technology are driving the world to extinction.\n"
@@ -153,7 +152,7 @@ def drugs_inventory(I,G,P_J,P_V):#médicament=bombe
     if tmp != 0 :
         explode(G,I,P_J,P_V,tmp-1)
         pop = random.randint(0,3)
-        inventory[tmp-1] = dinventory[pop]
+        inventory[tmp] = dinventory[pop]
     if tmp == "0":
         exit
 
@@ -176,9 +175,39 @@ def power_up(I):
         i = i + 1
 
 
+"""
+def explode(G,a):
+    global nb_vir
+    x=location_player[0]
+    y=location_player[1]+1
+    size1=inventory[a][1]//2
+    size2=inventory[a][1]-size1
+    S=[size1,size2]
+    rand1=random.randint(0,1)
+    rand2=inventory[a][1]-S[rand1]
+    i,j=0,0
+    while i<S[rand1]:
+        if y>9:
+            break
+        if G[x][y]== virus :
+            G[x][y]=' '
+            nb_vir=nb_vir-1
+        #G[x][y]='B' #test peter les mur et size (cheat des devs)
+        y,i=y+1,i+1
+    y=location_player[1]-1
+    while j<rand2:
+        if y<0:
+            break
+        if G[x][y]== virus:
+            G[x][y]=' '
+            nb_vir=nb_vir-1
+        #G[x][y]='H' #test peter les murs et size (cheat des devs)
+        y,j=y-1,j+1
+"""
+################################
 def explode(G,I,P_J,P_V,C):
-    x= P_J[0]
-    y= P_J[1]
+    x_player = P_J[0]
+    y_player = P_J[1]
     size_foreward = I[C][1]//2
     size_backward = I[C][1]-size_foreward
     S=[size_foreward,size_backward]
@@ -186,28 +215,17 @@ def explode(G,I,P_J,P_V,C):
     rand2=inventory[C][1]-S[rand1]
     step_foreward = 1
     step_backward = -1
-    for i in range(size_foreward):#down
-        y=y+step_foreward
+    for i in range(size_foreward):
+        x=x+step_foreward
         if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
             break
-        if G[x][y] == virus:
-            #G[x][y]='B'
-            depop_virus(x,y,P_V)
+        elif G[x][y] == virus :
+            del P_V[1]
             G[x][y] = " "
-    for i in range(size_backward):#up
-        y=y+step_backward
-        if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
-            break
-        if G[x][y] == virus :
-            #G[x][y]='F'
-            depop_virus(x,y,P_V)
-            G[x][y] = " "
-        
-def depop_virus(x,y,P_V):
-    print x
-    print y
-    index = P_V.index([x,y])
-    del P_V[index]
+
+def depop_virus(x,y,L):
+    index = L.index([x,y])
+    del L[index]
 
 ################################
 
@@ -280,9 +298,9 @@ def commandes(level):
             move_player(grid,location_player,inventory,location_virus)
             move_virus(grid,location_player,inventory,location_virus)
         elif nb == "2":
-            drugs_inventory(inventory,grid,location_player,location_virus)
             os.system("clear")
             print_grid(grid,inventory)
+            drugs_inventory(inventory,grid,location_player,location_player)
         elif nb == "0":
             exit()
             #start()
@@ -371,3 +389,13 @@ grid[location_player[0]][location_player[1]]= perso #position initiale définie 
 
 start()
 
+'''
+print u"\u266b" #test
+print u"\u2620"
+print u"\u2615"
+print u"\u2605"
+print u"\u2606"
+print u"\u263a"
+print u"\u263b"
+print u"\u25a9"
+'''
