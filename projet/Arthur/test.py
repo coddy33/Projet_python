@@ -29,7 +29,6 @@ def print_grid(grid,I):
         y=y+1
     print_inventory(I)
 
-
 def speech():
     print "Welcome warrior,\n"
     print "You are in 2594, Humanity is in danger, recent advances in genetics, robotics, and technology are driving the world to extinction.\n"
@@ -148,10 +147,10 @@ def print_inventory(I):
 
 #### voir try et except pour mauvais input
 
-def drugs_inventory(I,G,P_J,P_V):#médicament=bombe
+def drugs_inventory(I,G):#médicament=bombe
     tmp=input("Quel est votre choix ?")
     if tmp != 0 :
-        explode(G,I,P_J,P_V,tmp-1)
+        explode(G,tmp-1)
         pop = random.randint(0,3)
         inventory[tmp-1] = dinventory[pop]
     if tmp == "0":
@@ -175,41 +174,33 @@ def power_up(I):
             I[tmp][1]=8
         i = i + 1
 
-
-def explode(G,I,P_J,P_V,C):
-    x= P_J[0]
-    y= P_J[1]
-    size_foreward = I[C][1]//2
-    size_backward = I[C][1]-size_foreward
-    S=[size_foreward,size_backward]
+def explode(G,a):
+    global nb_vir
+    x=location_player[0]
+    y=location_player[1]+1
+    size1=inventory[a][1]//2
+    size2=inventory[a][1]-size1
+    S=[size1,size2]
     rand1=random.randint(0,1)
-    rand2=inventory[C][1]-S[rand1]
-    step_foreward = 1
-    step_backward = -1
-    for i in range(size_foreward):#down
-        y=y+step_foreward
-        if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
+    rand2=inventory[a][1]-S[rand1]
+    i,j=0,0
+    while i<S[rand1]:
+        if y>9:
             break
-        if G[x][y] == virus:
-            #G[x][y]='B'
-            depop_virus(x,y,P_V)
-            G[x][y] = " "
-    for i in range(size_backward):#up
-        y=y+step_backward
-        if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
+        if G[x][y]== virus :
+            G[x][y]=' '
+            nb_vir=nb_vir-1
+        #G[x][y]='B' #test peter les mur et size (cheat des devs)
+        y,i=y+1,i+1
+    y=location_player[1]-1
+    while j<rand2:
+        if y<0:
             break
-        if G[x][y] == virus :
-            #G[x][y]='F'
-            depop_virus(x,y,P_V)
-            G[x][y] = " "
-        
-def depop_virus(x,y,P_V):
-    print x
-    print y
-    index = P_V.index([x,y])
-    del P_V[index]
-
-################################
+        if G[x][y]== virus:
+            G[x][y]=' '
+            nb_vir=nb_vir-1
+        #G[x][y]='H' #test peter les murs et size (cheat des devs)
+        y,j=y-1,j+1
 
 def win(loc_virus):
     if len(loc_virus)==0:
@@ -239,7 +230,6 @@ def hardcore(grid):
     for i in range(len(listx)):
         grid[listx[i]][listy[i]]=wall
 
-
 def lose(I):
     x=0
     for i in I:
@@ -254,9 +244,7 @@ def lose(I):
         print "      / /    | |_| | | |_| |      | |___  | |_| |  ___| | | |___  "
         print "     /_/     \_____/ \_____/      |_____| \_____/ /_____/ |_____| "
 
-
-
-def menu(L):
+def menu():
     print "============ Virus Killer ==============="
     print "\n"
     print "[1] pour vous déplacer"
@@ -273,16 +261,16 @@ def commandes(level):
     pop(nb_vir,virus,location_virus,grid) # 4 = number of Virus
     while a == 0:
         print_grid(grid,inventory)
-        menu(0)
+        menu()
         nb=raw_input()
         if nb == "1":
             power_less(inventory)
             move_player(grid,location_player,inventory,location_virus)
             move_virus(grid,location_player,inventory,location_virus)
         elif nb == "2":
-            drugs_inventory(inventory,grid,location_player,location_virus)
             os.system("clear")
             print_grid(grid,inventory)
+            drugs_inventory(inventory,grid)
         elif nb == "0":
             exit()
             #start()
@@ -292,39 +280,18 @@ def commandes(level):
 
 def print_title():
     os.system("clear")
-    print """\x1b[32;1m     _     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____   
-    | |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \  
-    | |  / /  | | | |_| |  | | | | | |___       | |/ /   | | | |     | |     | |__   | |_| |  
-    | | / /   | | |  _  /  | | | | \___  \      | |\ \   | | | |     | |     |  __|  |  _  /  
-    | |/ /    | | | | \ \  | |_| |  ___| |      | | \ \  | | | |___  | |___  | |___  | | \ \  
-    |___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ \x1b[37;1m"""
-    print """\x1b[31;1m                 _                      _________                    _
-               _dMMMb._              .adOOOOOOOOOba.              _,dMMMb_
-              dP'  ~YMMb            dOOOOOOOOOOOOOOOb            aMMP~  `Yb
-              V      ~"Mb          dOOOOOOOOOOOOOOOOOb          dM"~      V
-                       `Mb.       dOOOOOOOOOOOOOOOOOOOb       ,dM'
-                        `YMb._   |OOOOOOOOOOOOOOOOOOOOO|   _,dMP'
-                   __     `YMMM| OP'~"YOOOOOOOOOOOP"~`YO |MMMP'     __
-                 ,dMMMb.     ~~' OO     `YOOOOOP'     OO `~~     ,dMMMb.
-              _,dP~  `YMba_      OOb      `OOO'      dOO      _aMMP'  ~Yb._
-            <MMP'     `~YMMa_    YOOo   \x1b[37;1m@\x1b[31;1m  OOO  \x1b[37;1m@\x1b[31;1m   oOOP   _adMP~'      `YMM>
-                          `YMMMM\`OOOo     OOO     oOOO'/MMMMP'
-                  ,aa.     `~YMMb `OOOb._,dOOOb._,dOOO'dMMP~'       ,aa.
-                ,dMYYMba._         `OOOOOOOOOOOOOOOOO'          _,adMYYMb.
-               ,MP'   `YMMba._      OOOOOOOOOOOOOOOOO       _,adMMP'   `YM.
-               MP'        ~YMMMba._ YOOOOPVVVVVYOOOOP  _,adMMMMP~       `YM
-               YMb           ~YMMMM\`OOOOI`````IOOOOO'/MMMMP~           dMP
-                `Mb.           `YMMMb`OOOI,,,,,IOOOO'dMMMP'           ,dM'
-                  `'                  `OObNNNNNdOO'                   `'
-                                        `~OOOOO~'         
-    \x1b[37;1m"""
-    print "\x1b[32;1m =============================================================================================\x1b[37;1m"
+    print "\x1b[32;1m _     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____   "
+    print "\x1b[32;1m| |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \  "
+    print "\x1b[32;1m| |  / /  | | | |_| |  | | | | | |___       | |/ /   | | | |     | |     | |__   | |_| |  "
+    print "\x1b[32;1m| | / /   | | |  _  /  | | | | \___  \      | |\ \   | | | |     | |     |  __|  |  _  /  "
+    print "\x1b[32;1m| |/ /    | | | | \ \  | |_| |  ___| |      | | \ \  | | | |___  | |___  | |___  | | \ \  "
+    print "\x1b[32;1m|___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ \x1b[37;1m"
     print "\n"
     print "\n"
     print "[1] START"
     print "[0] EXIT"
 
-def exit():
+def exit():    
     os.system("clear")
     print "Are you sure?"
     print "[1] YES"
@@ -337,7 +304,7 @@ def exit():
 def difficulty():
     lvl=raw_input()
     if lvl=="0":
-        exit()
+        exit()    
     elif lvl=="1":
         commandes(easy)
     elif lvl=="2":
@@ -345,9 +312,8 @@ def difficulty():
     elif lvl=="3":
         commandes(hardcore)
     else:
-        print "You make a mistake, retry please..."
+        print "You make a mistake, retry please..." 
         #gestion d'erreur
-
 
 def start():
     print_title()
@@ -355,15 +321,13 @@ def start():
     while rep != 0:
         os.system("clear")
         if rep=="1":
-            speech()
+            speech()    
             difficulty()
         if rep==0:
             exit()
         else:
             print "You make a mistake, retry please..."
             continue
-
-
 
 
 
@@ -391,4 +355,15 @@ create_grid(grid)
 grid[location_player[0]][location_player[1]]= perso #position initiale définie x=0 ;y=0
 
 start()
+
+'''
+print u"\u266b" #test
+print u"\u2620"
+print u"\u2615"
+print u"\u2605"
+print u"\u2606"
+print u"\u263a"
+print u"\u263b"
+print u"\u25a9"
+'''
 
