@@ -29,21 +29,52 @@ def print_grid(grid,I):
         y=y+1
     print_inventory(I)
 
-
 def speech():
-    print "Welcome warrior,\n"
-    print "You are in 2594, Humanity is in danger, recent advances in genetics, robotics, and technology are driving the world to extinction.\n"
-    print "A new virus appeared from nowhere, is name \x1b[31;1mSOVEREIGN!\x1b[37;1m",virus,"\n"
-    print "We detected 4 powerfull strains, if you succeed in destroying them, maybe humanity will have \x1b[33;1mHOPE!\x1b[37;1m\n"
-    print "For this mission you will have 4 anti-virus with different power to start."
-    print "But on the field you will have \x1b[32;1mPower enhancer\x1b[37;1m : ",ATP," they will increase two of your anti-virus by 1.\n"
-    print "BUT above all, pay attention at the power of your anti-virus , if they all fall to 0 we are all dead, nothing will stop him!"
-    print "\n\n\n"
-    print "Choose your level of difficulty : "
-    print "[1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m." #For noobs
-    print "[2] Normal   : you may have guts..."
-    print "[3] Hardcore : finally a real warrior, let me see your true nature as a hero!","\x1b[33;1m"u"\u2605""\x1b[37;1m\n"
-    print "[0] Leave."
+    star="\x1b[33;1m"u"\u2605""\x1b[37;1m"
+    print """
+=====================================================================================
+|                                                                                   |
+|                                ╓▄ª▀╙▀╙▀▀%w▄;                                      |
+|                             ▄A▀             └▀▀v▄                                 |
+|                          ╓A▀                     └█                               |    Welcome warrior,
+|                         █                          ▌                              |
+|                         ▌                          █                              |    You are in 2594, Humanity is in danger, recent advances in genetics, 
+|                        ▐                           ▐⌐                             |    robotics, and technology are driving the world to extinction.
+|                        █`└└""*"*ⁿⁿⁿ══════ⁿⁿª*ff**"?└▌                             |    
+|                        █                            ▌                             |    A new virus appeared from nowhere, is name \x1b[31;1mSOVEREIGN!\x1b[37;1m""",virus,"""
+|                       ,█¥═▄▄▄;,                 ,,;▄▌                             |
+|                    ,═Γ█│\╙╕ ▀    ,▄⌠╙└└└└└└└└v▄ ,▄Ω<▌                             |    We detected 4 powerfull strains, if you succeed in destroying them, maybe humanity will have \x1b[33;1mHOPE!\x1b[37;1m
+|                 ╓A▀ ,⌐▌,V╘▐▌       Q▀▀▀▄▄  .  ▄▀╙   ▌▄▄                           |
+|              ,═▀  ,A  ▌Γ\ ▐▌       .│:       ▐     ▐└*w█▀▄▄                       |    For this mission you will have 4 anti-virus with different power to start.
+|            ╓▀`   ╓┘   ▀▄╕ ▐= v                ▌≈=═Φ     ²Y▄▀¥▄                    |
+|           ▄▌     ▌      ¥▄,▌   *      Γ       ╙¥  █         "w▀▀▄                 |    But on the field you will have \x1b[32;1mPower enhancer\x1b[37;1m : """,ATP,""" 
+|          ▐▌▌     ▌     ╓▀▌ █    =     [x==l, ,Ü/ ╓▀            *▄▀W,              |    they will increase two of your anti-virus by 1.
+|          ║ ╙▄    █    ▄¬█  └▌   ⌐ ,⌐`  ,-~ç  ,. '█               ╙╕╙█,            |
+|          ║   ╕    █  A ▐⌐   ▀⌐  ⌐/   ç▄═¬═w╓=▄¬└ █                 ╙w▀▄           |    BUT above all, pay attention at the power of your anti-virus , 
+|          ▐⌐   ╙▄   ▀█ ,▌     '▀ç"   ⌐'""ⁿ¬══─*  k█                   █┘           |    if they all fall to 0 we are all dead, nothing will stop him!
+|           ▌     "w   ╙▀▄        ▀▄  ╞`¬ç   ,,╓┘ █▐Ö╗               ╓█╙▀W▄         |
+|        ╓▄▀█       `\ç    ▀▀≡▄ç    ▀▄╘           ▌ █ ▀▄            ▄▀ "%, ▀▄       |
+|      ▄▀   ▐▌         "═ç      `╙▀   "█▄        ,▌ ▐∩  █          █`     ▀  ▀█▄▄   |
+|    ▄▀     █▀             "═w,   █     "▀▄▄▄▄▄≤▀▀   ▌   ▀       ,█ ▄▄≡Φ█▀▀▀└`      |
+|  ▄█═"╙╙'" ▌ █                ⌐  ▌*≈¡      ,«"      █    █     ╓▀,▀     ▀▄ ┐       |
+| ▄┘        ⌐  ▀▄             ▐  ▐=     -""¬         █     █   ╓▀ █        █ ╕      |
+|▄¬        ▐     '▀▄,         ▐  ▐=                  ▌     █  ╓█  ▌         ▌ ⌐     |
+|▌         ▐        `▀W▄      ▐  ▐▌▄                ▀     ▄  ,▌ ╙▄█         █ ▌     |
+|         1**f▄      ╓¬═▀Φ▄    ▄  ▌ └ª═▄,        ╓A└    ╓▀   █    ▀▄        █ ▀     |
+|         █   ▌      ▐   ▐⌐ ▀▄ ╙  █      └-""**"-     ▄▀¬   ▐ⁿ╩"│Ö▐^▌▄.ÜΩ╣]ó▄╫╫▄▄   |
+|         ▀   *      └   '    ▀ * ╙                 ^┘               ▀▀*"╙▀▀└¬      |
+|                                                                                   |
+|                                  \x1b[33;1mGeneral Mike Hertz\x1b[37;1m                               |
+|                                                                                   |
+=====================================================================================
+"""
+    print """
+Choose your level of difficulty :
+
+[1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m."
+[2] Normal   : you may have guts...
+[3] Hardcore : finally a real warrior, let me see your true nature as a hero!""",star,"""\n
+[0] Leave."""
 
 def pop(nb,mol,loc,G): #on defini le nombre de pop=nb ; puis quelle molecule doit pop=mol
     for i in range(nb):
@@ -175,7 +206,6 @@ def power_up(I):
             I[tmp][1]=8
         i = i + 1
 
-
 def explode(G,I,P_J,P_V,C):
     x= P_J[0]
     y= P_J[1]
@@ -239,13 +269,28 @@ def hardcore(grid):
     for i in range(len(listx)):
         grid[listx[i]][listy[i]]=wall
 
-
 def lose(I):
     x=0
     for i in I:
         if i[1]==0:
             x=x+1
     if x==4:
+        print """
+                 __
+            ,-~¨^  ^¨-,           _,
+           /          / ;^-._...,¨/
+          /          / /         /
+         /          / /         /
+        /          / /         /
+       /,.-:''-,_ / /         /
+       _,.-:--._ ^ ^:-._ __../
+     /^         / /¨:.._¨__.;
+    /          / /      ^  /
+   /          / /         /
+  /          / /         /
+ /_,.--:^-._/ /         /
+^            ^¨¨-.___.:^  
+"""
         os.system("clear")
         print "    __    __  _____   _   _        _       _____   _____   _____  "
         print "    \ \  / / /  _  \ | | | |      | |     /  _  \ /  ___/ | ____| "
@@ -253,8 +298,6 @@ def lose(I):
         print "      \  /   | | | | | | | |      | |     | | | | \___  \ |  __|  "
         print "      / /    | |_| | | |_| |      | |___  | |_| |  ___| | | |___  "
         print "     /_/     \_____/ \_____/      |_____| \_____/ /_____/ |_____| "
-
-
 
 def menu(L):
     print "============ Virus Killer ==============="
@@ -318,6 +361,20 @@ def print_title():
                   `'                  `OObNNNNNdOO'                   `'
                                         `~OOOOO~'         
     \x1b[37;1m"""
+    print """
+                                             ^
+                                _______     ^^^
+                               |xxxxxxx|  _^^^^^_
+                               |xxxxxxx| | [][]  |
+                            ______xxxxx| |[][][] |
+                           |++++++|xxxx| | [][][]|      METROPOLIS
+                           |++++++|xxxx| |[][][] |
+                           |++++++|_________ [][]|
+                           |++++++|=|=|=|=|=| [] |
+                           |++++++|=|=|=|=|=|[][]|
+                ___________|++HH++|  _HHHH__|   _________   _________  _________
+                         _______________   ______________      ______________
+                __________________  ___________    __________________    ____________"""
     print "\x1b[32;1m =============================================================================================\x1b[37;1m"
     print "\n"
     print "\n"
@@ -347,8 +404,6 @@ def difficulty():
     else:
         print "You make a mistake, retry please..."
         #gestion d'erreur
-
-
 def start():
     print_title()
     rep=raw_input()
@@ -362,7 +417,6 @@ def start():
         else:
             print "You make a mistake, retry please..."
             continue
-
 
 
 
