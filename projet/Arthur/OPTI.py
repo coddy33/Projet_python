@@ -11,7 +11,7 @@ import random
 import codecs
 
 
-def commandes():#is+else#input
+def commandes():
     '''
     This function is one of the main it control course of the game
     '''
@@ -25,6 +25,7 @@ def commandes():#is+else#input
             power_less(inventory)
             move_player(grid,location_player,inventory,location_virus)
             move_virus(grid,location_player,inventory,location_virus)
+            lose(inventory)
         elif nb == 2:
             drugs_inventory(inventory,grid,location_player,location_virus)
             print_grid(grid,inventory)
@@ -55,7 +56,7 @@ def depop_virus(x,y,P_V):
     index = P_V.index([x,y])
     del P_V[index]
 
-def difficulty():#input#if+else
+def difficulty():
     '''
     This function allow player to choose his difficulty level
     '''
@@ -74,7 +75,7 @@ def difficulty():#input#if+else
     else:
         print "You make a mistake, retry please..." ###### voir si ça fonctionne et qu'on revient pas au menu
 
-def drugs_inventory(I,G,P_J,P_V):#input#if+else
+def drugs_inventory(I,G,P_J,P_V):#power d'une bombe ne pas utiliser
     '''
     This function is used when we have to use a medicine
 
@@ -102,7 +103,7 @@ def easy(G):
     for i in range(len(listx)):
         G[listx[i]][listy[i]]=wall
 
-def error(): # error management for input
+def error():
     i=1
     while i !=0:
         try :
@@ -113,7 +114,7 @@ def error(): # error management for input
         except SyntaxError: # for special character
             print "Wrong value..."
 
-def explode(G,I,P_J,P_V,C):#if+else
+def explode(G,I,P_J,P_V,C):
     '''
     This function make the "explosion" of medicine when player use it
     First we choose to randomly determine where go the explosion if the power is uneven
@@ -228,7 +229,7 @@ def menu():
     print "\n"
     print "\x1b[30;1m=========================================\x1b[37;0m"
 
-def move(G,P,I,movement,nbr_case,x,y,P_V):#P?#if+else#description
+def move(G,P,I,movement,nbr_case,x,y,P_V):#description
     '''
     This function is the movement properly where virus and player move step by step,
     ####a compléter#####
@@ -267,7 +268,7 @@ def move(G,P,I,movement,nbr_case,x,y,P_V):#P?#if+else#description
         x,y = turn_back(x,y,x_step,y_step)
     return x,y
 
-def move_player(G,P,I,P_V):#input#P?
+def move_player(G,P,I,P_V):
     '''
     This function ask player where did he want to go and call a function to move player
 
@@ -285,7 +286,7 @@ def move_player(G,P,I,P_V):#input#P?
     P[0]=x
     P[1]=y
 
-def move_virus(G,P,I,P_V):#P?
+def move_virus(G,P,I,P_V):
     '''
     This function is base on move_player function and allow virus to move randomly
     Here we choose a random direction then a random number of cases to move
@@ -306,6 +307,12 @@ def move_virus(G,P,I,P_V):#P?
         P_V[i][1]=y
 
 def new_game(level):
+    '''
+    This function make condition on default to start a new game like walls, ATP, virus then call the function commandes to start game
+    
+    Args:
+        level-> difficulty
+    '''
     level(grid)
     pop(nb_ATP,ATP,location_virus,grid)
     pop(nb_vir,virus,location_virus,grid)
@@ -323,7 +330,7 @@ def normal(grid):
     for i in range(len(listx)):
         grid[listx[i]][listy[i]]=wall
 
-def pop(nb,mol,loc,G):#if+else
+def pop(nb,mol,loc,G):
     '''
     In this function we add a number of molecule randomly and for virus we save their positions
 
@@ -359,7 +366,6 @@ def power_less(I):
         if I[i][1] < 0 :
             I[i][1] = 0
         i = i + 1
-    lose(I)
 
 def power_up(I):
     '''
@@ -514,7 +520,7 @@ Choose your level of difficulty :
 [4] Load previous game.
 [0] Leave."""
 
-def start():#input#if+else
+def start():
     '''
     This function start the game and call all other functions
     '''
@@ -574,7 +580,7 @@ def turn_back(x,y,x_step,y_step):
     x=x-(x_step)
     return x,y
 
-def win(loc_virus):#if+else
+def win(loc_virus):
     '''
     This function determine when player win
 
@@ -617,8 +623,13 @@ __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '''
 
-
 def Save(G,P_V,I,P_J):
+    '''
+    This function write in a file save, necesseray informations to restart a game on the same point
+    
+    Args:
+        G->grid, P_V-> virus position, I-> inventory, P_J-> player position
+    '''
     file=codecs.open("save","w",encoding="utf-8")
     file.write('######### GRID ##########\n')
     for i in G:
@@ -653,6 +664,9 @@ def Save(G,P_V,I,P_J):
     file.close()
 
 def Load():
+    '''
+    This function read the file save to make global object to the value of previous game
+    '''
     file=codecs.open('save',"r",encoding="utf-8")
     global grid
     global location_virus
