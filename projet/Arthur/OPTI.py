@@ -152,6 +152,7 @@ def exit():
     choice=input()
     if choice==1:
         print "Goodbye warrior!"
+        Save(grid,location_virus,inventory,location_player)
         sys.exit()
 
 def hardcore(G):
@@ -504,7 +505,7 @@ def start():#input#if+else
         if rep=="1":
             speech()
             difficulty()
-        if rep==0:
+        if rep=="0":
             exit()
         else:
             os.system('clear')
@@ -597,6 +598,28 @@ __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
 
 
 
+
+def Save(G,P_V,I,P_J):
+    file=open("save","w")
+    file.write('#########GRID##########')
+    for i in G:#save grid
+        file.write(str(i))
+        file.write(';')
+    file.write('\n======================================================================================\n')
+    
+    for i in P_V:#location virus
+        file.write(str(i))
+        file.write(';')
+    file.write('\n======================================================================================\n')
+    for i in I:#inventory
+        file.write(str(i))
+        file.write(';')
+    file.write('\n======================================================================================\n')
+    for i in P_J:#player position
+        file.write(str(i))
+        file.write(';')
+    file.write('\n======================================================================================\n')
+    file.close()
 
 
 ######################
