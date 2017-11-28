@@ -8,7 +8,7 @@
 import sys
 import os
 import random
-
+import codecs
 
 
 def commandes(level):#is+else#input
@@ -41,7 +41,6 @@ def commandes(level):#is+else#input
             os.system("clear")
             print "You make a mistake, retry please..."
 
-
 def error(): # error management for input
     i=1
     while i !=0:
@@ -52,7 +51,6 @@ def error(): # error management for input
             print "Wrong value..."
         except SyntaxError: # for special character
             print "Wrong value..."
-
 
 def create_grid(G):
     '''
@@ -172,7 +170,6 @@ def exit():
         exit
     else :
         print "Wrong value" ####### vérifier si ça fonctionne
-
 
 def hardcore(G):
     '''
@@ -620,11 +617,14 @@ __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
 
 
 def Save(G,P_V,I,P_J):
-    file=open("save","w")
+    file=codecs.open("save","w",encoding="utf-8")
     file.write('######### GRID ##########\n')
-    for i in G:#save grid
-        file.write(str(i))
-        file.write(';')
+    for i in G:
+        file.write(':')
+        for j in i:#save grid
+            file.write(j)
+            file.write(';')
+        file.write('\n')
     file.write('\n======================================================================================\n')
     file.write('######### VIRUS LOCATION ##########\n')
     for i in P_V:#location virus
@@ -644,15 +644,14 @@ def Save(G,P_V,I,P_J):
     file.close()
 
 
-'''
-def Load():
+def Load(G):
     file=open('save',"r")
     for line in file.readlines():
         if not line:
             break
-        if line.startswith('GRID'):
-            #print 'test'
-'''
+        if line.startswith(':'):
+            y=line.split(';')
+        
 
 ######################
 ######## MAIN ########
