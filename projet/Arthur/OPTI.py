@@ -11,18 +11,12 @@ import random
 import codecs
 
 
-def commandes(level):#is+else#input
+def commandes():#is+else#input
     '''
     This function is one of the main it control course of the game
-
-    Args:
-        level correspond to the difficulty which is choose by player in difficulty()
     '''
     a=0
     os.system("clear")
-    level(grid)
-    pop(nb_ATP,ATP,location_virus,grid)
-    pop(nb_vir,virus,location_virus,grid)
     while a == 0:
         print_grid(grid,inventory)
         menu()
@@ -40,17 +34,6 @@ def commandes(level):#is+else#input
         else:
             os.system("clear")
             print "You make a mistake, retry please..."
-
-def error(): # error management for input
-    i=1
-    while i !=0:
-        try :
-            nb=input()
-            return nb
-        except NameError: # if input = string
-            print "Wrong value..."
-        except SyntaxError: # for special character
-            print "Wrong value..."
 
 def create_grid(G):
     '''
@@ -80,11 +63,14 @@ def difficulty():#input#if+else
     if lvl==0:
         exit()
     elif lvl==1:
-        commandes(easy)
+        new_game(easy)#easy
     elif lvl==2:
-        commandes(normal)
+        new_game(normal)#normal
     elif lvl==3:
-        commandes(hardcore)
+        new_game(hardcore)#hardcore
+    elif lvl==4:
+        Load()
+        commandes()
     else:
         print "You make a mistake, retry please..." ###### voir si ça fonctionne et qu'on revient pas au menu
 
@@ -115,6 +101,17 @@ def easy(G):
     listy=[0,1,2,3,4,5,6,7,8,9]
     for i in range(len(listx)):
         G[listx[i]][listy[i]]=wall
+
+def error(): # error management for input
+    i=1
+    while i !=0:
+        try :
+            nb=input()
+            return nb
+        except NameError: # if input = string
+            print "Wrong value..."
+        except SyntaxError: # for special character
+            print "Wrong value..."
 
 def explode(G,I,P_J,P_V,C):#if+else
     '''
@@ -307,6 +304,12 @@ def move_virus(G,P,I,P_V):#P?
         G[x][y]= virus
         P_V[i][0]=x
         P_V[i][1]=y
+
+def new_game(level):
+    level(grid)
+    pop(nb_ATP,ATP,location_virus,grid)
+    pop(nb_vir,virus,location_virus,grid)
+    commandes()
 
 def normal(grid):
     '''
@@ -508,6 +511,7 @@ Choose your level of difficulty :
 [1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m.
 [2] Normal   : you may have guts...
 [3] Hardcore : finally a real warrior, let me see your true nature as a hero!""",star,"""\n
+[4] Load previous game.
 [0] Leave."""
 
 def start():#input#if+else
@@ -614,44 +618,86 @@ __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
 '''
 
 
-
-
 def Save(G,P_V,I,P_J):
     file=codecs.open("save","w",encoding="utf-8")
     file.write('######### GRID ##########\n')
     for i in G:
-        file.write(':')
+        file.write(':,')
         for j in i:#save grid
             file.write(j)
-            file.write(';')
+            file.write(',')
         file.write('\n')
     file.write('\n======================================================================================\n')
     file.write('######### VIRUS LOCATION ##########\n')
-    for i in P_V:#location virus
-        file.write(str(i))
-        file.write(';')
+    for k in P_V:#location virus
+        file.write('v;')
+        for t in k:
+            file.write(str(t))
+            file.write(';')
+        file.write('\n')
     file.write('\n======================================================================================\n')
     file.write('######### INVENTORY ##########\n')
-    for i in I:#inventory
-        file.write(str(i))
-        file.write(';')
+    for l in I:#inventory
+        file.write('i;')
+        for h in l:
+            file.write(str(h))
+            file.write(';')
+        file.write('\n')
     file.write('\n======================================================================================\n')
     file.write('######### PLAYER POSITION ##########\n')
-    for i in P_J:#player position
-        file.write(str(i))
+    file.write('p;')
+    for m in P_J:#player position
+        file.write(str(m))
         file.write(';')
     file.write('\n======================================================================================\n')
     file.close()
 
-
-def Load(G):
-    file=open('save',"r")
+def Load():
+    file=codecs.open('save',"r",encoding="utf-8")
+    global grid
+    global location_virus
+    global inventory
+    global location_player
+    grid=[]
+    inventory=[]
+    location_player=[]
     for line in file.readlines():
         if not line:
             break
-        if line.startswith(':'):
-            y=line.split(';')
-        
+        if line.startswith(':,'):
+            y=line.split(',')
+            y.pop(0)
+            y.pop(-1)
+            grid.append(y)
+        if line.startswith('v;'):
+            v=line.split(';')
+            v.pop(0)
+            v.pop(-1)
+            vir1=int(v[0])
+            vir2=int(v[1])
+            vir=[vir1,vir2]
+            location_virus.append(vir)
+        if line.startswith('i;'):
+            i=line.split(';')
+            i.pop(0)
+            i.pop(-1)
+            inv1=i[0]
+            inv2=int(i[1])
+            inv=[inv1,inv2]
+            inventory.append(inv)
+        if line.startswith('p;'):
+            p=line.split(';')
+            p.pop(0)
+            p.pop(-1)
+            print p
+            p1=int(p[0])
+            p2=int(p[1])
+            location_player.append(p1)
+            location_player.append(p2)
+        else:
+            continue
+
+
 
 ######################
 ######## MAIN ########
