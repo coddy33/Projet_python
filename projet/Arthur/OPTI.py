@@ -396,10 +396,10 @@ def print_title():
     This function is usefull to print screen title of the game
     '''
     print """\x1b[32;1m     _     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____
-    | |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \
+    | |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \\
     | |  / /  | | | |_| |  | | | | | |___       | |/ /   | | | |     | |     | |__   | |_| |
     | | / /   | | |  _  /  | | | | \___  \      | |\ \   | | | |     | |     |  __|  |  _  /
-    | |/ /    | | | | \ \  | |_| |  ___| |      | | \ \  | | | |___  | |___  | |___  | | \ \
+    | |/ /    | | | | \ \  | |_| |  ___| |      | | \ \  | | | |___  | |___  | |___  | | \ \\
     |___/     |_| |_|  \_\ \_____/ /_____/      |_|  \_\ |_| |_____| |_____| |_____| |_|  \_\ \x1b[37;1m"""
     print """\x1b[31;1m                 _                      _________                    _
                _dMMMb._              .adOOOOOOOOOba.              _,dMMMb_
@@ -487,7 +487,7 @@ def speech():
     print """
 Choose your level of difficulty :
 
-[1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m."
+[1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m.
 [2] Normal   : you may have guts...
 [3] Hardcore : finally a real warrior, let me see your true nature as a hero!""",star,"""\n
 [0] Leave."""
