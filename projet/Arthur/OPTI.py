@@ -26,20 +26,33 @@ def commandes(level):#is+else#input
     while a == 0:
         print_grid(grid,inventory)
         menu()
-        nb=raw_input()
-        if nb == "1":
+        nb= error()
+        if nb == 1:
             power_less(inventory)
             move_player(grid,location_player,inventory,location_virus)
             move_virus(grid,location_player,inventory,location_virus)
-        elif nb == "2":
+        elif nb == 2:
             drugs_inventory(inventory,grid,location_player,location_virus)
-            os.system("clear")
             print_grid(grid,inventory)
-        elif nb == "0":
+            os.system("clear")
+        elif nb == 0:
             exit()
         else:
             os.system("clear")
             print "You make a mistake, retry please..."
+
+
+def error(): # error management for input
+    i=1
+    while i !=0:
+        try :
+            nb=input()
+            return nb
+        except NameError: # if input = string
+            print "Wrong value..."
+        except SyntaxError: # for special character
+            print "Wrong value..."
+
 
 def create_grid(G):
     '''
@@ -65,17 +78,17 @@ def difficulty():#input#if+else
     '''
     This function allow player to choose his difficulty level
     '''
-    lvl=raw_input()
-    if lvl=="0":
+    lvl=error()
+    if lvl==0:
         exit()
-    elif lvl=="1":
+    elif lvl==1:
         commandes(easy)
-    elif lvl=="2":
+    elif lvl==2:
         commandes(normal)
-    elif lvl=="3":
+    elif lvl==3:
         commandes(hardcore)
     else:
-        print "You make a mistake, retry please..."
+        print "You make a mistake, retry please..." ###### voir si ça fonctionne et qu'on revient pas au menu
 
 def drugs_inventory(I,G,P_J,P_V):#input#if+else
     '''
@@ -84,7 +97,8 @@ def drugs_inventory(I,G,P_J,P_V):#input#if+else
     Args:
         I->inventory,G->grid,P_J->player position,P_V->virus position
     '''
-    tmp=input("Quel est votre choix ?")
+    print("Choose a medicine")
+    tmp=error()
     if tmp != 0 :
         explode(G,I,P_J,P_V,tmp-1)
         pop = random.randint(0,3)
@@ -149,11 +163,16 @@ def exit():
     print "Are you sure?"
     print "[1] YES"
     print "[0] NO"
-    choice=input()
+    choice=error()
     if choice==1:
         print "Goodbye warrior!"
         Save(grid,location_virus,inventory,location_player)
         sys.exit()
+    if choice == 0:
+        exit
+    else :
+        print "Wrong value" ####### vérifier si ça fonctionne
+
 
 def hardcore(G):
     '''
@@ -262,7 +281,8 @@ def move_player(G,P,I,P_V):#input#P?
         G->grid, P->location player, I->inventory, P_V->location virus
     '''
     movement = raw_input("Où voulez-vous aller ?")
-    nbr_case=input("De combien de cases voulez-vous vous déplacer ?") #error --> input
+    print ("De combien de cases voulez-vous vous déplacer ?")
+    nbr_case=error()
     x=P[0]
     y=P[1]
     x,y = move(G,P,I,movement,nbr_case,x,y,P_V)
@@ -501,11 +521,11 @@ def start():#input#if+else
     r=0
     while r == 0:
         print_title()
-        rep=raw_input()
-        if rep=="1":
+        rep=error()
+        if rep == 1:
             speech()
             difficulty()
-        if rep=="0":
+        if rep == 0:
             exit()
         else:
             os.system('clear')
@@ -601,26 +621,38 @@ __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
 
 def Save(G,P_V,I,P_J):
     file=open("save","w")
-    file.write('#########GRID##########')
+    file.write('######### GRID ##########\n')
     for i in G:#save grid
         file.write(str(i))
         file.write(';')
     file.write('\n======================================================================================\n')
-    
+    file.write('######### VIRUS LOCATION ##########\n')
     for i in P_V:#location virus
         file.write(str(i))
         file.write(';')
     file.write('\n======================================================================================\n')
+    file.write('######### INVENTORY ##########\n')
     for i in I:#inventory
         file.write(str(i))
         file.write(';')
     file.write('\n======================================================================================\n')
+    file.write('######### PLAYER POSITION ##########\n')
     for i in P_J:#player position
         file.write(str(i))
         file.write(';')
     file.write('\n======================================================================================\n')
     file.close()
 
+
+'''
+def Load():
+    file=open('save',"r")
+    for line in file.readlines():
+        if not line:
+            break
+        if line.startswith('GRID'):
+            #print 'test'
+'''
 
 ######################
 ######## MAIN ########
