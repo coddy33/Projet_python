@@ -9,8 +9,15 @@ import sys
 import os
 import random
 
+
+
 def commandes(level):#is+else#input
-    #this function is one of the main it control course of the game and only take level as arguements#
+    '''
+    This function is one of the main it control course of the game
+    
+    Args:
+        level correspond to the difficulty which is choose by player in difficulty()
+    '''
     a=0
     os.system("clear")
     level(grid)
@@ -35,18 +42,29 @@ def commandes(level):#is+else#input
             print "You make a mistake, retry please..."
 
 def create_grid(G):
-    #This function take in arguments the grid [] and then make a two dimension grid [][]#
+    '''
+    This function make a two dimension grid , it make 10 list (length of 10values) in the list grid[] ==> grid[][](10x10)
+    
+    Args:
+        G --> the grid []
+    '''
     for i in range(10):
         list=[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
         G.append(list)
 
 def depop_virus(x,y,P_V):
-    #this function is used to suppress a virus when a medicine explosion hit him, take as arguements x,y,virus position#
+    '''
+    This function is used to suppress a virus when a medicine explosion hit him, We suppress him from list of virus position
+    
+    Args: x,y(current position choosein explode),P_V -> virus position
+    '''
     index = P_V.index([x,y])
     del P_V[index]
 
 def difficulty():#input#if+else
-    #this function allow player to choose his difficulty level#
+    '''
+    This function allow player to choose his difficulty level
+    '''
     lvl=raw_input()
     if lvl=="0":
         exit()
@@ -60,7 +78,12 @@ def difficulty():#input#if+else
         print "You make a mistake, retry please..."
 
 def drugs_inventory(I,G,P_J,P_V):#input#if+else
-    #This function is used when we have to use a bomb, take as arguments,inventory,grid,playerposition,virusposition#
+    '''
+    This function is used when we have to use a medicine
+    
+    Args:
+        I->inventory,G->grid,P_J->player position,P_V->virus position
+    '''
     tmp=input("Quel est votre choix ?")
     if tmp != 0 :
         explode(G,I,P_J,P_V,tmp-1)
@@ -69,15 +92,26 @@ def drugs_inventory(I,G,P_J,P_V):#input#if+else
     if tmp == "0":
         exit
 
-def easy(grid):
-    #this function establish the position of walls for easy mode, take as arguements grid#
+def easy(G):
+    '''
+    This function establish the position of walls for easy mode
+    
+    Arguments:
+        G->grid
+    '''
     listx=[2,7,4,0,4,1,6,3,8,2]
     listy=[0,1,2,3,4,5,6,7,8,9]
     for i in range(len(listx)):
-        grid[listx[i]][listy[i]]=wall
+        G[listx[i]][listy[i]]=wall
 
 def explode(G,I,P_J,P_V,C):#if+else
-    #this function make the "explosion" of medicine when player use it, take as arguements grid, inventory,player position,virus position,medicine selected#
+    '''
+    This function make the "explosion" of medicine when player use it
+    First we "scan" the down of the column where player set medicine and if we go over 
+    
+    Args:
+        G->grid, I->inventory , P_J->player position , P_V->virus position , C->selected medicine
+    '''
     x= P_J[0]
     y= P_J[1]
     size_foreward = I[C][1]//2
