@@ -100,7 +100,7 @@ def drugs_inventory(I,G,P_J,P_V):#power d'une bombe ne pas utiliser
     '''
     print("Choose a medicine")
     tmp=error()
-    if tmp != 0 :
+    if tmp != 0 and inventory[tmp-1][1]!=0:
         explode(G,I,P_J,P_V,tmp-1)
         pop = random.randint(0,3)
         inventory[tmp-1] = dinventory[pop]
@@ -476,50 +476,51 @@ def speech():
     os.system('clear')
     star="\x1b[33;1m"u"\u2605""\x1b[37;1m"
     print """
-=====================================================================================
-|                                                                                   |
-|                                ╓▄ª▀╙▀╙▀▀%w▄;                                      |
-|                             ▄A▀             └▀▀v▄                                 |
-|                          ╓A▀                     └█                               |    Welcome warrior,
-|                         █                          ▌                              |
-|                         ▌                          █                              |    You are in 2594, Humanity is in danger, recent advances in genetics,
-|                        ▐                           ▐⌐                             |    robotics, and technology are driving the world to extinction.
-|                        █`└└""*"*ⁿⁿⁿ══════ⁿⁿª*ff**"?└▌                             |
-|                        █                            ▌                             |    A new virus appeared from nowhere, is name \x1b[31;1mSOVEREIGN!\x1b[37;1m""",virus,"""
-|                       ,█¥═▄▄▄;,                 ,,;▄▌                             |
-|                    ,═Γ█│\╙╕ ▀    ,▄⌠╙└└└└└└└└v▄ ,▄Ω<▌                             |    We detected 4 powerfull strains, if you succeed in destroying them, maybe humanity will have \x1b[33;1mHOPE!\x1b[37;1m
-|                 ╓A▀ ,⌐▌,V╘▐▌       Q▀▀▀▄▄  .  ▄▀╙   ▌▄▄                           |
-|              ,═▀  ,A  ▌Γ\ ▐▌       .│:       ▐     ▐└*w█▀▄▄                       |    For this mission you will have 4 anti-virus with different power to start.
-|            ╓▀`   ╓┘   ▀▄╕ ▐= v                ▌≈=═Φ     ²Y▄▀¥▄                    |
-|           ▄▌     ▌      ¥▄,▌   *      Γ       ╙¥  █         "w▀▀▄                 |    But on the field you will have \x1b[32;1mPower enhancer\x1b[37;1m : """,ATP,"""
-|          ▐▌▌     ▌     ╓▀▌ █    =     [x==l, ,Ü/ ╓▀            *▄▀W,              |    they will increase two of your anti-virus by 1.
-|          ║ ╙▄    █    ▄¬█  └▌   ⌐ ,⌐`  ,-~ç  ,. '█               ╙╕╙█,            |
-|          ║   ╕    █  A ▐⌐   ▀⌐  ⌐/   ç▄═¬═w╓=▄¬└ █                 ╙w▀▄           |    BUT above all, pay attention at the power of your anti-virus ,
-|          ▐⌐   ╙▄   ▀█ ,▌     '▀ç"   ⌐'""ⁿ¬══─*  k█                   █┘           |    if they all fall to 0 we are all dead, nothing will stop him!
-|           ▌     "w   ╙▀▄        ▀▄  ╞`¬ç   ,,╓┘ █▐Ö╗               ╓█╙▀W▄         |
-|        ╓▄▀█       `\ç    ▀▀≡▄ç    ▀▄╘           ▌ █ ▀▄            ▄▀ "%, ▀▄       |
-|      ▄▀   ▐▌         "═ç      `╙▀   "█▄        ,▌ ▐∩  █          █`     ▀  ▀█▄▄   |
-|    ▄▀     █▀             "═w,   █     "▀▄▄▄▄▄≤▀▀   ▌   ▀       ,█ ▄▄≡Φ█▀▀▀└`      |
-|  ▄█═"╙╙'" ▌ █                ⌐  ▌*≈¡      ,«"      █    █     ╓▀,▀     ▀▄ ┐       |
-| ▄┘        ⌐  ▀▄             ▐  ▐=     -""¬         █     █   ╓▀ █        █ ╕      |
-|▄¬        ▐     '▀▄,         ▐  ▐=                  ▌     █  ╓█  ▌         ▌ ⌐     |
-|▌         ▐        `▀W▄      ▐  ▐▌▄                ▀     ▄  ,▌ ╙▄█         █ ▌     |
-|         1**f▄      ╓¬═▀Φ▄    ▄  ▌ └ª═▄,        ╓A└    ╓▀   █    ▀▄        █ ▀     |
-|         █   ▌      ▐   ▐⌐ ▀▄ ╙  █      └-""**"-     ▄▀¬   ▐ⁿ╩"│Ö▐^▌▄.ÜΩ╣]ó▄╫╫▄▄   |
-|         ▀   *      └   '    ▀ * ╙                 ^┘               ▀▀*"╙▀▀└¬      |
-|                                                                                   |
-|                                  \x1b[33;1mGeneral Mike Hertz\x1b[37;1m                               |
-|                                                                                   |
-=====================================================================================
-"""
+    =====================================================================================
+    |                                                                                   |
+    |                                ╓▄ª▀╙▀╙▀▀%w▄;                                      |
+    |                             ▄A▀             └▀▀v▄                                 |
+    |                          ╓A▀                     └█                               |    Welcome warrior,
+    |                         █                          ▌                              |
+    |                         ▌                          █                              |    You are in 2594, Humanity is in danger, recent advances in genetics,
+    |                        ▐                           ▐⌐                             |    robotics, and technology are driving the world to extinction.
+    |                        █`└└""*"*ⁿⁿⁿ══════ⁿⁿª*ff**"?└▌                             |
+    |                        █                            ▌                             |    A new virus appeared from nowhere, is name \x1b[31;1mSOVEREIGN!\x1b[37;1m""",virus,"""
+    |                       ,█¥═▄▄▄;,                 ,,;▄▌                             |
+    |                    ,═Γ█│\╙╕ ▀    ,▄⌠╙└└└└└└└└v▄ ,▄Ω<▌                             |    We detected 4 powerfull strains, if you succeed in destroying them, maybe humanity will have \x1b[33;1mHOPE!\x1b[37;1m
+    |                 ╓A▀ ,⌐▌,V╘▐▌       Q▀▀▀▄▄  .  ▄▀╙   ▌▄▄                           |
+    |              ,═▀  ,A  ▌Γ\ ▐▌       .│:       ▐     ▐└*w█▀▄▄                       |    For this mission you will have 4 anti-virus with different power to start.
+    |            ╓▀`   ╓┘   ▀▄╕ ▐= v                ▌≈=═Φ     ²Y▄▀¥▄                    |
+    |           ▄▌     ▌      ¥▄,▌   *      Γ       ╙¥  █         "w▀▀▄                 |    But on the field you will have \x1b[32;1mPower enhancer\x1b[37;1m : """,ATP,"""
+    |          ▐▌▌     ▌     ╓▀▌ █    =     [x==l, ,Ü/ ╓▀            *▄▀W,              |    they will increase two of your anti-virus by 1.
+    |          ║ ╙▄    █    ▄¬█  └▌   ⌐ ,⌐`  ,-~ç  ,. '█               ╙╕╙█,            |
+    |          ║   ╕    █  A ▐⌐   ▀⌐  ⌐/   ç▄═¬═w╓=▄¬└ █                 ╙w▀▄           |    BUT above all, pay attention at the power of your anti-virus ,
+    |          ▐⌐   ╙▄   ▀█ ,▌     '▀ç"   ⌐'""ⁿ¬══─*  k█                   █┘           |    if they all fall to 0 we are all dead, nothing will stop him!
+    |           ▌     "w   ╙▀▄        ▀▄  ╞`¬ç   ,,╓┘ █▐Ö╗               ╓█╙▀W▄         |
+    |        ╓▄▀█       `\ç    ▀▀≡▄ç    ▀▄╘           ▌ █ ▀▄            ▄▀ "%, ▀▄       |
+    |      ▄▀   ▐▌         "═ç      `╙▀   "█▄        ,▌ ▐∩  █          █`     ▀  ▀█▄▄   |
+    |    ▄▀     █▀             "═w,   █     "▀▄▄▄▄▄≤▀▀   ▌   ▀       ,█ ▄▄≡Φ█▀▀▀└`      |
+    |  ▄█═"╙╙'" ▌ █                ⌐  ▌*≈¡      ,«"      █    █     ╓▀,▀     ▀▄ ┐       |
+    | ▄┘        ⌐  ▀▄             ▐  ▐=     -""¬         █     █   ╓▀ █        █ ╕      |
+    |▄¬        ▐     '▀▄,         ▐  ▐=                  ▌     █  ╓█  ▌         ▌ ⌐     |
+    |▌         ▐        `▀W▄      ▐  ▐▌▄                ▀     ▄  ,▌ ╙▄█         █ ▌     |
+    |         1**f▄      ╓¬═▀Φ▄    ▄  ▌ └ª═▄,        ╓A└    ╓▀   █    ▀▄        █ ▀     |
+    |         █   ▌      ▐   ▐⌐ ▀▄ ╙  █      └-""**"-     ▄▀¬   ▐ⁿ╩"│Ö▐^▌▄.ÜΩ╣]ó▄╫╫▄▄   |
+    |         ▀   *      └   '    ▀ * ╙                 ^┘               ▀▀*"╙▀▀└¬      |
+    |                                                                                   |
+    |                                  \x1b[33;1mGeneral Mike Hertz\x1b[37;1m                               |
+    |                                                                                   |
+    =====================================================================================
+    """
     print """
-Choose your level of difficulty :
+    Choose your level of difficulty :
 
-[1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m.
-[2] Normal   : you may have guts...
-[3] Hardcore : finally a real warrior, let me see your true nature as a hero!""",star,"""\n
-[4] Load previous game.
-[0] Leave."""
+    [1] Easy     : better to begin againt \x1b[31;1mSOVEREIGN!\x1b[37;1m.
+    [2] Normal   : you may have guts...
+    [3] Hardcore : finally a real warrior, let me see your true nature as a hero!""",star,"""\n
+    [4] Load previous game.
+    [0] Leave.
+    """
 
 def start():
     '''
@@ -591,38 +592,38 @@ def win(loc_virus):
     if len(loc_virus)==0:
         os.system("clear")
         print """"
-                                                            |@@@@|     |####|
-                                                            |@@@@|     |####|
-__    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
-\ \  / / /  _  \ | | | |      | |        / / | | |  \ | |   \@@@@|     |####/
- \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| |    \@@@|     |###/
-  \  /   | | | | | | | |      | | /  | / /   | | | |\   |     `@@|_____|##'
-  / /    | |_| | | |_| |      | |/   |/ /    | | | | \  |          (O)
- /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_|       .-'''''-.
-                                                              .'  * * *  `.
-                                                             :  *       *  :
-                                                            : ~ \x1b[33;1mW O R L D\x1b[37;1m ~ :
-                                                            : ~  \x1b[33;1mH E R O\x1b[37;1m  ~ :
-                                                             :  *       *  :
-                                                              `.  * * *  .'
-                                                                `-.....-'
+                                                                |@@@@|     |####|
+                                                                |@@@@|     |####|
+    __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
+    \ \  / / /  _  \ | | | |      | |        / / | | |  \ | |   \@@@@|     |####/
+     \ \/ /  | | | | | | | |      | |  __   / /  | | |   \| |    \@@@|     |###/
+      \  /   | | | | | | | |      | | /  | / /   | | | |\   |     `@@|_____|##'
+      / /    | |_| | | |_| |      | |/   |/ /    | | | | \  |          (O)
+     /_/     \_____/ \_____/      |___/|___/     |_| |_|  \_|       .-'''''-.
+                                                                  .'  * * *  `.
+                                                                 :  *       *  :
+                                                                 : ~ \x1b[33;1mW O R L D\x1b[37;1m ~ :
+                                                                 : ~  \x1b[33;1mH E R O\x1b[37;1m  ~ :
+                                                                 :  *       *  :
+                                                                  `.  * * *  .'
+                                                                    `-.....-'
 
-"""
+                                                                    """
         print '''
-                                 .''.
-       .''.             *''*    :_\/_:     .
-      :_\/_:   .    .:.*_\/_*   : /\ :  .'.:.'.
-  .''.: /\ : _\(/_  ':'* /\ *  : '..'.  -=:o:=-
- :_\/_:'.:::. /)\*''*  .|.* '.\'/.'_\(/_'.':'.'
- : /\ : :::::  '*_\/_* | |  -= o =- /)\    '  *
-  '..'  ':::'   * /\ * |'|  .'/.\'.  '._____
-      *        __*..* |  |     :      |.   |' .---"|
-       _*   .-'   '-. |  |     .--'|  ||   | _|    |
-    .-'|  _.|  |    ||   '-__  |   |  |    ||      |
-    |' | |.    |    ||       | |   |  |    ||      |
- ___|  '-'     '    ""       '-'   '-.'    '`      |____
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'''
+                                    .''.
+          .''.             *''*    :_\/_:     .
+         :_\/_:   .    .:.*_\/_*   : /\ :  .'.:.'.
+     .''.: /\ : _\(/_  ':'* /\ *  : '..'.  -=:o:=-
+    :_\/_:'.:::. /)\*''*  .|.* '.\'/.'_\(/_'.':'.'
+    : /\ : :::::  '*_\/_* | |  -= o =- /)\    '  *
+     '..'  ':::'   * /\ * |'|  .'/.\'.  '._____
+         *        __*..* |  |     :      |.   |' .---"|
+          _*   .-'   '-. |  |     .--'|  ||   | _|    |
+       .-'|  _.|  |    ||   '-__  |   |  |    ||      |
+       |' | |.    |    ||       | |   |  |    ||      |
+    ___|  '-'     '    ""       '-'   '-.'    '`      |____
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    '''
 
 def Save(G,P_V,I,P_J):
     '''
