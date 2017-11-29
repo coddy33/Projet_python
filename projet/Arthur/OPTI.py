@@ -10,6 +10,22 @@ import os
 import random
 import codecs
 
+def blast(direction,step,x,y,G,P_V):
+    '''
+    This function is part of the explosion function and allow to check if
+    there is a virus at the x,y position.
+
+    Args:
+        direction->direction,step->,step ->+1 or-1,x,y(current position), G-> grid, P_V-> virus positions
+    '''
+    for i in range(direction):#up
+        y=y+step
+        if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
+            break
+        if G[x][y] == virus :
+            #G[x][y]='F'
+            depop_virus(x,y,P_V)
+            G[x][y] = " "
 
 def commandes():
     '''
@@ -134,22 +150,8 @@ def explode(G,I,P_J,P_V,C):
     rand2=inventory[C][1]-S[rand1]
     step_foreward = 1
     step_backward = -1
-    for i in range(size_foreward):#down
-        y=y+step_foreward
-        if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
-            break
-        if G[x][y] == virus:
-            #G[x][y]='B'
-            depop_virus(x,y,P_V)
-            G[x][y] = " "
-    for i in range(size_backward):#up
-        y=y+step_backward
-        if  test_grid(x,y,G) == False or G[x][y] == wall: # pas sortir de la grille ou un mur
-            break
-        if G[x][y] == virus :
-            #G[x][y]='F'
-            depop_virus(x,y,P_V)
-            G[x][y] = " "
+    blast(size_backward,step_backward,x,y,G,P_V)
+    blast(size_foreward,step_foreward,x,y,G,P_V)
 
 def exit():
     '''
@@ -181,7 +183,7 @@ def hardcore(G):
     for i in range(len(listx)):
         G[listx[i]][listy[i]]=wall
 
-def lose(I):#if+else
+def lose(I):
     '''
     This function is used to know if player lose the game and then print lose
 
@@ -231,8 +233,7 @@ def menu():
 
 def move(G,P,I,movement,nbr_case,x,y,P_V):#description
     '''
-    This function is the movement properly where virus and player move step by step,
-    ####a compléter#####
+    This function is the  properly movement where virus and player move step by step. Moreover, this function allows to increase the power of bombs if an ATP is picked up.
 
     Args:
         G->grid, P->player position, I->inventory, movement->function movement, nbr_case ->number of case,x ,y(current position), P_V->location virus
@@ -309,7 +310,7 @@ def move_virus(G,P,I,P_V):
 def new_game(level):
     '''
     This function make condition on default to start a new game like walls, ATP, virus then call the function commandes to start game
-    
+
     Args:
         level-> difficulty
     '''
@@ -420,7 +421,7 @@ def print_inventory(I):
 
 def print_title():
     '''
-    This function is usefull to print screen title of the game
+    This function is useful to print screen title of the game
     '''
     print """\x1b[32;1m     _     _   _   _____    _   _   _____        _   _    _   _       _       _____   _____
     | |   / / | | |  _  \  | | | | /  ___/      | | / /  | | | |     | |     | ____| |  _  \\
@@ -626,7 +627,7 @@ __    __  _____   _   _        _          __  _   __   _    |@@@@|     |####|
 def Save(G,P_V,I,P_J):
     '''
     This function write in a file save, necesseray informations to restart a game on the same point
-    
+
     Args:
         G->grid, P_V-> virus position, I-> inventory, P_J-> player position
     '''
