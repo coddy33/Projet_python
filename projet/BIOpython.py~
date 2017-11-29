@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-"""
+
 adn = "agccgtaggctatttcgacgcaa"
 print(adn)
 print(len(adn) ) #longueur de la string
@@ -31,8 +31,8 @@ num = mystere(protein)
 print "il␣y␣a␣" , num , "␣Cysteine(s)"
 print "==========================="
 print "\n"
-"""
-"""
+
+
 #Exercice 2.2.1: En vous inspirant des exercices précédents, écrivez la fonction isDNA(seq) qui retourne True si la séquence d’ADN (une String) contient uniquement des “A”, des “T”, des “C” et des “G”.
 
 
@@ -71,7 +71,7 @@ def countAll(seqProt,symbol):
 seq='MVHLSAEEKEAVLGLWGKVNVDEVGGEALGRLLVVYPWTQ'
 print countAll(seq,'P') # 1
 print countAll(seq,'V') # 7
-"""
+
 #Exercice 2.2.4: Écrire une fonction oneWord(seq,start,wlen) qui extrait un mot de longueur wlen à la position start.
 
 def oneWord(seq,start,wlen):
@@ -142,7 +142,13 @@ flagi = isGene(seq1)
 print flag
 print flagi
 
-"""Note: Attention! ici, dans la boucle, on avance de 3 en 3 (mots NON chevauchants) car les codons start et stop doivent être localisés sur un même cadre de lecture c’est à dire distant d’un multiple de 3 comme dans l’exemple ci-dessous."""
+
 
 #Exercice 2.2.9: Écrire une fonction isGene3(seq) qui retourne true si la séquence contient un codon start et un codon stop pour les 3 cadres de lecture.
 
+
+
+
+seq='TGATGTTCCATTACCAGTACAACAAACTATGATTCCATTACCAGTACA'
+flag = isGene3(seq) # True
+print flag
