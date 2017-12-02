@@ -81,9 +81,9 @@ def getGeneticCode(NCBI_ID):
     if NCBI_ID==2:############################################################
         ###########DICO#########
         dicocode_1["AGA"]="Ter"
-        dicocode_1["AGG"]:"Ter"
-        dicocode_1["ATA"]:"Met"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["AGG"]="Ter"
+        dicocode_1["ATA"]="Met"
+        dicocode_1["TGA"]="Trp"
         ########STOP############
         codon_stop.pop(2)
         ########INIT############
@@ -107,19 +107,19 @@ def getGeneticCode(NCBI_ID):
             codon_initiateur.append("GTG")
     if NCBI_ID==3:############################################################
         ###########DICO#########
-        dicocode_1["ATA"]:"Met"
-        dicocode_1["CTT"]:"Thr"
-        dicocode_1["CTC"]:"Thr"
-        dicocode_1["CTA"]:"Thr"
-        dicocode_1["CTG"]:"Thr"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["ATA"]="Met"
+        dicocode_1["CTT"]="Thr"
+        dicocode_1["CTC"]="Thr"
+        dicocode_1["CTA"]="Thr"
+        dicocode_1["CTG"]="Thr"
+        dicocode_1["TGA"]="Trp"
         del dicocode_1["CGA"]
         del dicocode_1["CGC"]
         ###########STOP#########
         codon_stop.pop(2)
     if NCBI_ID==4:############################################################
         ###########DICO#########
-        dicocode_1["UGA"]:"Trp"
+        dicocode_1["UGA"]="Trp"
         ########INIT############
         print '''
             [1] Trypanosoma
@@ -148,10 +148,10 @@ def getGeneticCode(NCBI_ID):
             codon_initiateur.append("GTA")
     if NCBI_ID==5:############################################################
         ###########DICO#########
-        dicocode_1["AGA"]:"Ser"
-        dicocode_1["AGG"]:"Ser"
-        dicocode_1["ATA"]:"Met"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["AGA"]="Ser"
+        dicocode_1["AGG"]="Ser"
+        dicocode_1["ATA"]="Met"
+        dicocode_1["TGA"]="Trp"
         print '''
             [1] Yes
             [0] No
@@ -172,45 +172,45 @@ def getGeneticCode(NCBI_ID):
         sp=input('Which specie do you want?')
         codon_initiateur.append("ATA")
         codon_initiateur.append("ATT")
-            if sp==1:
+        if sp==1:
             codon_initiateur.append("ATC")
-            if sp==2:
+        if sp==2:
             codon_initiateur.append("GTG")
-            if sp==3:
+        if sp==3:
             codon_initiateur.append("TTG")
     if NCBI_ID==6:############################################################
         ###########DICO#########
-        dicocode_1["TAA"]:"Gln"
-        dicocode_1["TAG"]:"Gln"
+        dicocode_1["TAA"]="Gln"
+        dicocode_1["TAG"]="Gln"
         ########STOP############
         codon_stop.pop(0)
         codon_stop.pop(1)
     if NCBI_ID==9:############################################################
         ###########DICO#########
-        dicocode_1["AAA"]:"Asn"
-        dicocode_1["AGA"]:"Ser"
-        dicocode_1["AGG"]:"Ser"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["AAA"]="Asn"
+        dicocode_1["AGA"]="Ser"
+        dicocode_1["AGG"]="Ser"
+        dicocode_1["TGA"]="Trp"
         ########STOP############
         codon_stop.pop(2)
     if NCBI_ID==10:###########################################################
         ###########DICO#########
-        dicocode_1["TGA"]:"Cys"
+        dicocode_1["TGA"]="Cys"
         ########STOP############
         codon_stop.pop(2)
     if NCBI_ID==11:###########################################################
         continue
     if NCBI_ID==12:###########################################################
         ###########DICO#########
-        dicocode_1["CTG"]:"Ser"
+        dicocode_1["CTG"]="Ser"
         ########INIT############
         codon_initiateur.append("CAG")
     if NCBI_ID==13:###########################################################
         ###########DICO#########
-        dicocode_1["AGA"]:"Gly"
-        dicocode_1["AGG"]:"Gly"
-        dicocode_1["ATA"]:"Met"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["AGA"]="Gly"
+        dicocode_1["AGG"]="Gly"
+        dicocode_1["ATA"]="Met"
+        dicocode_1["TGA"]="Trp"
         ########STOP############
         codon_stop.pop(2)
         ########INIT############
@@ -220,72 +220,72 @@ def getGeneticCode(NCBI_ID):
         codon_initiateur.append("ATA")
     if NCBI_ID==14:###########################################################
         ###########DICO#########
-        dicocode_1["AAA"]:"Asn"
-        dicocode_1["AGA"]:"Ser"
-        dicocode_1["AGG"]:"Ser"
-        dicocode_1["TAA"]:"Tyr"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["AAA"]="Asn"
+        dicocode_1["AGA"]="Ser"
+        dicocode_1["AGG"]="Ser"
+        dicocode_1["TAA"]="Tyr"
+        dicocode_1["TGA"]="Trp"
         ########STOP############
         codon_stop.pop(1)
         codon_stop.pop(2)
     if NCBI_ID==16:###########################################################
         ###########DICO#########
-        dicocode_1["TAG"]:"Leu"
+        dicocode_1["TAG"]="Leu"
         ########STOP############
         codon_stop.pop(0)
     if NCBI_ID==21:###########################################################
         ###########DICO#########
-        dicocode_1["TGA"]:"Trp"
-        dicocode_1["ATA"]:"Met"
-        dicocode_1["AGA"]:"Ser"
-        dicocode_1["AGG"]:"Ser"
-        dicocode_1["AAA"]:"Asn"
+        dicocode_1["TGA"]="Trp"
+        dicocode_1["ATA"]="Met"
+        dicocode_1["AGA"]="Ser"
+        dicocode_1["AGG"]="Ser"
+        dicocode_1["AAA"]="Asn"
         ########STOP############
         codon_stop.pop(2)
     if NCBI_ID==22:###########################################################
         ###########DICO#########
-        dicocode_1["TCA"]:"STOP"
-        dicocode_1["TAG"]:"Leu"
+        dicocode_1["TCA"]="STOP"
+        dicocode_1["TAG"]="Leu"
         ########STOP############
         codon_stop.pop(0)
     if NCBI_ID==23:###########################################################
         continue
     if NCBI_ID==24:###########################################################
         ###########DICO#########
-        dicocode_1["AGA"]:"Ser"
-        dicocode_1["AGG"]:"Lys"
-        dicocode_1["TGA"]:"Trp"
+        dicocode_1["AGA"]="Ser"
+        dicocode_1["AGG"]="Lys"
+        dicocode_1["TGA"]="Trp"
         ########STOP############
         codon_stop.pop(2)
     if NCBI_ID==25:###########################################################
         ###########DICO#########
-        dicocode_1["TGA"]:"Gly"
+        dicocode_1["TGA"]="Gly"
         ########INIT############
         codon_initiateur = ["AUG","GUG","UUG"]
         ########STOP############
         codon_stop.pop(2)
     if NCBI_ID==26:###########################################################
         ###########DICO#########
-        dicocode_1["CTG"]:"Ala"
+        dicocode_1["CTG"]="Ala"
         ########INIT############
         codon_initiateur = ["AUG","GUG","UUG"]
     if NCBI_ID==27:###########################################################
         ###########DICO#########
-        dicocode_1["TAG"]:"Gln"
-        dicocode_1["TAA"]:"Gln"
-        dicocode_1["TGA"]:"STOP"
+        dicocode_1["TAG"]="Gln"
+        dicocode_1["TAA"]="Gln"
+        dicocode_1["TGA"]="STOP"
         ########STOP############
         codon_stop.pop(1)
         codon_stop.pop(0)
     if NCBI_ID==28:###########################################################
         ###########DICO#########
-        dicocode_1["TGA"]:"STOP"
-        dicocode_1["TAG"]:"STOP"
-        dicocode_1["UAA"]:"STOP"
+        dicocode_1["TGA"]="STOP"
+        dicocode_1["TAG"]="STOP"
+        dicocode_1["UAA"]="STOP"
     if NCBI_ID==29:###########################################################
         ###########DICO#########
-        dicocode_1["TAA"]:"Tyr"
-        dicocode_1["TAG"]:"Tyr"
+        dicocode_1["TAA"]="Tyr"
+        dicocode_1["TAG"]="Tyr"
         ########INIT############
         codon_initiateur = ["ATG"]
         ########STOP############
@@ -293,23 +293,22 @@ def getGeneticCode(NCBI_ID):
         codon_stop.pop(0)
     if NCBI_ID==30:###########################################################
         ###########DICO#########
-        dicocode_1["TAA"]:"Glu"
-        dicocode_1["TAG"]:"Glu"
+        dicocode_1["TAA"]="Glu"
+        dicocode_1["TAG"]="Glu"
         ########STOP############
         codon_stop.pop(1)
         codon_stop.pop(0)
     if NCBI_ID==31:###########################################################
         ###########DICO#########
-        dicocode_1["TGA"]:"Trp"
-        dicocode_1["TAG"]:"STOP"
-        dicocode_1["TAA"]:"STOP"
+        dicocode_1["TGA"]="Trp"
+        dicocode_1["TAG"]="STOP"
+        dicocode_1["TAA"]="STOP"
         ########STOP############
         codon_stop.pop(2)
     return dicocode_1,codon_stop,codon_initiateur
 
-
-
 #####################################################################################################################################################################################################################
+
 def findORF(seq, treshold, codeTable):
     '''This function is the main function of our script this function call all other to make the programm work
 
@@ -337,9 +336,6 @@ def findORF(seq, treshold, codeTable):
 
     for i in list_ORF:
         translate(i)
-
-
-
 
 ###########################################################"""
 
