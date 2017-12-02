@@ -1,10 +1,16 @@
-"""
-Projet BioPython
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
 
-"""
+#Projet de programmation BioPython
+# BLASQUIZ Julie
+# JUNG Frédéric
+# THOUVENIN Arthur
+
+
 
 import myBio as bio
 import myProject as proj
+import codecs
 
 """
 try:
@@ -362,7 +368,6 @@ def getLengths(orf_list):
         sizelistaa.append(sizeaa)
     return sizelistbp,sizelistaa
 
-
 #a verifier
 def getLongestORF(orf_list):
     for i in orf_list:
@@ -378,7 +383,6 @@ def getLongestORF(orf_list):
             indice.append(i)
     return orf_list[indice]
 
-
 def getTopLongestORF(orf_list,value):
     topvalues=[]
     tmp=orf_list
@@ -392,5 +396,110 @@ def getTopLongestORF(orf_list,value):
 
 
 
+
+def writeCSV(filename, separator):#revoir
+    '''This function allow current programm to save in file which the name is choosen
+
+    Description:
+        In this function we open a file whi name is choose by the user and then we write dictionnary
+
+    Args:
+        filename: file name
+        separator: separator for save objects in filename
+
+    Return:
+        J'en sais rien########################
+    '''
+    global
+    file=codecs.open(filename,"w",encoding="utf-8")
+    file.write(':')
+    for key in dict.keys():####################revoir le dict
+        file.write(key)
+        file.write(separator)
+    file.write('\n')
+    file.write('>')
+    for values in dict.values():###########revoir le dict
+        file.write(values)
+        file.write(separator)
+
+
+def readCSV(filename, separator,data):#revoir
+    '''This function allow current programm to load a file
+
+    Description:
+        User choose file to load and then this functio open file and read line by line, first line = listkey, second line = listvalues
+        Then we make a dictionnary from those lists.
+
+    Args:
+        filename: file name
+        separator: separator for load objects in filename
+
+    Return:
+        ####### Dictionnary of ORFs.
+    '''
+    file=codecs.open(filename,"r",encoding="utf-8")
+    listkey=[]
+    listvalues=[]
+    for line in file.readlines():
+        if not line:
+            break
+        if line.startswith(':'):
+            listkey=line.split(separator)
+        if line.startswith('>'):
+            listvalues=line.split(separator)
+    if len(listkey)!=len(listvalues):
+        print 'Corrupted save file.'
+    for i in listkey:
+        n=0
+        dict[i]=listvalues[n]######## revoir le dict
+        n=n+1
+    return dict################revoir dict
+
+
+def compare(orflist1,orflist2):###############same size?+revoir
+    '''This function compare two list of orf and returns orfs which are present in those two lists.
+    Desciption:
+        In this function we use each element i orflist1 to see if they are in orflist2.
+
+    Args:
+        orflist1: list 1 of orfs
+        orflist2: list 2 of orfs
+
+    Return:
+        this function return a list of all similar genes.
+    '''
+    same=[]
+    for i in orflist1:
+        if i in orflist2:
+            same.append(i)
+
+def readFlatFile(filename):
+    '''This function read a FlatFile
+
+    Description:
+        Here we open and then read a flat file and then store information in a variable which we return
+
+    Args:
+        filename : name of the file read
+
+    Return:
+        Return a string of all file read.
+    '''
+    file=codecs.open(filename,"r",encoding="utf-8")
+    Flat=file.read()
+    return Flat
+
+def getFeatures(txt):
+    '''This function gives features of a FlatFile read before by readFlatFile.
+
+    Description:
+
+    '''
+    txt['FEATURES':'ORIGIN']
+
+def getGenes(txt):
+    
+
+###MAIN####
 result = getGeneticCode(NCBI_ID)
 result[0] #CodeTable
