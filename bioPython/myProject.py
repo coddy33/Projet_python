@@ -11,6 +11,7 @@
 import myBio as bio
 import myProject as proj
 import codecs
+import sys
 
 """
 try:
@@ -315,7 +316,7 @@ def getGeneticCode(NCBI_ID):
 
 #####################################################################################################################################################################################################################
 
-def findORF(seq, treshold, codeTable):
+def findORF(seq, treshold, codeTable):######demander treshold
     '''This function is the main function of our script this function call all other to make the programm work
 
     Description:
@@ -422,7 +423,6 @@ def writeCSV(filename, separator):#revoir
         file.write(values)
         file.write(separator)
 
-
 def readCSV(filename, separator,data):#revoir
     '''This function allow current programm to load a file
 
@@ -455,7 +455,6 @@ def readCSV(filename, separator,data):#revoir
         n=n+1
     return dict################revoir dict
 
-
 def compare(orflist1,orflist2):###############same size?+revoir
     '''This function compare two list of orf and returns orfs which are present in those two lists.
     Desciption:
@@ -472,6 +471,7 @@ def compare(orflist1,orflist2):###############same size?+revoir
     for i in orflist1:
         if i in orflist2:
             same.append(i)
+    return same
 
 def readFlatFile(filename):
     '''This function read a FlatFile
@@ -495,10 +495,60 @@ def getFeatures(txt):
     Description:
 
     '''
-    txt['FEATURES':'ORIGIN']
+    tmp=txt.partition("FEATURES")[2].partition("ORIGIN")[0]
+    return tmp
 
 def getGenes(txt):
-    
+    remove=txt.partition(' gene ')[0]
+    txt=txt[len(remove):]
+    tmp=txt
+    length=tmp.count(' gene ')
+    for i in range(length):
+        try:
+            start=tmp.partition('gene         ')[2].partition('..')[0]
+            start=int(start)
+        except ValueError:
+            start=tmp.partition('complement(')[2].partition('..')[0]
+            start=int(start)
+        try:
+            stop=tmp.partition('..')[2].partition('\n')[0]
+            stop=int(stop)
+        except ValueError:
+            stop=tmp.partition('..')[2].partition(')\n')[0]
+            stop=int(stop)
+        length=stop-start
+        name=''
+        name=tmp.partition('gene=\"')[2].partition('\"')[0]
+        if name == '':
+            name='unknow'
+        protein=''
+        protein=tmp.partition('/protein_id=\"')[2].partition('\"')[0]
+        if protein=='':
+            protein='xxx'
+        product=''
+        product=tmp.partition('/product=\"')[2].partition('\"')[0]
+        if product=='':
+            product='unknown'
+        remove=txt.partition(' gene  ')[2].partition(' gene ')[0]
+        txt=txt[len(remove):]
+        tmp=txt
+        remove=txt.partition(' gene ')[0]
+        txt=txt[len(remove):]
+        tmp=txt
+        print tmp
+        print start
+        print stop
+        print length
+        print name
+        print protein
+        print product
+
+
+
+
+
+
+
 
 ###MAIN####
 result = getGeneticCode(NCBI_ID)
