@@ -1,13 +1,19 @@
 def getGenes(txt):
-    remove=txt.partition(' gene ')[0]
+    remove=txt.partition('gene  ')[0]
     txt=txt[len(remove):]
     tmp=txt###########remove before first gene
-    length=tmp.count(' gene ')#number of gene?
+    length=tmp.count('gene  ')#number of gene?
     for i in range(length):#boucle number of gene
-        remove=txt.partition(' gene  ')[2].partition(' gene ')[0]
+        remove=txt.partition('gene   ')[2].partition('gene  ')[0]
+        print (txt)### sans doute mettre les tests ici
         txt=txt[len(remove):]
         tmp=txt
-        try:
+        print ('test===',txt)
+        remove=txt.partition(' gene  ')[0]
+        txt=txt[len(remove):]
+        tmp=txt
+        print ('resultat',tmp)
+        '''try:
             start=tmp.partition('gene         ')[2].partition('..')[0]
             start=int(start)
         except ValueError:
@@ -32,9 +38,9 @@ def getGenes(txt):
         product=tmp.partition('/product=\"')[2].partition('\"')[0]
         if product=='':
             product='unknown'
-        remove=txt.partition(' gene ')[0]
-        txt=txt[len(remove):]
-        tmp=txt
+        '''
+
+        '''
         #print (tmp)
         print (start)
         print (stop)
@@ -42,6 +48,7 @@ def getGenes(txt):
         print (name)
         print (protein)
         print (product)
+        '''
 
 Flat='''
 FEATURES             Location/Qualifiers
