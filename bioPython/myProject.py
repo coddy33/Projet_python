@@ -84,7 +84,7 @@ def getGeneticCode(NCBI_ID):
     ["CAG"]:"Gln",["CAA"]:"Gln",["CAC"]:"His",["CAT"]:"His",
     ["TAG"]:"STOP",["TAA"]:"STOP",["TAC"]:"Tyr",["TAT"]:"Tyr"}#2stop
     if NCBI_ID==1:############################################################
-        continue
+        pass
     if NCBI_ID==2:############################################################
         ###########DICO#########
         dicocode_1["AGA"]="Ter"
@@ -167,7 +167,7 @@ def getGeneticCode(NCBI_ID):
         if droso==1:
             del dicocode_1["AGG"]
         if droso==0:
-            continue
+            pass
         ###########STOP#########
         codon_stop.pop(2)
         ########INIT############
@@ -206,7 +206,7 @@ def getGeneticCode(NCBI_ID):
         ########STOP############
         codon_stop.pop(2)
     if NCBI_ID==11:###########################################################
-        continue
+        pass
     if NCBI_ID==12:###########################################################
         ###########DICO#########
         dicocode_1["CTG"]="Ser"
@@ -256,7 +256,7 @@ def getGeneticCode(NCBI_ID):
         ########STOP############
         codon_stop.pop(0)
     if NCBI_ID==23:###########################################################
-        continue
+        pass
     if NCBI_ID==24:###########################################################
         ###########DICO#########
         dicocode_1["AGA"]="Ser"
@@ -411,7 +411,6 @@ def writeCSV(filename, separator):#revoir
     Return:
         J'en sais rien########################
     '''
-    global
     file=codecs.open(filename,"w",encoding="utf-8")
     file.write(':')
     for key in dict.keys():####################revoir le dict
@@ -501,9 +500,9 @@ def getFeatures(txt):
 def getGenes(txt):
     remove=txt.partition(' gene ')[0]
     txt=txt[len(remove):]
-    tmp=txt
-    length=tmp.count(' gene ')
-    for i in range(length):
+    tmp=txt###########remove before first gene
+    length=tmp.count(' gene ')#number of gene?
+    for i in range(length):#boucle number of gene
         try:
             start=tmp.partition('gene         ')[2].partition('..')[0]
             start=int(start)
