@@ -12,6 +12,7 @@ import myBio as bio
 import myProject as proj
 import codecs
 import sys
+import re
 
 """
 try:
@@ -491,61 +492,165 @@ def readFlatFile(filename):
 def getFeatures(txt):
     '''This function gives features of a FlatFile read before by readFlatFile.
 
-    Description:
+    Description: This function cut the string containing the flatfile to "ORIGIN" from "FEATURES" and return this part.
+    
+    Args:
+        txt: a flatfile in a string.
+    
+    Return:
+        tmp: a string cut from the flatfile.
 
     '''
     tmp=txt.partition("FEATURES")[2].partition("ORIGIN")[0]
     return tmp
 
 def getGenes(txt):
-    remove=txt.partition(' gene ')[0]
+    '''This function get genes caracteristics
+    
+    Desciption:
+        This function find how many 'gene' are in the txt to fix the number of loop to take informations of each gene.
+        We made a function register_gene() to take information of each gene.
+        
+    Args:
+        txt: a string that contain a specific format and all genes
+    
+    Return:
+        listdico: a list containing all dictionnary containning information about all genes.
+    
+    '''
+    listdico=[]
+    remove=txt.partition('gene  ')[0]
     txt=txt[len(remove):]
-    tmp=txt###########remove before first gene
-    length=tmp.count(' gene ')#number of gene?
-    for i in range(length):#boucle number of gene
-        try:
-            start=tmp.partition('gene         ')[2].partition('..')[0]
-            start=int(start)
-        except ValueError:
-            start=tmp.partition('complement(')[2].partition('..')[0]
-            start=int(start)
-        try:
-            stop=tmp.partition('..')[2].partition('\n')[0]
-            stop=int(stop)
-        except ValueError:
-            stop=tmp.partition('..')[2].partition(')\n')[0]
-            stop=int(stop)
-        length=stop-start
-        name=''
-        name=tmp.partition('gene=\"')[2].partition('\"')[0]
-        if name == '':
-            name='unknow'
-        protein=''
-        protein=tmp.partition('/protein_id=\"')[2].partition('\"')[0]
-        if protein=='':
-            protein='xxx'
-        product=''
-        product=tmp.partition('/product=\"')[2].partition('\"')[0]
-        if product=='':
-            product='unknown'
-        remove=txt.partition(' gene  ')[2].partition(' gene ')[0]
-        txt=txt[len(remove):]
-        tmp=txt
-        remove=txt.partition(' gene ')[0]
-        txt=txt[len(remove):]
-        tmp=txt
-        print tmp
-        print start
-        print stop
-        print length
-        print name
-        print protein
-        print product
+    tmp=txt##remove all before first gene
+    length=tmp.count(' gene  ')#number of gene?
+    firstg=tmp.partition('     gene            ')[0]#first gene
+    listdico.append(register_gene(firstg))
+    for i in range(length):
+        firstg=tmp.partition('     gene            ')[0]
+        tmp=tmp[len(firstg):]
+        secondg=tmp.partition('     gene            ')[2].partition(' gene     ')[0]#all genes are taking back
+        listdico.append(register_gene(secondg))
+        tmp=tmp[len(secondg):]
+    return listdico
 
+def register_gene(tmp):
+    '''This function take all information about only one gene in a string and take them in a dictionnary.
+    
+    Description:
+        There is specific paragraph for information, so 7 data : start,stop,length,frame,name,protein,product
+        And at list a paragraph to take all of information in a dictionnary.
+    
+    Args:
+        tmp: a string containing only one gene.
+    
+    Return:
+        dico: a dictionnary about gene and all of these information.
+    '''
+    ###############  start  ##################
+    l=re.findall(r'\d+',tmp)
+    start=int(l[0])
+    ###############  stop  ##################
+    stop=int(l[1])
+    ###############  length  ##################
+    length=stop-start
+    ###############  frame  ###################
+    fra=0
+    if 'complement' in tmp:
+        fra=-1
+    else:
+        fra=1
+    value=start%3
+    frame=fra*(value+1)
+    ###############  name  ###################
+    name=''
+    name=tmp.partition('gene=\"')[2].partition('\"')[0]
+    if name == '':
+        name='unknow'
+    ###############  protein  ##################
+    protein=''
+    protein=tmp.partition('/protein_id=\"')[2].partition('\"')[0]
+    if protein=='':
+        protein='xxx'
+    ###############  product  ##################
+    product=''
+    product=tmp.partition('/product=\"')[2].partition('\"')[0]
+    if product=='':
+        product='unknown'
+    ############################  DICT  #######################################"
+    dico={'start':start,'stop':stop,'length':length,'frame':frame,'name':name,'protein':protein,'product':product}
+    return dico
+    '''
+    print('frame',frame)
+    print ('start',start)
+    print ('stop',stop)
+    print ('length',length)
+    print ('name',name)
+    print ('protein',protein)
+    print ('product',product)
+    '''
 
+def readGenBank(filename):#description
+    txt=readFlatFile(filename)
+    register_general(txt)
 
-
-
+def register_general(txt):#miss genetic code +description
+    ###############  description  ##################
+    tmp=txt.partition('DEFINITION  ')[2].partition('\nACCESSION')[0]
+    description=tmp
+    ###############  type  ##################
+    tmp=txt.partition('bp    ')[2].partition('     ')[0]
+    typeda=tmp
+    ###############  data  ##################
+    tmp=txt.partition('ORIGIN')[2].partition('//')[0]
+    data=tmp
+    ###############  ID  ##################
+    tmp=txt.partition('LOCUS       ')[2].partition(' ')[0]
+    ID=tmp
+    ###############  length  ##################
+    tmp=txt.partition('LOCUS       ')[2].partition(' bp')[0]
+    tmp=tmp.split(' ')
+    leng=int(tmp[len(tmp)-1])
+    ###############  gbtype  ##################
+    tmp=txt.partition('/mol_type="')[2].partition('"\n')[0]
+    gbtype=tmp
+    ###############  organism  ##################
+    tmp=txt.partition('ORGANISM  ')[2].partition('\n')[0]
+    organism=tmp
+    ###############  codeTableID  ##################
+    
+    ################################################
+    nbgene=len(getGenes(txt))
+    general={
+        'description':description,
+        'type':typeda,
+        'data':data,
+        'ID':ID,
+        'length':leng,
+        'gbtype':gbtype,
+        'organism':organism,
+        'number of gene':nbgene,
+        'genes':getGenes(txt)
+        }
+    print ('========== General Information  ==========')
+    print ('Description :',general['description'])
+    print ('Type :',general['type'])
+    print ('Data :',general['data'])
+    print ('ID :',general['ID'])
+    print ('Length :',general['length'])
+    print ('GBtype :',general['gbtype'])
+    print ('Organism :',general['organism'])
+    print ('Number of gene :',general['number of gene'])
+    print ('=========  GENES  =========')
+    for i in general['genes']:
+        print ('Start :',i['start'])
+        print ('Stop :',i['stop'])
+        print ('Length :',i['length'])
+        print ('Frame:',i['frame'])
+        print ('Name :',i['name'])
+        print ('Protein :',i['protein'])
+        print ('Product :',i['product'])
+        print ('======================')
+    return general
 
 
 
