@@ -1,5 +1,74 @@
 import re
 
+
+listcode=[]
+AAs='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+Starts='---M------**--*----M---------------M----------------------------'
+Base1='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+Base2='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+Base3='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+list1=[AAs,Starts,Base1,Base2,Base3]
+listcode.append(list1)
+
+
+AAs='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSS**VVVVAAAADDEEGGGG'
+Starts='----------**--------------------MMMM----------**---M------------'
+Base1='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+Base2='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+Base3='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+list1=[AAs,Starts,Base1,Base2,Base3]
+listcode.append(list1)
+
+AAs='FFLLSSSSYY**CCWWTTTTPPPPHHQQRRRRIIMMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+Starts='----------**----------------------MM----------------------------'
+Base1='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+Base2='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+Base3='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+list1=[AAs,Starts,Base1,Base2,Base3]
+listcode.append(list1)
+
+def getGeneticCode(AAs,Base1,Base2,Base3):
+    dicocode={}
+    for i in range(len(AAs)):
+        codon=Base1[i]+Base2[i]+Base3[i]
+        dicocode.update({codon:AAs[i]})
+    print(dicocode)
+    return dicocode
+
+
+def getGeneticCodeStart(Starts,Base1,Base2,Base3):
+    dicocodestart={}
+    for i in range(len(Starts)):
+        if Starts[i]!='-' and Starts[i]!='*':
+            codon=Base1[i]+Base2[i]+Base3[i]
+            dicocodestart.update({codon:Starts[i]})
+    print (dicocodestart)
+    return dicocodestart
+
+def getGeneticCodeStop(Starts,Base1,Base2,Base3):
+    dicocodestop={}
+    for i in range(len(Starts)):
+        if Starts[i]!='-' and Starts[i]!='M':
+            codon=Base1[i]+Base2[i]+Base3[i]
+            dicocodestop.update({codon:Starts[i]}) 
+    print(dicocodestop)
+    return dicocodestop
+
+
+
+
+
+
+
+getGeneticCodeStop(Starts,Base1,Base2,Base3)
+getGeneticCodeStart(Starts,Base1,Base2,Base3)
+getGeneticCode(AAs,Base1,Base2,Base3)
+
+
+
+
+
+
 def getGenes(txt):
     listdico=[]
     remove=txt.partition('gene  ')[0]

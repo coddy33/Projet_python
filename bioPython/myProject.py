@@ -14,13 +14,32 @@ import codecs
 import sys
 import re
 
-"""
-try:
-    NCBI_ID = raw_input("ID :")
-"""
+#############################standard code 1
+listcode=['nothing']
+AAs   ='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+Starts='---M------**--*----M---------------M----------------------------'
+Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+list1=[AAs,Starts,Base1,Base2,Base3]
+listcode.append(list1)
 
-standard = bio.getStandardCode()
-myTable  = proj.getGeneticCode(1) # Standard genetic code table
+#############################The Vertebrate Mitochondrial Code 2
+AAs   ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSS**VVVVAAAADDEEGGGG'
+Starts='----------**--------------------MMMM----------**---M------------'
+Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+list1=[AAs,Starts,Base1,Base2,Base3]
+listcode.append(list1)
+##############################The Yeast Mitochondrial Code 3
+AAs   ='FFLLSSSSYY**CCWWTTTTPPPPHHQQRRRRIIMMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+Starts='----------**----------------------MM----------------------------'
+Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+list1=[AAs,Starts,Base1,Base2,Base3]
+listcode.append(list1)
 
 def error():
     '''This function control error through the programm, like input errors.
@@ -44,276 +63,36 @@ def error():
         except SyntaxError: # for special character
             print "Wrong NCBI_ID..."
 
-def getGeneticCode(NCBI_ID):
-    '''This function is used to get genetic code from NCBI with an ID (1 to 31).
+def getGeneticCode(nb):
+    dicocode={}
+    for i in range(len(listcode[nb][0])):
+        codon=listcode[nb][2][i]+listcode[nb][3][i]+listcode[nb][4][i]
+        dicocode.update({codon:listcode[nb][0][i]})
+    print(dicocode)
+    return dicocode
 
-    Description:
-        This function make 3 objects:
-            - 1 dictionnary
-            - 2 list
-        First, dictionnary(dicocode_1) is the storage for genetic code and with ID we modify it to correspond to the correct genetic code.
-        Sometimes we need to ask USER what is the specie which is analyse.
-        Then a list of initiating codon(codon_initiateur), where we store each specific start codon.
-        And at the end a list of stop codon(codon_stop), where we store each specific stop codon.
+def getGeneticCodeStart(nb):
+    dicocodestart={}
+    for i in range(len(listcode[nb][1])):
+        if listcode[nb][1][i]!='-' and listcode[nb][1][i]!='*':
+            codon=listcode[nb][2][i]+listcode[nb][3][i]+listcode[nb][4][i]
+            dicocodestart.update({codon:listcode[nb][1][i]})
+    print (dicocodestart)
+    return dicocodestart
 
-    Args:
-        NCBI_ID: an identifier ofgenetic code.
+def getGeneticCodeStop(nb):
+    dicocodestop={}
+    for i in range(len(listcode[nb][1])):
+        if listcode[nb][1][i]!='-' and listcode[nb][1][i]!='M':
+            codon=listcode[nb][2][i]+listcode[nb][3][i]+listcode[nb][4][i]
+            dicocodestop.update({codon:listcode[nb][1][i]})
+    print(dicocodestop)
+    return dicocodestop
 
-    Return:
-        dicocode_1: dictionnary containing the genetic code corresponding to the ID.
-        codon_initiateur: list of initiating codon specific of the ID.
-        codon_stop: list of stopping codon specific of the ID.
-    '''
-    codon_initiateur = ["ATG",]
-    codon_stop = ["TAG"],["TAA"],["TGA"]
+getGeneticCodeStop(0)
+getGeneticCodeStart(0)
+getGeneticCode(0)
 
-    dicocode_1 = {
-    ["TTT"]:"Phe",["TTC"]:"Phe",["TTA"]:"Leu",["TTG"]:"Leu",
-    ["CTT"]:"Leu",["CTC"]:"Leu",["CTA"]:"Leu",["CTG"]:"Leu",
-    ["ATT"]:"Ile",["ATC"]:"Ile",["ATA"]:"Ile",["ATG"]:"Met",
-    ["GTT"]:"Val",["GTC"]:"Val",["GTA"]:"Val",["GTG"]:"Val",
-    ["TCT"]:"Ser",["TCC"]:"Ser",["TCA"]:"Ser",["TCG"]:"Ser",
-    ["CCT"]:"Pro",["CCC"]:"Pro",["CCA"]:"Pro",["CCG"]:"Pro",
-    ["ACT"]:"Thr",["ACC"]:"Thr",["ACA"]:"Thr",["ACG"]:"Thr",
-    ["GCT"]:"Ala",["GCC"]:"Ala",["GCA"]:"Ala",["GCG"]:"Ala",
-    ["GGG"]:"Gly",["GGA"]:"Gly",["GGC"]:"Gly",["GGT"]:"Gly",
-    ["AGG"]:"Arg",["AGA"]:"Arg",["AGC"]:"Ser",["AGT"]:"AGT",
-    ["CGG"]:"Arg",["CGA"]:"Arg",["CGC"]:"Arg",["CGT"]:"Arg",
-    ["TGG"]:"Trp",["TGA"]:"STOP",["TGC"]:"Cys",["TGT"]:"Cys",#1stop
-    ["GAG"]:"Glu",["GAA"]:"Glu",["GAC"]:"Asp",["GAT"]:"Asp",
-    ["AAG"]:"Lys",["AAA"]:"Lys",["AAC"]:"Asn",["AAT"]:"Asn",
-    ["CAG"]:"Gln",["CAA"]:"Gln",["CAC"]:"His",["CAT"]:"His",
-    ["TAG"]:"STOP",["TAA"]:"STOP",["TAC"]:"Tyr",["TAT"]:"Tyr"}#2stop
-    if NCBI_ID==1:############################################################
-        pass
-    if NCBI_ID==2:############################################################
-        ###########DICO#########
-        dicocode_1["AGA"]="Ter"
-        dicocode_1["AGG"]="Ter"
-        dicocode_1["ATA"]="Met"
-        dicocode_1["TGA"]="Trp"
-        ########STOP############
-        codon_stop.pop(2)
-        ########INIT############
-        print '''
-            [1] Bos
-            [2] Homo
-            [3] Mus
-            [4] Coturnix, Gallus
-            '''
-        sp=input('Which specie do you want?')
-        if sp==1:
-            codon_initiateur.append("ATA")
-        if sp==2:
-            codon_initiateur.append("ATA")
-            codon_initiateur.append("ATT")
-        if sp==3:
-            codon_initiateur.append("ATA")
-            codon_initiateur.append("ATT")
-            codon_initiateur.append("ATC")
-        if sp==4:
-            codon_initiateur.append("GTG")
-    if NCBI_ID==3:############################################################
-        ###########DICO#########
-        dicocode_1["ATA"]="Met"
-        dicocode_1["CTT"]="Thr"
-        dicocode_1["CTC"]="Thr"
-        dicocode_1["CTA"]="Thr"
-        dicocode_1["CTG"]="Thr"
-        dicocode_1["TGA"]="Trp"
-        del dicocode_1["CGA"]
-        del dicocode_1["CGC"]
-        ###########STOP#########
-        codon_stop.pop(2)
-    if NCBI_ID==4:############################################################
-        ###########DICO#########
-        dicocode_1["UGA"]="Trp"
-        ########INIT############
-        print '''
-            [1] Trypanosoma
-            [2] Leishmania
-            [3] Tetrahymena
-            [4] Paramecium
-            '''
-        sp=input('Which specie do you want?')
-        if sp==1:
-            codon_initiateur.append("TTA")
-            codon_initiateur.append("TTG")
-            codon_initiateur.append("CTG")
-        if sp==2:
-            codon_initiateur.append("ATT")
-            codon_initiateur.append("ATA")
-        if sp==3:
-            codon_initiateur.append("ATT")
-            codon_initiateur.append("ATA")
-            codon_initiateur.append("ATG")
-        if sp==4:
-            codon_initiateur.append("ATT")
-            codon_initiateur.append("ATA")
-            codon_initiateur.append("ATG")
-            codon_initiateur.append("ATC")
-            codon_initiateur.append("GTG")
-            codon_initiateur.append("GTA")
-    if NCBI_ID==5:############################################################
-        ###########DICO#########
-        dicocode_1["AGA"]="Ser"
-        dicocode_1["AGG"]="Ser"
-        dicocode_1["ATA"]="Met"
-        dicocode_1["TGA"]="Trp"
-        print '''
-            [1] Yes
-            [0] No
-            '''
-        droso=input('Is it Drosophila')
-        if droso==1:
-            del dicocode_1["AGG"]
-        if droso==0:
-            pass
-        ###########STOP#########
-        codon_stop.pop(2)
-        ########INIT############
-        print '''
-            [1] Apis
-            [2] Polyplacophora
-            [3] Ascaris, Caernorhabditis
-            '''
-        sp=input('Which specie do you want?')
-        codon_initiateur.append("ATA")
-        codon_initiateur.append("ATT")
-        if sp==1:
-            codon_initiateur.append("ATC")
-        if sp==2:
-            codon_initiateur.append("GTG")
-        if sp==3:
-            codon_initiateur.append("TTG")
-    if NCBI_ID==6:############################################################
-        ###########DICO#########
-        dicocode_1["TAA"]="Gln"
-        dicocode_1["TAG"]="Gln"
-        ########STOP############
-        codon_stop.pop(0)
-        codon_stop.pop(1)
-    if NCBI_ID==9:############################################################
-        ###########DICO#########
-        dicocode_1["AAA"]="Asn"
-        dicocode_1["AGA"]="Ser"
-        dicocode_1["AGG"]="Ser"
-        dicocode_1["TGA"]="Trp"
-        ########STOP############
-        codon_stop.pop(2)
-    if NCBI_ID==10:###########################################################
-        ###########DICO#########
-        dicocode_1["TGA"]="Cys"
-        ########STOP############
-        codon_stop.pop(2)
-    if NCBI_ID==11:###########################################################
-        pass
-    if NCBI_ID==12:###########################################################
-        ###########DICO#########
-        dicocode_1["CTG"]="Ser"
-        ########INIT############
-        codon_initiateur.append("CAG")
-    if NCBI_ID==13:###########################################################
-        ###########DICO#########
-        dicocode_1["AGA"]="Gly"
-        dicocode_1["AGG"]="Gly"
-        dicocode_1["ATA"]="Met"
-        dicocode_1["TGA"]="Trp"
-        ########STOP############
-        codon_stop.pop(2)
-        ########INIT############
-        codon_initiateur.append("ATA")
-        codon_initiateur.append("GTG")
-        codon_initiateur.append("TTG")
-        codon_initiateur.append("ATA")
-    if NCBI_ID==14:###########################################################
-        ###########DICO#########
-        dicocode_1["AAA"]="Asn"
-        dicocode_1["AGA"]="Ser"
-        dicocode_1["AGG"]="Ser"
-        dicocode_1["TAA"]="Tyr"
-        dicocode_1["TGA"]="Trp"
-        ########STOP############
-        codon_stop.pop(1)
-        codon_stop.pop(2)
-    if NCBI_ID==16:###########################################################
-        ###########DICO#########
-        dicocode_1["TAG"]="Leu"
-        ########STOP############
-        codon_stop.pop(0)
-    if NCBI_ID==21:###########################################################
-        ###########DICO#########
-        dicocode_1["TGA"]="Trp"
-        dicocode_1["ATA"]="Met"
-        dicocode_1["AGA"]="Ser"
-        dicocode_1["AGG"]="Ser"
-        dicocode_1["AAA"]="Asn"
-        ########STOP############
-        codon_stop.pop(2)
-    if NCBI_ID==22:###########################################################
-        ###########DICO#########
-        dicocode_1["TCA"]="STOP"
-        dicocode_1["TAG"]="Leu"
-        ########STOP############
-        codon_stop.pop(0)
-    if NCBI_ID==23:###########################################################
-        pass
-    if NCBI_ID==24:###########################################################
-        ###########DICO#########
-        dicocode_1["AGA"]="Ser"
-        dicocode_1["AGG"]="Lys"
-        dicocode_1["TGA"]="Trp"
-        ########STOP############
-        codon_stop.pop(2)
-    if NCBI_ID==25:###########################################################
-        ###########DICO#########
-        dicocode_1["TGA"]="Gly"
-        ########INIT############
-        codon_initiateur = ["AUG","GUG","UUG"]
-        ########STOP############
-        codon_stop.pop(2)
-    if NCBI_ID==26:###########################################################
-        ###########DICO#########
-        dicocode_1["CTG"]="Ala"
-        ########INIT############
-        codon_initiateur = ["AUG","GUG","UUG"]
-    if NCBI_ID==27:###########################################################
-        ###########DICO#########
-        dicocode_1["TAG"]="Gln"
-        dicocode_1["TAA"]="Gln"
-        dicocode_1["TGA"]="STOP"
-        ########STOP############
-        codon_stop.pop(1)
-        codon_stop.pop(0)
-    if NCBI_ID==28:###########################################################
-        ###########DICO#########
-        dicocode_1["TGA"]="STOP"
-        dicocode_1["TAG"]="STOP"
-        dicocode_1["UAA"]="STOP"
-    if NCBI_ID==29:###########################################################
-        ###########DICO#########
-        dicocode_1["TAA"]="Tyr"
-        dicocode_1["TAG"]="Tyr"
-        ########INIT############
-        codon_initiateur = ["ATG"]
-        ########STOP############
-        codon_stop.pop(1)
-        codon_stop.pop(0)
-    if NCBI_ID==30:###########################################################
-        ###########DICO#########
-        dicocode_1["TAA"]="Glu"
-        dicocode_1["TAG"]="Glu"
-        ########STOP############
-        codon_stop.pop(1)
-        codon_stop.pop(0)
-    if NCBI_ID==31:###########################################################
-        ###########DICO#########
-        dicocode_1["TGA"]="Trp"
-        dicocode_1["TAG"]="STOP"
-        dicocode_1["TAA"]="STOP"
-        ########STOP############
-        codon_stop.pop(2)
-    return dicocode_1,codon_stop,codon_initiateur
 
 #####################################################################################################################################################################################################################
 
@@ -331,6 +110,11 @@ def findORF(seq, treshold, codeTable):######demander treshold
         list of ORFs
 
     '''
+    L=getGeneticCode(codeTable)
+    start=L[2]
+    print start
+    stop=L[1]
+    print stop
     list_ORF=[]
     list_translated_ORF
     for i in range(len(seq)):
@@ -342,10 +126,18 @@ def findORF(seq, treshold, codeTable):######demander treshold
                         if len(ORF) > treshold:
                             list.append(seq[i:j+3])
 
-    for i in list_ORF:
-        translate(i)
-
 ###########################################################"""
+
+
+def translate(listorf):
+    tmp=listorf
+    j=0
+    for i in tmp:#i = 1 orf
+        
+
+
+
+
 
 def getLengths(orf_list):
     '''This function determine the length of ORFs
@@ -493,10 +285,10 @@ def getFeatures(txt):
     '''This function gives features of a FlatFile read before by readFlatFile.
 
     Description: This function cut the string containing the flatfile to "ORIGIN" from "FEATURES" and return this part.
-    
+
     Args:
         txt: a flatfile in a string.
-    
+
     Return:
         tmp: a string cut from the flatfile.
 
@@ -506,17 +298,17 @@ def getFeatures(txt):
 
 def getGenes(txt):
     '''This function get genes caracteristics
-    
+
     Desciption:
         This function find how many 'gene' are in the txt to fix the number of loop to take informations of each gene.
         We made a function register_gene() to take information of each gene.
-        
+
     Args:
         txt: a string that contain a specific format and all genes
-    
+
     Return:
         listdico: a list containing all dictionnary containning information about all genes.
-    
+
     '''
     listdico=[]
     remove=txt.partition('gene  ')[0]
@@ -535,14 +327,14 @@ def getGenes(txt):
 
 def register_gene(tmp):
     '''This function take all information about only one gene in a string and take them in a dictionnary.
-    
+
     Description:
         There is specific paragraph for information, so 7 data : start,stop,length,frame,name,protein,product
         And at list a paragraph to take all of information in a dictionnary.
-    
+
     Args:
         tmp: a string containing only one gene.
-    
+
     Return:
         dico: a dictionnary about gene and all of these information.
     '''
@@ -593,7 +385,7 @@ def readGenBank(filename):#description
     txt=readFlatFile(filename)
     register_general(txt)
 
-def register_general(txt):#miss genetic code +description
+def register_general(txt):#description
     ###############  description  ##################
     tmp=txt.partition('DEFINITION  ')[2].partition('\nACCESSION')[0]
     description=tmp
@@ -617,7 +409,12 @@ def register_general(txt):#miss genetic code +description
     tmp=txt.partition('ORGANISM  ')[2].partition('\n')[0]
     organism=tmp
     ###############  codeTableID  ##################
-    
+    tmp=''
+    tmp=txt.partition('/transl_table=')[2].partition('\n')[0]
+    if tmp=='':
+        GeneticCode=1
+    else:
+        GeneticCode=int(tmp)
     ################################################
     nbgene=len(getGenes(txt))
     general={
@@ -652,8 +449,66 @@ def register_general(txt):#miss genetic code +description
         print ('======================')
     return general
 
+def read_fasta(filename):
+    file=codecs.open(filename,"r",encoding="utf-8")
+    seq=''
+    for line in file.readlines():
+        if not line:
+            break
+        if line.startswith(">"):
+            pass
+        else:
+            seq=seq+line
+    return seq
 
+def menu():
+    print "======================================== MENU ========================================="
+    print "\n"
+    print "taper [1] chercher les ORFs d'une séquence"
+    print "taper [2] afficher les ORFs"
+    print "taper [0] pour quitter"
+    print "\n"
+    print "======================================================================================="
 
+def threshold():
+  print "[1] No threshold"
+  print "[2] 90pb"
+  print "[3] 210pb"
+  print "[4] 300pb"
+  print "[5] 420pb"
+  threshold = raw_input()
+  if threshold == "1":
+    threshold = 1
+  elif threshold == "2":
+    threshold = 90
+  elif threshold == "3":
+    threshold = 210
+  elif threshold == "4":
+    threshold = 300
+  elif threshold == "5":
+    threshold= 420
+  else :
+    print "Erreur"
+  return threshold
+
+def commandes():
+    nb=1
+    while nb != 0 :
+        menu()
+        nb=raw_input()
+        if nb == "1":
+            fasta = raw_input("Entrer le nom de votre fichier FASTA")
+            seq=read_fasta(fasta)
+            id = input("Choisir l'ID")
+            threshold = threshold() #possibilité de laisser l'utilisateur choisir avec un input
+            findORF(seq, threshold, id)
+        if nb == "2" :
+            print fasta
+        elif nb == "0":
+            print "Bye"
+            sys.exit()
+        else:
+            print "ERREUR : mauvaise valeur"
 ###MAIN####
-result = getGeneticCode(NCBI_ID)
-result[0] #CodeTable
+
+commandes()
