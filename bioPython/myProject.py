@@ -89,11 +89,6 @@ def getGeneticCodeStop(nb):
     print(dicocodestop)
     return dicocodestop
 
-getGeneticCodeStop(0)
-getGeneticCodeStart(0)
-getGeneticCode(0)
-
-
 #####################################################################################################################################################################################################################
 
 def findORF(seq, treshold, codeTable):######demander treshold
@@ -126,18 +121,35 @@ def findORF(seq, treshold, codeTable):######demander treshold
                         if len(ORF) > treshold:
                             list.append(seq[i:j+3])
 
+def testfindORF(seq,treshold,codeTable):
+    L=getGeneticCode(codeTable)
+    start=L[2]
+    stop=L[1]
+    list_ORF=[]
+    list_translated_ORF
+    i=0
+    while i>0:
+        if oneWord(seq,i,3)==test:
+            i=i+3
+
+
 ###########################################################"""
 
-
-def translate(listorf):
+def translate(listorf,nb):#verification
     tmp=listorf
+    seqprot=''
+    dico=getGeneticCode(nb)
+    listranslate=[]
     j=0
     for i in tmp:#i = 1 orf
-        
-
-
-
-
+        while j<len(i):
+            try:
+                seqprot=seqprot+dico[oneWord(i,j,3)]
+            except KeyError:
+                seqprot=seqprot+'X'
+            j=j+3
+        listranslate.append(seqprot)
+    return listranlate
 
 def getLengths(orf_list):
     '''This function determine the length of ORFs
@@ -162,8 +174,7 @@ def getLengths(orf_list):
         sizelistaa.append(sizeaa)
     return sizelistbp,sizelistaa
 
-#a verifier
-def getLongestORF(orf_list):
+def getLongestORF(orf_list):#verification
     for i in orf_list:
         result = getLengths(i)
     x=result[0]
@@ -187,9 +198,6 @@ def getTopLongestORF(orf_list,value):
         topvalues.append(y)
         tmp.pop(tmp.index(y))
         s=s-1
-
-
-
 
 def writeCSV(filename, separator):#revoir
     '''This function allow current programm to save in file which the name is choosen
