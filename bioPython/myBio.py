@@ -138,18 +138,17 @@ flagi = isGene(seq1)
 #print flagi
 
 #Traduire une séquence
-
+'''
 def translate(seq):
-    
     translated_ORF=[]
-    for i in range(len(seq),3)
+    for i in range(len(seq),3):
         tmp=[]
         tmp.append(seq[i])
         tmp.append(seq([i+1])
         tmp.append(seq([i+2])
         print tmp
-    #return translated_ORF
-
+    return translated_ORF
+'''
 
 
 #Exercice 2.2.9: Écrire une fonction isGene3(seq) qui retourne true si la séquence contient un codon start et un codon stop pour les 3 cadres de lecture.
