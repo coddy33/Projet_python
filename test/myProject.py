@@ -123,11 +123,6 @@ def findORF(seq, threshold, codeTable):######demander treshold
                         
                 j=j+3
 
-                #pos start
-                #pos stop
-                #taille de l'ORF
-                #frame
-                #seq
                 
     return list_ORF
 
@@ -474,6 +469,7 @@ def menu():
     print "taper [1] chercher les ORFs d'une séquence"
     print "taper [2] afficher le nombre d'ORF trouvé"
     print "taper [3] afficher la taille de l'ORF le plus grand"
+    print "taper [4xs]"
     print "taper [0] pour quitter"
     print "\n"
     print "======================================================================================="
@@ -490,11 +486,18 @@ def commandes():
             treshold=90 #possibilité de laisser l'utilisateur choisir avec un input
             id=input("Choisir l'ID")
             listORF=findORF(seq, treshold,id)
-            transalte(listORF, id)
+            seq2=reverse(seq)
+            print seq2
+            #listORF(seq2)
+            #transalte(listORF, id)
         elif nb == "2" :
             print len(listORF), "trouvés" 
         elif nb == "3":
             print getLongestORF(listORF)
+        elif nb == "4":
+            seq=read_fasta(fasta)
+            seq2=reverse(seq)
+            print seq2
         elif nb == "0":
             print "Bye"
             sys.exit()

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-
-#Projet de programmation BioPython
+# Projet de programmation BioPython - Alone in the Dark
 # BLASQUIZ Julie
 # JUNG Frédéric
 # THOUVENIN Arthur
@@ -9,11 +8,153 @@
 
 
 import myBio as bio
-import myProject as proj
+#import myProject as proj
 import codecs
+import os
 import sys
 import re
 
+def geneticode():
+    listcode=['nothing']
+    Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
+    Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
+    Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
+    #############################standard code 1
+    AAs   ='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts='---M------**--*----M---------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    #############################The Vertebrate Mitochondrial Code 2
+    AAs   ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSS**VVVVAAAADDEEGGGG'
+    Starts='----------**--------------------MMMM----------**---M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ##############################The Yeast Mitochondrial Code 3
+    AAs   ='FFLLSSSSYY**CCWWTTTTPPPPHHQQRRRRIIMMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts='----------**----------------------MM----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ The Mold, Protozoan, and Coelenterate Mitochondrial Code and the Mycoplasma/Spiroplasma Code (transl_table=4)
+    AAs   ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts='--MM------**-------M------------MMMM---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ The Invertebrate Mitochondrial Code (transl_table=5)
+    AAs   ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSSSSVVVVAAAADDEEGGGG'
+    Starts='---M------**--------------------MMMM---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ The Ciliate, Dasycladacean and Hexamita Nuclear Code (transl_table=6)
+    AAs    ='FFLLSSSSYYQQCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='--------------*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Code 7 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################ Code 8 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################ The Echinoderm and Flatworm Mitochondrial Code (transl_table=9)
+    AAs    ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNNKSSSSVVVVAAAADDEEGGGG'
+    Starts ='----------**-----------------------M---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ The Euplotid Nuclear Code (transl_table=10)
+    AAs    ='FFLLSSSSYY**CCCWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='----------**-----------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################# The Bacterial, Archaeal and Plant Plastid Code (transl_table=11)
+    AAs    ='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='---M------**--*----M------------MMMM---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################  The Alternative Yeast Nuclear Code (transl_table=12)
+    AAs    ='FFLLSSSSYY**CC*WLLLSPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='----------**--*----M---------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ The Ascidian Mitochondrial Code (transl_table=13)
+    AAs    ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSSGGVVVVAAAADDEEGGGG'
+    Starts ='---M------**----------------------MM---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################# The Alternative Flatworm Mitochondrial Code (transl_table=14)
+    AAs    ='FFLLSSSSYYY*CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNNKSSSSVVVVAAAADDEEGGGG'
+    Starts ='-----------*-----------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################# Code 15 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################# Chlorophycean Mitochondrial Code (transl_table=16)
+    AAs    ='FFLLSSSSYY*LCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='----------*---*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################# Code 17 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################# Code 18 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################# Code 19 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################# Code 20 NO AVAILABLE ON NCBI
+    listcode.append(listcode[1])
+    ################################# Trematode Mitochondrial Code (transl_table=21)
+    AAs    ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNNKSSSSVVVVAAAADDEEGGGG'
+    Starts ='----------**-----------------------M---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Scenedesmus obliquus Mitochondrial Code (transl_table=22)
+    AAs    ='FFLLSS*SYY*LCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='------*---*---*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Thraustochytrium Mitochondrial Code (transl_table=23)
+    AAs    ='FF*LSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='--*-------**--*-----------------M--M---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Pterobranchia Mitochondrial Code (transl_table=24)
+    AAs    ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSSKVVVVAAAADDEEGGGG'
+    Starts ='---M------**-------M---------------M---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ############################### Candidate Division SR1 and Gracilibacteria Code (transl_table=25)
+    AAs    ='FFLLSSSSYY**CCGWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='---M------**-----------------------M---------------M------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Pachysolen tannophilus Nuclear Code (transl_table=26)
+    AAs    ='FFLLSSSSYY**CC*WLLLAPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='----------**--*----M---------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Karyorelict Nuclear (transl_table=27)
+    AAs    ='FFLLSSSSYYQQCCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='--------------*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Condylostoma Nuclear (transl_table=28)
+    AAs    ='FFLLSSSSYYQQCCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='----------**--*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Mesodinium Nuclear (transl_table=29)
+    AAs    ='FFLLSSSSYYYYCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='--------------*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Peritrich Nuclear (transl_table=30)
+    AAs    ='FFLLSSSSYYEECC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='--------------*--------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ################################ Blastocrithidia Nuclear (transl_table=31)
+    AAs    ='FFLLSSSSYYEECCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
+    Starts ='----------**-----------------------M----------------------------'
+    list1=[AAs,Starts,Base1,Base2,Base3]
+    listcode.append(list1)
+    ###########################################################################
+    return listcode
 
 def error():
     '''This function control error through the programm, like input errors.
@@ -37,59 +178,36 @@ def error():
         except SyntaxError: # for special character
             print "Wrong NCBI_ID..."
 
-#############################standard code 1
-listcode=['nothing']
-AAs   ='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
-Starts='---M------**--*----M---------------M----------------------------'
-Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
-Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
-Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
-list1=[AAs,Starts,Base1,Base2,Base3]
-listcode.append(list1)
-
-#############################The Vertebrate Mitochondrial Code 2
-AAs   ='FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSS**VVVVAAAADDEEGGGG'
-Starts='----------**--------------------MMMM----------**---M------------'
-Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
-Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
-Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
-list1=[AAs,Starts,Base1,Base2,Base3]
-listcode.append(list1)
-##############################The Yeast Mitochondrial Code 3
-AAs   ='FFLLSSSSYY**CCWWTTTTPPPPHHQQRRRRIIMMTTTTNNKKSSRRVVVVAAAADDEEGGGG'
-Starts='----------**----------------------MM----------------------------'
-Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
-Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
-Base3 ='TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG'
-list1=[AAs,Starts,Base1,Base2,Base3]
-listcode.append(list1)
-
-
-def getGeneticCode(nb):
+def getGeneticCode(num):
+    listcode=geneticode()
     dicocode={}
+    nb=int(num)
     for i in range(len(listcode[nb][0])):
         codon=listcode[nb][2][i]+listcode[nb][3][i]+listcode[nb][4][i]
         dicocode.update({codon:listcode[nb][0][i]})
     return dicocode
 
-def getGeneticCodeStart(nb):
+def getGeneticCodeStart(num):
     dicocodestart={}
+    listcode=geneticode()
+    nb=int(num)
     for i in range(len(listcode[nb][1])):
         if listcode[nb][1][i]!='-' and listcode[nb][1][i]!='*':
             codon=listcode[nb][2][i]+listcode[nb][3][i]+listcode[nb][4][i]
             dicocodestart.update({codon:listcode[nb][1][i]})
     return dicocodestart
 
-def getGeneticCodeStop(nb):
+def getGeneticCodeStop(num):
     dicocodestop={}
+    listcode=geneticode()
+    nb=int(num)
     for i in range(len(listcode[nb][1])):
         if listcode[nb][1][i]!='-' and listcode[nb][1][i]!='M':
             codon=listcode[nb][2][i]+listcode[nb][3][i]+listcode[nb][4][i]
             dicocodestop.update({codon:listcode[nb][1][i]})
     return dicocodestop
 
-
-def findORF(seq, threshold, codeTable):######demander treshold
+def findORF(seq, threshold, id,nb):######demander treshold
     '''This function is the main function of our script this function call all other to make the programm work
 
     Description:
@@ -101,40 +219,56 @@ def findORF(seq, threshold, codeTable):######demander treshold
 
     Return:
         list of ORFs
-
     '''
+    ORF_csv=[]
+    start_dico=getGeneticCodeStart(id)
+    start=start_dico.keys()
+    stop_dico=getGeneticCodeStop(id)
+    stop=stop_dico.keys()
+    list_ORF=[]
     for i in [0,1,2]:
-        j=0
-        while j<=len(seq):
-            if bio.isCodonStart(seq,j,start_dico) == True:
-                print "coucou"
-                for k in range(j,len(seq),3):
-                    if bio.isCodonStop(seq,k,stop) == True :
-                        print "coucou stop"
-                        lenORF=k-j
-                        print lenORF
-                        if lenORF >= threshold:
-                            seq_nuc = seq[j:k+3]
-                            list_ORF.append(seq_nuc)
-                            D={"start":j,
-                               "stop":k,
-                               "length":lenORF,
-                               "frame":i,
-                               "sequence":seq_nuc}
-                        j=k
-                        break
+        j=i
+        while i <= len(seq):
+                if bio.isCodonStart(seq,i,start_dico) == True:
+                    for k in range(i,len(seq),3):
+                        if bio.isCodonStop(seq,k,stop) == True :
+                            lenORF=k-i
+                            if lenORF >= threshold:
+                                seq_nuc = seq[i:k+3]
+                                seq_nuc = seq_nuc.encode('ascii')
+                                seq_aa=translate(seq_nuc,id)
+                                D={"start":i,
+                                       "stop":k,
+                                       "length":lenORF,
+                                       "frame":j+1,
+                                       "sequencean1":seq_nuc,
+                                       "sequenceaa":seq_aa}
+                                ORF_csv.append(D)
+                            i=k
+                            break
+                i=i+3
 
-            j=j+3
+    return ORF_csv
 
-    return list_ORF
+###########################################################
 
+def translate(listorf,id):#verification
+    #tmp=listorf
+    seqprot=''
+    dico=getGeneticCode(id)
+    #listranslate=[]
+    j=0
+    #for i in tmp:#i = 1 orf
+    while j<len(listorf):
+        try:
+            seqprot=seqprot+dico[bio.oneWord(listorf,j,3)]
+        except KeyError:
+            seqprot=seqprot+'X'
+        j=j+3
+    #listranslate.append(seqprot)
+    #return listranslate
+    return seqprot
 
-
-###########################################################"""
-
-
-#def translate()
-#    exit
 
 def getLengths(orf_list):
     '''This function determine the length of ORFs
@@ -184,9 +318,6 @@ def getTopLongestORF(orf_list,value):
         topvalues.append(y)
         tmp.pop(tmp.index(y))
         s=s-1
-
-
-
 
 def writeCSV(filename, separator):#revoir
     '''This function allow current programm to save in file which the name is choosen
@@ -458,22 +589,41 @@ def menu():
     print "\n"
     print "taper [1] chercher les ORFs d'une séquence"
     print "taper [2] afficher le nombre d'ORF trouvé"
+    print "taper [3] afficher la taille de l'ORF le plus grand"
+    print "taper [4] afficher le reverse ADN"
+    print "taper [5] traduire une séquence nucléique"
     print "taper [0] pour quitter"
     print "\n"
     print "======================================================================================="
 
 def commandes():
     nb=1
+    os.system("clear")
     while nb != 0 :
         menu()
         nb=raw_input()
         if nb == "1":
             fasta = raw_input("Entrer le nom de votre fichier FASTA")
-            seq=read_fasta(fasta)
-            treshold=150 #possibilité de laisser l'utilisateur choisir avec un input
-            listORF=findORF(seq, treshold,id)
+            seq_sens=read_fasta(fasta)
+            seq_antisens=bio.reverse(seq_sens)
+            threshold=90 #possibilité de laisser l'utilisateur choisir avec un input
+            id=input("Choisir l'ID")
+            dico_ORF_sens=findORF(seq_sens, threshold,id,0)
+            print dico_ORF_sens
+            dico_ORF_antisens=findORF(seq_antisens,threshold,id,1)
+            #print dico_ORF_antisens
+            dico_ORF = dico_ORF_sens + dico_ORF_antisens
+            #print dico_ORF
+            #transalte(listORF, id)
         elif nb == "2" :
-            print len(listORF)
+            print len(dico_ORF), "trouvés"
+            print dico_ORF
+        elif nb == "3":
+            print getLongestORF(listORF)
+        elif nb == "4":
+            fasta = raw_input("Entrer le nom de votre fichier FASTA")
+        elif nb == "5":
+            print "lol"
         elif nb == "0":
             print "Bye"
             sys.exit()

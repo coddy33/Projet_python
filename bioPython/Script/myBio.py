@@ -137,3 +137,16 @@ def isGene3(seq):
            
 
 
+def reverse(seq):
+    rev_seq=[]
+    for -i in seq :
+        if -i == "A" :
+            rev_seq.append("T")
+        if -i == "T" :
+            rev_seq.append("A")
+        if -i == "C" :
+            rev_seq.append("G")
+        if -i == "G" :
+            rev_seq.append("c")
+
+            
