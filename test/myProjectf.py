@@ -5,16 +5,25 @@
 # JUNG Frédéric
 # THOUVENIN Arthur
 
-
-
 import myBio as bio
-#import myProject as proj
 import codecs
 import os
 import sys
 import re
 
 def geneticode():
+    '''This function provide genetic codes to all function.
+
+    Description:
+        This function have 31 different genetic code (with some exceptions), there is only AAs and Starts variables that change through genetic codes
+        and then we make all codes in a list containing codecs.
+
+    Args:
+        No Args needed
+
+    Return:
+        listcode: a list containing different genetic codes.
+    '''
     listcode=['nothing']
     Base1 ='TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG'
     Base2 ='TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG'
@@ -179,6 +188,18 @@ def error():
             print "Wrong NCBI_ID..."
 
 def getGeneticCode(num):
+    '''This function get genetic code specify by user.
+
+    Description:
+        In this function we take genetic codes from function geneticode() and then we choose in the list the code choose by user. Then we return a dictionnary from the specify genetic code.
+
+    Args:
+        num: NCBI_ID corresponding to one of 31 different genetic codes
+
+    Return:
+        dicocode: a dictionnary of codon corresponding to an AA.
+
+    '''
     listcode=geneticode()
     dicocode={}
     nb=int(num)
@@ -188,6 +209,17 @@ def getGeneticCode(num):
     return dicocode
 
 def getGeneticCodeStart(num):
+    '''This function get genetic code specify by userand return Start codons.
+
+    Description:
+        In this function we take genetic codes from function geneticode() and then we choose in the list the code choose by user. Then we return a dictionnary from the specify genetic code of all start codons.
+
+    Args:
+        num: NCBI_ID corresponding to one of 31 different genetic codes
+
+    Return:
+        dicocode: a dictionnary of codon start corresponding to an AA.
+    '''
     dicocodestart={}
     listcode=geneticode()
     nb=int(num)
@@ -198,6 +230,17 @@ def getGeneticCodeStart(num):
     return dicocodestart
 
 def getGeneticCodeStop(num):
+    '''This function get genetic code specify by userand return Stop codons.
+
+    Description:
+        In this function we take genetic codes from function geneticode() and then we choose in the list the code choose by user. Then we return a dictionnary from the specify genetic code of all stop codons.
+
+    Args:
+        num: NCBI_ID corresponding to one of 31 different genetic codes
+
+    Return:
+        dicocode: a dictionnary of codon stop corresponding to an AA.
+    '''
     dicocodestop={}
     listcode=geneticode()
     nb=int(num)
@@ -207,25 +250,27 @@ def getGeneticCodeStop(num):
             dicocodestop.update({codon:listcode[nb][1][i]})
     return dicocodestop
 
-def findORF(seq, threshold, id,nb):######demander treshold
+def findORF(seq, threshold,id,sens):
     '''This function is the main function of our script this function call all other to make the programm work
 
     Description:
+        In this function we go through sequence, given by user, and all frames to get orfs from sequence.
+        Then we return those in a list of dictionnary, each dictionary contain information about the orf detected.
 
     Args:
         seq: a nucleic sequence
         treshold: the minimumof ORF length in bp
-        codeTable: a genetic code table
+        id: NCBI_ID of genetic code table
+        sens: sens of the analyse (1 or -1)
 
     Return:
-        list of ORFs
+        ORF_csv: A list containning dictionaries of orf and it's information.
     '''
     ORF_csv=[]
     start_dico=getGeneticCodeStart(id)
     start=start_dico.keys()
     stop_dico=getGeneticCodeStop(id)
     stop=stop_dico.keys()
-    list_ORF=[]
     for i in [0,1,2]:
         j=i
         while i <= len(seq):
@@ -240,7 +285,7 @@ def findORF(seq, threshold, id,nb):######demander treshold
                                 D={"start":i,
                                        "stop":k,
                                        "length":lenORF,
-                                       "frame":j+1,
+                                       "frame":sens*(j+1), ### -1 pour antisens
                                        "sequencean1":seq_nuc,
                                        "sequenceaa":seq_aa}
                                 ORF_csv.append(D)
@@ -250,134 +295,192 @@ def findORF(seq, threshold, id,nb):######demander treshold
 
     return ORF_csv
 
-###########################################################
+def translate(orf,id):
+    ''' This function allow to translate nucleic sequence into acide amine sequence
 
-def translate(listorf,id):#verification
-    #tmp=listorf
+    Description:
+        This function translate nucleic sequence to proteic sequence through dictionnary get by getGeneticCode(num)
+
+    Args :
+        orf: the ORF to translate
+        id: the code Table id
+
+    Return:
+        seqprot: The sequence that have been translate.
+    '''
     seqprot=''
     dico=getGeneticCode(id)
-    #listranslate=[]
     j=0
-    #for i in tmp:#i = 1 orf
-    while j<len(listorf):
+    while j<len(orf):
         try:
-            seqprot=seqprot+dico[bio.oneWord(listorf,j,3)]
+            seqprot=seqprot+dico[bio.oneWord(orf,j,3)]
         except KeyError:
             seqprot=seqprot+'X'
         j=j+3
-    #listranslate.append(seqprot)
-    #return listranslate
+
     return seqprot
 
-
-def getLengths(orf_list):
+def getLengths(listdic):
     '''This function determine the length of ORFs
 
-    Desciption:
+    Description:
         This function use the list of ORFs and use length of each element to know lengths
 
     Args:
-        orf_list: list of ORF produce by find ORF function
+        listdic: list of dictionnary containing ORF informations produce by findORF(seq,threshold,id,sens) function
 
     Return:
-        Two list:
-            - First list where sizes are in bp(sizelistbp)
-            - Second list where sizes are in aa(sizelistaa)
+        sizelistbp: First list where sizes are in bp
+        sizelistaa: Second list where sizes are in aa
     '''
     sizelistbp=[]
     sizelistaa=[]
-    for i in orf_list:
-        size=len(i)
-        sizelist.append(size)
+    for i in listdic:
+        size=i['length']
+        size = int(size)
+        sizelistbp.append(size)
         sizeaa=size/3
         sizelistaa.append(sizeaa)
     return sizelistbp,sizelistaa
 
-#a verifier
-def getLongestORF(orf_list):
-    for i in orf_list:
-        result = getLengths(i)
-    x=result[0]
+def getLongestORF(ORF):
+    '''This function get the longest ORF of all ORF detected by program
+
+    Description:
+        This function get lengths of all ORF through getLengths(ORF), and then return the indice of the longest ORF to find the longest ORF of the list containg all dictionaries
+
+    Args:
+        ORF: global variable, a list of dictionaries containing all information about ORFs
+
+    Return:
+        ORF[indice]: a dictionnary of the longest ORF detected
+    '''
+    result=getLengths(ORF)
+    result=result[0]
+    x=0
     for i in result:
         if i>x:
             x=i
     maxi=x
-    indice = []
+    indice=0
     for i in result:
         if i==maxi:
-            indice.append(i)
-    return orf_list[indice]
+            return ORF[indice]
+        else:
+            indice=indice+1
 
-def getTopLongestORF(orf_list,value):
+def getTopLongestORF(ORF,value):
+    '''This function get (value%) of longest ORF of all ORF detected by program
+
+    Description:
+        This function get lengths of all ORF through getLengths(ORF), and then use a temporary list to delete (value%) of longest ORF that is kept in another list.
+        Then we return (value%) of longest ORF of all ORF detected by program through the list topvalues.
+
+    Args:
+        ORF: global variable, a list of dictionaries containing all information about ORFs
+        value: a value of percent
+
+    Return:
+        topvalues: a list containing dictionnaries of (value%) of longest ORF of all ORF detected by program.
+    '''
     topvalues=[]
-    tmp=orf_list
-    s=len(orf_list)
-    s=(1-value)*s
+    tmp=ORF
+    s=len(tmp)
+    s=value*s
     while s>0:
         y=getLongestORF(tmp)
         topvalues.append(y)
         tmp.pop(tmp.index(y))
         s=s-1
+    return topvalues
 
-def writeCSV(filename, separator):#revoir
+def writeCSV(listdict,filename, sep):
     '''This function allow current programm to save in file which the name is choosen
 
     Description:
-        In this function we open a file whi name is choose by the user and then we write dictionnary
+        In this function we open a file which name is choose by the user and then we write a list of dictionaries about ORFs
 
     Args:
+        listdict: a list of dictionaries about ORFs
         filename: file name
-        separator: separator for save objects in filename
+        sep: separator for save objects in filename
 
     Return:
-        J'en sais rien########################
+        Nothing to return.
     '''
-    file=codecs.open(filename,"w",encoding="utf-8")
-    file.write(':')
-    for key in dict.keys():####################revoir le dict
-        file.write(key)
-        file.write(separator)
+    file=open(filename,"w")
+    j=0
+    file.write('>ORF')
+    file.write(sep)
+    file.write('Start')
+    file.write(sep)
+    file.write('Stop')
+    file.write(sep)
+    file.write('Length')
+    file.write(sep)
+    file.write('Frame')
+    file.write(sep)
+    file.write('Seq an')
+    file.write(sep)
+    file.write('Seq aa')
     file.write('\n')
-    file.write('>')
-    for values in dict.values():###########revoir le dict
-        file.write(values)
-        file.write(separator)
+    for i in listdict:##################  Pour un dico
+        file.write('ORF'+str(j))#+(str(j)).encode('ascii'))###########################ajouter des chiffres qui s'additione pour ORF
+        file.write(sep)
+        file.write(str(i['start']))
+        file.write(sep)
+        file.write(str(i['stop']))
+        file.write(sep)
+        file.write(str(i['length']))
+        file.write(sep)
+        file.write(str(i['frame']))
+        file.write(sep)
+        file.write(i['sequencean1'])
+        file.write(sep)
+        file.write(i['sequenceaa'])
+        file.write('\n')
+        j=j+1
 
-def readCSV(filename, separator,data):#revoir
+def readCSV(filename, sep):
     '''This function allow current programm to load a file
 
     Description:
         User choose file to load and then this functio open file and read line by line, first line = listkey, second line = listvalues
-        Then we make a dictionnary from those lists.
+        Then we make a dictionnary from those lists, and at the end one big list containing all dictionaries.
 
     Args:
         filename: file name
-        separator: separator for load objects in filename
+        sep: separator for load objects in filename
 
     Return:
-        ####### Dictionnary of ORFs.
+        listdictorf: A list of dictionaries about ORFs
     '''
-    file=codecs.open(filename,"r",encoding="utf-8")
-    listkey=[]
-    listvalues=[]
+    file=open(filename,"r")
+    listdictorf=[]
+    values=[]
+    Dic={}
     for line in file.readlines():
         if not line:
             break
-        if line.startswith(':'):
-            listkey=line.split(separator)
         if line.startswith('>'):
-            listvalues=line.split(separator)
-    if len(listkey)!=len(listvalues):
-        print 'Corrupted save file.'
-    for i in listkey:
-        n=0
-        dict[i]=listvalues[n]######## revoir le dict
-        n=n+1
-    return dict################revoir dict
+            pass
+        if line.startswith('ORF'):
+            value=line.split(sep)
+            seqaa=value[6]
+            seqaa=seqaa[:-1]
+            Dic={"start":value[1],
+                "stop":value[2],
+                "length":value[3],
+                "frame":value[4], ### -1 pour antisens
+                "sequencean1":value[5],
+                "sequenceaa":seqaa}
+        listdictorf.append(Dic)
+    del listdictorf[0]
+    return listdictorf################revoir dict
 
-def compare(orflist1,orflist2):###############same size?+revoir
+def compare(orflist1,orflist2):###############same size?+revoir################################################################################
     '''This function compare two list of orf and returns orfs which are present in those two lists.
-    Desciption:
+    Description:
         In this function we use each element i orflist1 to see if they are in orflist2.
 
     Args:
@@ -427,7 +530,7 @@ def getFeatures(txt):
 def getGenes(txt):
     '''This function get genes caracteristics
 
-    Desciption:
+    Description:
         This function find how many 'gene' are in the txt to fix the number of loop to take informations of each gene.
         We made a function register_gene() to take information of each gene.
 
@@ -509,11 +612,34 @@ def register_gene(tmp):
     print ('product',product)
     '''
 
-def readGenBank(filename):#description
+def readGenBank(filename):
+    '''This function call other function to read the GenBank of a read FlatFile
+
+    Description:
+        In this function we call two function first one to read FlatFile given by user then second one to take and return all information about the FlatFile.
+
+    Args:
+        filename : The file Name
+
+    Return:
+        Nothing to return
+    '''
     txt=readFlatFile(filename)
     register_general(txt)
 
-def register_general(txt):#miss genetic code +description
+def register_general(txt):
+    '''This function take general information about FlatFile given by user.
+
+    Description:
+        In this function we find and take all information about sequence in the file.
+        Then we return those information in a list of dictionaries of ORFs
+
+    Args:
+        txt: a string containing the FlatFile
+
+    Return:
+        general: a list of dictionaries of ORFs
+    '''
     ###############  description  ##################
     tmp=txt.partition('DEFINITION  ')[2].partition('\nACCESSION')[0]
     description=tmp
@@ -573,6 +699,17 @@ def register_general(txt):#miss genetic code +description
     return general
 
 def read_fasta(filename):
+    '''This function read a FASTA file and return the sequence in this fasta file.
+
+    Description:
+        In this function we open a file and read it to take the sequence which is in the file.
+
+    Args:
+        filename: The file name
+
+    Return:
+        seq: The sequence which is used to find ORFs
+    '''
     file=codecs.open(filename,"r",encoding="utf-8")
     seq=''
     for line in file.readlines():
@@ -585,51 +722,169 @@ def read_fasta(filename):
     return seq
 
 def menu():
+    '''This function print a MENU
+
+    Description:
+        This function print a Menu to help user
+
+    Args:
+        No Args needed
+
+    Return:
+        No return needed
+    '''
     print "======================================== MENU ========================================="
     print "\n"
-    print "taper [1] chercher les ORFs d'une séquence"
-    print "taper [2] afficher le nombre d'ORF trouvé"
-    print "taper [3] afficher la taille de l'ORF le plus grand"
-    print "taper [4] afficher le reverse ADN"
-    print "taper [5] traduire une séquence nucléique"
+    print "taper [1] Afficher le nombre d'ORF trouvé"#################################################################
+    print "taper [2] Afficher l'ORF le plus grand"
+    print "taper [3] Afficher les x %/ ORFs les plus grand"
+    print "taper [4] Afficher les gènes et information d'un FlatFile de NCBI"
+    print "taper [5] "
     print "taper [0] pour quitter"
     print "\n"
     print "======================================================================================="
 
-def commandes():
+def nb1menu():
+    '''This function correspond to findORF() and a save of results
+
+    Description:
+        In this function we call many function to find orf in a fasta file, first we read the fasta given by user, then we use the function findORF() to find ORFs,
+        Then we keep all results in a list of dictionaries call dico_ORF then we ask user if he want to save in a CSV file.
+        At the end we return the list of dictionaries.
+
+    Args:
+        No Args needed
+
+    Return:
+        dico_ORF: a list of dictionaries
+    '''
+    fasta = raw_input("Entrer le nom de votre fichier FASTA\n")
+    seq_sens=read_fasta(fasta)
+    seq_antisens=bio.reverse(seq_sens)
+    id=input("Choisir l'ID\n")
+    threshold=input("Entrer le threshold :\n")
+    dico_ORF_sens=findORF(seq_sens, threshold,id,1)
+    dico_ORF_antisens=findORF(seq_antisens,threshold,id,-1)
+    dico_ORF = dico_ORF_sens + dico_ORF_antisens
+    print '''
+    Voulez-vous sauvegarder au format .csv?
+    [1] Oui
+    [0] Non
+    '''
+    choice=raw_input()
+    if choice=="1":
+        filename=raw_input('Choisir le nom de votre fichier de sauvegarde : \n')
+        sep=raw_input('Choisissez le nom du séparateur utilisé dans le fichier de sauvegarde : ";" ou "," ou ":"\n')
+        writeCSV(dico_ORF,filename, sep)
+    else:
+        pass
+    return dico_ORF
+
+def commandes(ORF):
+    '''This function is the skeleton of our program, it call all other function to make program work well.
+
+    Description:
+        This function is a menu that call function in agreement with user choice.
+
+    Args:
+        ORF: list of dictionaries of ORFs information.
+
+    Return:
+        Nothing to return.
+    '''
     nb=1
     os.system("clear")
     while nb != 0 :
         menu()
         nb=raw_input()
         if nb == "1":
-            fasta = raw_input("Entrer le nom de votre fichier FASTA")
-            seq_sens=read_fasta(fasta)
-            seq_antisens=bio.reverse(seq_sens)
-            threshold=90 #possibilité de laisser l'utilisateur choisir avec un input
-            id=input("Choisir l'ID")
-            dico_ORF_sens=findORF(seq_sens, threshold,id,0)
-            print dico_ORF_sens
-            dico_ORF_antisens=findORF(seq_antisens,threshold,id,1)
-            #print dico_ORF_antisens
-            dico_ORF = dico_ORF_sens + dico_ORF_antisens
-            #print dico_ORF
-            #transalte(listORF, id)
+            print len(ORF), "trouvés"
         elif nb == "2" :
-            print len(dico_ORF), "trouvés"
-            print dico_ORF
+            doc=getLongestORF(ORF)
+            print '======  ORF  ====='
+            print 'Start :',doc['start']
+            print 'Stop :',doc['stop']
+            print 'Length :',doc['length']
+            print 'Frame:',doc['frame']
+            print 'Nucleic sequence :',doc['sequencean1']
+            print 'AAs sequence :',doc['sequenceaa']
+            print '\n'
         elif nb == "3":
-            print getLongestORF(listORF)
+            print 'Entrer le pourcentage souhaité de 0.0 à 1.0\n'
+            num=input()
+            num=float(num)
+            if num<0:
+                print "ERREUR : mauvaise valeur"
+            elif num>1:
+                print "ERREUR : mauvaise valeur"
+            else:
+                diqo=getTopLongestORF(ORF,num)
+                for i in diqo:
+                    print '======  ORF  ====='
+                    print 'Start :',i['start']
+                    print 'Stop :',i['stop']
+                    print 'Length :',i['length']
+                    print 'Frame:',i['frame']
+                    print 'Nucleic sequence :',i['sequencean1']
+                    print 'AAs sequence :',i['sequenceaa']
+                    print '\n'
         elif nb == "4":
-            fasta = raw_input("Entrer le nom de votre fichier FASTA")
+            print 'Entrer le nom du fichier contenant le FlatFile : '
+            filename=raw_input()
+            readGenBank(filename)
         elif nb == "5":
-            print "lol"
+            pass###############################################################    mise en page
         elif nb == "0":
             print "Bye"
             sys.exit()
         else:
             print "ERREUR : mauvaise valeur"
 
-###MAIN####
+def start():
+    '''This function corresponds to the initialization of our program
 
-commandes()
+    Description:
+        In this function we ask user if he want to start from a save file or a fasta file to analyse orf in the sequence
+
+    Args:
+        No Args needed
+
+    Return:
+        LISTDICO: A list of dictionaries of ORFs informations
+    '''
+    os.system("clear")
+    print'''
+       ____  ____  ______   _______           __                      ___    __                    _          __  __                __           __      ___    _____
+      / __ \/ __ \/ ____/  / ____(_)___  ____/ /__  _____            /   |  / /___  ____  ___     (_)___     / /_/ /_  ___     ____/ /___ ______/ /__   |__ \  / __  /
+     / / / / /_/ / /_     / /_  / / __ \/ __  / _ \/ ___/  ______   / /| | / / __ \/ __ \/ _ \   / / __ \   / __/ __ \/ _ \   / __  / __ `/ ___/ //_/   __/ / / / / /
+    / /_/ / _, _/ __/    / __/ / / / / / /_/ /  __/ /     /_____/  / ___ |/ / /_/ / / / /  __/  / / / / /  / /_/ / / /  __/  / /_/ / /_/ / /  / ,<     / __/_/ /_/ /
+    \____/_/ |_/_/      /_/   /_/_/ /_/\__,_/\___/_/              /_/  |_/_/\____/_/ /_/\___/  /_/_/ /_/   \__/_/ /_/\___/   \__,_/\__,_/_/  /_/|_|   /____(_)____/
+    '''
+    print'''
+    Bienvenue sur ORFinder,
+
+    [1] Voulez vous commencer à partir d'un fichier de sauvegarde d'une analyse précédente.
+
+    [2] Voulez vous rechercher les ORFs d'une séquence donnée.
+
+    [0] Quitter.
+    '''
+    LISTDICO=[]
+    choice=raw_input()
+    if choice=="0":
+        sys.exit()
+    elif choice=="1":
+        filename=raw_input('Choisir le nom de votre fichier de sauvegarde : \n')
+        sep=raw_input('Choisissez le nom du séparateur utilisé dans le fichier de sauvegarde : ";" ou "," ou ":"\n')
+        LISTDICO=readCSV(filename,sep)
+        #print LISTDICO
+    elif choice=="2":
+        LISTDICO=nb1menu()
+        #print LISTDICO
+    else:
+        print "ERREUR : mauvaise valeur"
+    return LISTDICO
+
+###MAIN####
+ORF=start()
+commandes(ORF)
